@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="select">
+		<fieldset name="select">
+			<field
+				id="client"
+				name="client"
+				type="client"
+				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
+			</field>
+			<field
+				id="tag"
+				name="tag"
+				type="language"
+				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
+				class="span12 small"
+				client="site"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
+			</field>
+			<field
+				id="storage"
+				name="storage"
+				type="storage"
+				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_SELECT</option>
+			</field>
+			<field
+				id="origin"
+				name="origin"
+				type="origin"
+				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_SELECT</option>
+			</field>
+			<field
+				id="state"
+				name="state"
+				type="state"
+				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STATE_SELECT</option>
+			</field>
+			<field
+				id="type"
+				name="type"
+				type="type"
+				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
+			</field>
+			<field
+				id="develop"
+				name="develop"
+				type="develop"
+				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_SELECT</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>

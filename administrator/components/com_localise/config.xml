@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="global"
+		label="COM_LOCALISE_CONFIG_GLOBAL_LABEL"
+		description="COM_LOCALISE_CONFIG_GLOBAL_DESC">
+		<!-- <field
+			name="backticks"
+			type="list"
+			default="0"
+			label="COM_LOCALISE_BACKTICKS"
+			description="COM_LOCALISE_BACKTICKS_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES (single-quote to backtick)</option>
+			<option value="-1">REVERSE (backtick to single-quote)</option>
+		</field>
+		<field
+			name="globalChanges"
+			type="radio"
+			default="0"
+			label="COM_LOCALISE_GLOBAL_CHANGES"
+			description="COM_LOCALISE_GLOBAL_CHANGES_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</field>
+		<field
+			name="searchStyle"
+			type="text"
+			size="80"
+			default="background-color:yellow;"
+			label="COM_LOCALISE_SEARCHSTYLE"
+			description="COM_LOCALISE_SEARCHSTYLE_DESC" />
+		<field
+			name="autoCorrect"
+			type="text"
+			size="80"
+			default="a^=â;e^=ê;i^=î;o^=ô;w^=ŵ;y^=ŷ;O^=Ô;i&quot;=ï"
+			label="COM_LOCALISE_AUTOCORRECT"
+			description="COM_LOCALISE_AUTOCORRECT_DESC" />-->
+		<field
+			name="reference"
+			type="referencelanguage"
+			required="true"
+			label="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE"
+			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC"
+			addfieldprefix="Joomla\Component\Localise\Administrator\Field" />
+		<field
+			name="filesavepermission"
+			type="text"
+			size="4"
+			maxlength="4"
+			minlength="4"
+			class="ltr"
+			required="true"
+			pattern="[0-7]{4}"
+			default="0644"
+			label="COM_LOCALISE_LABEL_SAVE_PERMISSION"
+			description="COM_LOCALISE_LABEL_SAVE_PERMISSION_DESC" />
+		<field
+			name="installation"
+			type="folderlist"
+			label="COM_LOCALISE_LABEL_INSTALLATION_FOLDER"
+			description="COM_LOCALISE_LABEL_INSTALLATION_FOLDER_DESC"
+			hide_default="1"
+			default="installation"
+			exclude="administrator|build|component|cache|images|includes|language|libraries|logs|media|modules|plugins|templates|test|tmp|bin|cli|layouts" />
+		<field
+			name="suffixes"
+			type="textarea"
+			class="ltr"
+			default=".sys"
+			label="COM_LOCALISE_LABEL_SUFFIXES"
+			description="COM_LOCALISE_LABEL_SUFFIXES_DESC" />
+		<field
+			name="priority"
+			type="radio"
+			class="switcher"		
+			default="0"
+			label="COM_LOCALISE_LABEL_PRIORITY"
+			description="COM_LOCALISE_LABEL_PRIORITY_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="complete"
+			type="radio"
+			class="switcher"		
+			default="1"
+			label="COM_LOCALISE_LABEL_COMPLETE"
+			description="COM_LOCALISE_LABEL_COMPLETE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="author"
+			type="text"
+			label="COM_LOCALISE_LABEL_AUTHOR"
+			description="COM_LOCALISE_LABEL_AUTHOR_DESC" />
+		<field
+			name="authorEmail"
+			type="email"
+			validate="email"
+			class="validate-email ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_EMAIL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_EMAIL_DESC" />
+		<field
+			name="authorUrl"
+			type="url"
+			validate="url"
+			scheme="http,https"
+			class="validate-url ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_URL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_URL_DESC" />
+		<field
+			name="copyright"
+			type="text"
+			label="COM_LOCALISE_LABEL_COPYRIGHT"
+			description="COM_LOCALISE_LABEL_COPYRIGHT_DESC" />
+		<field
+			name="additionalcopyright"
+			type="textarea"
+			label="COM_LOCALISE_LABEL_ADDITIONAL_COPYRIGHT"
+			description="COM_LOCALISE_LABEL_ADDITIONAL_COPYRIGHT_DESC" />
+		<field
+			name="license"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_LICENSE"
+			description="COM_LOCALISE_LABEL_LICENSE_DESC" />
+	</fieldset>
+	<fieldset
+		name="github_develop"
+		label="COM_LOCALISE_LABEL_GITHUB_DEVELOP_TAB"
+		description="COM_LOCALISE_LABEL_GITHUB_DEVELOP_TAB_DESC">
+		<field
+			name="gh_allow_develop"
+			type="radio"
+			class="switcher"		
+			default="0"
+			label="COM_LOCALISE_LABEL_GITHUB_ALLOW_DEVELOP"
+			description="COM_LOCALISE_LABEL_GITHUB_ALLOW_DEVELOP_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="gh_token"
+			type="text"
+			class="ltr"
+			default=""
+			label="COM_LOCALISE_LABEL_GITHUB_TOKEN"
+			description="COM_LOCALISE_LABEL_GITHUB_TOKEN_DESC" />
+		<field
+			type="spacer"
+			name="sourcespacer"
+			class="text"
+			label="COM_LOCALISE_SOURCE_SPACER_LABEL" />
+		<field
+			name="pre_stable"
+			type="radio"
+			class="switcher"		
+			default="0"
+			label="COM_LOCALISE_LABEL_GITHUB_PRESTABLE"
+			description="COM_LOCALISE_LABEL_GITHUB_PRESTABLE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="customisedref"
+			type="releases"
+			default="0"
+			label="COM_LOCALISE_LABEL_CUSTOMIZED_REF"
+			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC">
+			<option	value="0">COM_LOCALISE_LOCAL_INSTALLED_INSTANCE</option>
+		</field>
+		<field
+			type="spacer"
+			name="targetspacer"
+			class="text"
+			label="COM_LOCALISE_TARGET_SPACER_LABEL" />
+		<field
+			name="gh_branch"
+			type="text"
+			class="ltr"
+			default="staging"
+			label="COM_LOCALISE_LABEL_GITHUB_BRANCH"
+			description="COM_LOCALISE_LABEL_GITHUB_BRANCH_DESC" />
+		<field
+			name="gh_updates_interval"
+			type="list"
+			default="1"
+			label="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL"
+			description="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL_DESC">
+			<option	value="0">COM_LOCALISE_HOURLY</option>
+			<option	value="1">COM_LOCALISE_DAILY</option>
+		</field>
+		<field
+			name="gh_administrator_last_update"
+			type="calendar"
+			class="readonly"
+			label="COM_LOCALISE_LABEL_GITHUB_ADMINISTRATOR_LAST_UPDATE"
+			description="COM_LOCALISE_LABEL_GITHUB_ADMINISTRATOR_LAST_UPDATE_DESC"
+			size="22"
+			readonly="true"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc" />
+		<field
+			name="gh_site_last_update"
+			type="calendar"
+			class="readonly"
+			label="COM_LOCALISE_LABEL_GITHUB_SITE_LAST_UPDATE"
+			description="COM_LOCALISE_LABEL_GITHUB_SITE_LAST_UPDATE_DESC"
+			size="22"
+			readonly="true"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc" />
+		<field
+			name="gh_installation_last_update"
+			type="calendar"
+			class="readonly"
+			label="COM_LOCALISE_LABEL_GITHUB_INSTALLATION_LAST_UPDATE"
+			description="COM_LOCALISE_LABEL_GITHUB_INSTALLATION_LAST_UPDATE_DESC"
+			size="22"
+			readonly="true"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc" />
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC">
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			filter="rules"
+			component="com_localise"
+			section="component" />
+	</fieldset>
+</config>

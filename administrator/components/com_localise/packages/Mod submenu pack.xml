@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <title>Mod submenu pack</title>
+  <description>a specific submenu pack</description>
+  <manifest>Mod submenu pack</manifest>
+  <version>4.0.0</version>
+  <packversion>1</packversion>
+  <author/>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authoremail/>
+  <authorurl/>
+  <language>en-GB</language>
+  <copyright/>
+  <packager/>
+  <packagerurl/>
+  <servername/>
+  <serverurl/>
+  <administrator>
+    <filename>mod_submenu.ini</filename>
+    <filename>mod_submenu.sys.ini</filename>
+  </administrator>
+</package>

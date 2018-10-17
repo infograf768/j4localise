@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <title>com_localise</title>
+  <description>com_localise(fr-FR)</description>
+  <manifest>com_localise</manifest>
+  <version>3.0</version>
+  <packversion>1</packversion>
+  <author>French translation team : joomla.fr</author>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authoremail/>
+  <authorurl/>
+  <language>fr-FR</language>
+  <copyright>Copyright (C) 2012 - today Localise Team. All rights reserved.</copyright>
+  <packager/>
+  <packagerurl/>
+  <servername/>
+  <serverurl/>
+  <administrator>
+    <filename>com_localise.ini</filename>
+    <filename>com_localise.sys.ini</filename>
+  </administrator>
+</package>

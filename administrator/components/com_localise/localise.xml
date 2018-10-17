@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.0" method="upgrade">
+	<name>com_localise</name>
+	<creationDate>August 2011</creationDate>
+	<author>Christophe Demko</author>
+	<author>Jean-Marie Simonet</author>
+	<author>Ifan Evans</author>
+	<copyright>(C) 2017 Open Source Matters. All rights reserved.</copyright>
+	<authorEmail>admin@joomla.org</authorEmail>
+	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
+	<version>5.0.0-dev</version>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>COM_LOCALISE_XML_DESCRIPTION</description>
+	<scriptfile>install.php</scriptfile>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
+		</sql>
+	</uninstall>
+	<update>
+		<schemas>
+			<schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+	<media destination="com_localise" folder="media/com_localise">
+		<folder>images</folder>
+		<folder>customisedref</folder>
+		<folder>css</folder>
+		<folder>develop</folder>
+		<folder>js</folder>
+		<folder>packages</folder>
+		<filename>index.html</filename>
+	</media>
+	<administration>
+		<menu img="class:localise">COM_LOCALISE</menu>
+		<submenu>
+			<menu link="option=com_localise&amp;view=languages" img="class:languages" view="languages">COM_LOCALISE_LANGUAGES</menu>
+			<menu link="option=com_localise&amp;view=translations" img="class:translations" view="translations">COM_LOCALISE_TRANSLATIONS</menu>
+			<menu link="option=com_localise&amp;view=packages" img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
+		</submenu>
+		<files folder="component/admin">
+			<folder>Controller</folder>
+			<folder>customisedref</folder>
+			<folder>develop</folder>
+			<folder>Field</folder>
+			<folder>forms</folder>
+			<folder>Helper</folder>
+			<folder>language</folder>
+			<folder>layouts</folder>
+			<folder>Model</folder>
+			<folder>packages</folder>
+			<folder>sql</folder>
+			<folder>Table</folder>
+			<folder>tmpl</folder>
+			<folder>vendor</folder>
+			<folder>View</folder>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>dispatcher.php</filename>
+			<filename>install.php</filename>
+			<filename>localise.php</filename>
+		</files>
+	</administration>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Localise Update Site">https://raw.githubusercontent.com/joomla-projects/com_localise/develop/update-server.xml</server>
+	</updateservers>
+
+</extension>

@@ -1,0 +1,176 @@
+<?php
+/**
+ * @package     Com_Localise
+ * @subpackage  views
+ *
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+
+\JHtml::_('behavior.formvalidator');
+\JHtml::_('behavior.modal');
+\JHtml::_('jquery.framework');
+
+$fieldSets = $this->form->getFieldsets();
+$ftpSets   = $this->formftp->getFieldsets();
+\JText::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
+Factory::getDocument()->addScriptDeclaration("
+	(function($){
+		$(document).ready(function () {
+			$('.fileupload').click(function(e){
+
+				var form   = $('#filemodalForm');
+
+				// Assign task
+				form.find('input[name=task]').val('package.uploadOtherFile');
+
+				// Submit the form
+				if (confirm('" . \JText::_('COM_LOCALISE_MSG_FILES_VALID_IMPORT') . "'))
+				{
+					form.trigger('submit');
+				}
+
+				// Avoid the standard link action
+				e.preventDefault();
+			});
+		});
+	})(jQuery);
+");
+?>
+<script type="text/javascript">
+	\Joomla.submitbutton = function(task)
+	{
+		if ((task == 'package.apply' || task == 'package.save') && document.formvalidator.isValid(document.getElementById('localise-package-form')))
+		{
+			if (confirm(Joomla.JText._('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')))
+			{
+				Joomla.submitform(task, document.getElementById('localise-package-form'));
+			}
+		}
+		else if (task == 'package.cancel' || task == 'package.download')
+		{
+			Joomla.submitform(task, document.getElementById('localise-package-form'));
+		}
+	}
+</script>
+<form action="<?php echo \JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-package-form" class="form-validate">
+	<div class="row">
+		<!-- Begin Localise Package -->
+		<div class="col-md-12">
+			<fieldset>
+				<?php echo \JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
+					<?php if ($this->ftp) : ?>
+					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'ftp', \JText::_($ftpSets['ftp']->label, true)); ?>
+						<?php if (!empty($ftpSets['ftp']->description)):?>
+								<p class="tip"><?php echo \JText::_($ftpSets['ftp']->description); ?></p>
+						<?php endif;?>
+						<?php if ($this->ftp instanceof Exception): ?>
+								<p class="error"><?php echo \JText::_($this->ftp->message); ?></p>
+						<?php endif; ?>
+						<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
+								<div class="control-group">
+									<div class="control-label">
+										<?php echo $field->label; ?>
+									</div>
+									<div class="controls">
+										<?php echo $field->input; ?>
+									</div>
+								</div>
+						<?php endforeach; ?>
+						<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php endif; ?>
+					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'default', \JText::_($fieldSets['default']->label, true)); ?>
+						<div class="col-md-6">
+							<?php if (!empty($fieldSets['default']->description)):?>
+									<p class="tip"><?php echo \JText::_($fieldSets['default']->description); ?></p>
+							<?php endif;?>
+							<?php foreach($this->form->getFieldset('default') as $field): ?>
+									<div class="control-group">
+										<div class="control-label">
+											<?php echo $field->label; ?>
+										</div>
+										<div class="controls">
+											<?php echo $field->input; ?>
+										</div>
+									</div>
+							<?php endforeach; ?>
+						</div>
+						<div class="col-md-6">
+							<?php echo \JText::_($fieldSets['translations']->label); ?>
+							<?php if (!empty($fieldSets['translations']->description)):?>
+									<p class="tip"><?php echo \JText::_($fieldSets['translations']->description); ?></p>
+							<?php endif;?>
+							<?php foreach($this->form->getFieldset('translations') as $field): ?>
+									<div class="control-group">
+										<div class="control-label">
+											<?php echo $field->label; ?>
+										</div>
+										<div class="controls">
+											<?php echo $field->input; ?>
+										</div>
+									</div>
+							<?php endforeach; ?>
+						</div>
+					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'permissions', \JText::_($fieldSets['permissions']->label, true)); ?>
+						<?php if (!empty($fieldSets['permissions']->description)):?>
+								<p class="tip"><?php echo \JText::_($fieldSets['permissions']->description); ?></p>
+						<?php endif;?>
+						<?php foreach($this->form->getFieldset('permissions') as $field): ?>
+								<div class="control-group form-vertical">
+									<div class="controls">
+										<?php echo $field->input; ?>
+									</div>
+								</div>
+						<?php endforeach; ?>
+					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+
+					<input type="hidden" name="task" value="" />
+
+					<?php echo \JHtml::_('form.token'); ?>
+
+				<?php echo \JHtml::_('bootstrap.endTabSet'); ?>
+			</fieldset>
+		</div>
+		<!-- End Localise Package -->
+	</div>
+</form>
+
+<div id="fileModal" class="modal hide fade">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content col-md-12">
+			<div class="modal-header">
+				<h3 class="modal-title"><?php echo \JText::_('COM_LOCALISE_IMPORT_NEW_FILE_HEADER'); ?></h3>
+				
+			</div>
+			<div class="modal-body">
+				<div class="col-md-12">
+				<p><?php echo \JText::_('COM_LOCALISE_IMPORT_NEW_FILE_DESC'); ?></p>
+					<form method="post" action="<?php echo \JRoute::_('index.php?option=com_localise&task=package.uploadOtherFile&file=' . $this->file); ?>"
+						class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
+						<fieldset>
+							<label><?php echo \JText::_('COM_LOCALISE_TEXT_CLIENT'); ?></label>
+							<select name="location" type="location" required >
+								<option value="admin"><?php echo \JText::_('JADMINISTRATOR'); ?></option>
+								<option value="site"><?php echo \JText::_('JSITE'); ?></option>
+							</select>
+							<label></label>
+							<input type="file" name="files" required />
+								<a href="#" class="hasTooltip btn btn-primary fileupload">
+								<?php echo \JText::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
+								</a>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a role="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true"><?php echo \JText::_('COM_LOCALISE_MODAL_CLOSE'); ?></a>
+			</div>
+		</div>
+	</div>
+</div>
+
