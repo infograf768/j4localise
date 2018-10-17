@@ -45,24 +45,17 @@
 			<menu link="option=com_localise&amp;view=packages" img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
 		</submenu>
 		<files folder="component/admin">
-			<folder>Controller</folder>
 			<folder>customisedref</folder>
 			<folder>develop</folder>
-			<folder>Field</folder>
 			<folder>forms</folder>
-			<folder>Helper</folder>
 			<folder>language</folder>
 			<folder>layouts</folder>
-			<folder>Model</folder>
 			<folder>packages</folder>
-			<folder>sql</folder>
-			<folder>Table</folder>
+			<folder>src</folder>
 			<folder>tmpl</folder>
 			<folder>vendor</folder>
-			<folder>View</folder>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>dispatcher.php</filename>
 			<filename>install.php</filename>
 			<filename>localise.php</filename>
 		</files>
