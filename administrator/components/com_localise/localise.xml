@@ -51,6 +51,8 @@
 			<folder>language</folder>
 			<folder>layouts</folder>
 			<folder>packages</folder>
+			<folder>services</folder>
+			<folder>sql</folder>
 			<folder>src</folder>
 			<folder>tmpl</folder>
 			<folder>vendor</folder>
