@@ -55,6 +55,7 @@
 			<folder>layouts</folder>
 			<folder>Model</folder>
 			<folder>packages</folder>
+			<folder>services</folder>
 			<folder>sql</folder>
 			<folder>Table</folder>
 			<folder>tmpl</folder>
