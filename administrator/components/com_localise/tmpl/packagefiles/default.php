@@ -10,5 +10,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
-Factory::getApplication()->redirect(\JRoute::_('index.php?option=com_localise&view=packages', false));
+Factory::getApplication()->redirect(Route::_('index.php?option=com_localise&view=packages', false));

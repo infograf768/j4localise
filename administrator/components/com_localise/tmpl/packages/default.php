@@ -10,12 +10,15 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
-\JHtml::_('behavior.modal');
-\JHTML::_('stylesheet', 'com_localise/localise.css', null, true);
-\JHtml::_('formbehavior.chosen', 'select');
-\JHtml::_('jquery.framework');
-\JHtml::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.modal');
+HTMLHelper::_('stylesheet', 'com_localise/localise.css', null, true);
+HTMLHelper::_('formbehavior.chosen', 'select');
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('bootstrap.tooltip');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
@@ -32,7 +35,7 @@ Factory::getDocument()->addScriptDeclaration("
 				form.find('input[name=task]').val('package.uploadFile');
 
 				// Submit the form
-				if (confirm('" . \JText::_('COM_LOCALISE_MSG_PACKAGES_VALID_IMPORT') . "'))
+				if (confirm('" . Text::_('COM_LOCALISE_MSG_PACKAGES_VALID_IMPORT') . "'))
 				{
 					form.trigger('submit');
 				}
@@ -44,7 +47,7 @@ Factory::getDocument()->addScriptDeclaration("
 	})(jQuery);
 ");
 ?>
-<form action="<?php echo \JRoute::_('index.php?option=com_localise&view=packages');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_localise&view=packages');?>" method="post" name="adminForm" id="adminForm">
 	<?php echo $this->loadTemplate('filter'); ?>
 		<table class="table table-striped" id="localiseList">
 			<thead>
@@ -60,7 +63,7 @@ Factory::getDocument()->addScriptDeclaration("
 		<div>
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" name="task" value="" />
-			<?php echo \JHtml::_('form.token'); ?>
+			<?php echo HTMLHelper::_('form.token'); ?>
 		</div>
 	<!-- End Content -->
 </form>
@@ -69,16 +72,16 @@ Factory::getDocument()->addScriptDeclaration("
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 		<div class="modal-header">
-			<h3 class="modal-title"><?php echo \JText::_('COM_LOCALISE_IMPORT_NEW_PACKAGE_HEADER'); ?></h3>
+			<h3 class="modal-title"><?php echo Text::_('COM_LOCALISE_IMPORT_NEW_PACKAGE_HEADER'); ?></h3>
 		</div>
 		<div class="modal-body">
 			<div class="col-md-12">
-				<form method="post" action="<?php echo \JRoute::_('index.php?option=com_localise&task=package.uploadFile&file=' . $this->file); ?>"
+				<form method="post" action="<?php echo Route::_('index.php?option=com_localise&task=package.uploadFile&file=' . $this->file); ?>"
 					class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
 					<fieldset>
 						<input type="file" name="files" required />
 						<a href="#" class="hasTooltip btn btn-primary fileupload">
-							<?php echo \JText::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
+							<?php echo Text::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
 						</a>
 					</fieldset>
 				</form>

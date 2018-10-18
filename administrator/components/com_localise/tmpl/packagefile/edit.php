@@ -9,11 +9,15 @@
 
 defined('_JEXEC') or die;
 
-\JHtml::_('behavior.formvalidator');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
+HTMLHelper::_('behavior.formvalidator');
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
-\JText::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
+Text::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
 
 ?>
 <script type="text/javascript">
@@ -32,19 +36,18 @@ $ftpSets   = $this->formftp->getFieldsets();
 		}
 	}
 </script>
-<form action="<?php echo \JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-package-form" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-package-form" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Localise Package -->
-		<div class="span12 form-horizontal">
-			<fieldset>
-				<?php echo \JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
+		<div class="col-md-12">
+				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
 					<?php if ($this->ftp) : ?>
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'ftp', \JText::_($ftpSets['ftp']->label, true)); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 						<?php if (!empty($ftpSets['ftp']->description)):?>
-								<p class="tip"><?php echo \JText::_($ftpSets['ftp']->description); ?></p>
+								<p class="tip"><?php echo Text::_($ftpSets['ftp']->description); ?></p>
 						<?php endif;?>
 						<?php if ($this->ftp instanceof Exception): ?>
-								<p class="error"><?php echo \JText::_($this->ftp->message); ?></p>
+								<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 						<?php endif; ?>
 						<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
 								<div class="control-group">
@@ -56,12 +59,13 @@ $ftpSets   = $this->formftp->getFieldsets();
 									</div>
 								</div>
 						<?php endforeach; ?>
-						<?php echo \JHtml::_('bootstrap.endTab'); ?>
+						<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php endif; ?>
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'default', \JText::_($fieldSets['default']->label, true)); ?>
-						<div class="span6">
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
+						<div class="row">
+						<div class="col-lg-12 col-xl-6">
 							<?php if (!empty($fieldSets['default']->description)):?>
-									<p class="tip"><?php echo \JText::_($fieldSets['default']->description); ?></p>
+									<legend><?php echo Text::_($fieldSets['default']->description); ?></legend>
 							<?php endif;?>
 							<?php foreach($this->form->getFieldset('default') as $field): ?>
 									<div class="control-group">
@@ -74,10 +78,10 @@ $ftpSets   = $this->formftp->getFieldsets();
 									</div>
 							<?php endforeach; ?>
 						</div>
-						<div class="span6">
-							<?php echo \JText::_($fieldSets['translations']->label); ?>
+						<div class="col-lg-12 col-xl-6">
+							 <legend><?php echo Text::_($fieldSets['translations']->label); ?></legend>
 							<?php if (!empty($fieldSets['translations']->description)):?>
-									<p class="tip"><?php echo \JText::_($fieldSets['translations']->description); ?></p>
+									<legend><?php echo Text::_($fieldSets['translations']->description); ?></legend>
 							<?php endif;?>
 							<?php foreach($this->form->getFieldset('translations') as $field): ?>
 									<div class="control-group form-vertical">
@@ -90,10 +94,11 @@ $ftpSets   = $this->formftp->getFieldsets();
 									</div>
 							<?php endforeach; ?>
 						</div>
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'permissions', \JText::_($fieldSets['permissions']->label, true)); ?>
+						</div>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
 						<?php if (!empty($fieldSets['permissions']->description)):?>
-								<p class="tip"><?php echo \JText::_($fieldSets['permissions']->description); ?></p>
+								<p class="tip"><?php echo Text::_($fieldSets['permissions']->description); ?></p>
 						<?php endif;?>
 						<?php foreach($this->form->getFieldset('permissions') as $field): ?>
 								<div class="control-group form-vertical">
@@ -102,14 +107,13 @@ $ftpSets   = $this->formftp->getFieldsets();
 									</div>
 								</div>
 						<?php endforeach; ?>
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 					<input type="hidden" name="task" value="" />
 
-					<?php echo \JHtml::_('form.token'); ?>
+					<?php echo HTMLHelper::_('form.token'); ?>
 
-				<?php echo \JHtml::_('bootstrap.endTabSet'); ?>
-			</fieldset>
+				<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 		</div>
 		<!-- End Localise Package -->
 	</div>

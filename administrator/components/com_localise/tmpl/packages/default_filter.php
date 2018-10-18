@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die;
 
-$params     = (isset($this->state->params)) ? $this->state->params : new \JObject;
+use Joomla\CMS\Layout\LayoutHelper;
+
+$params = (isset($this->state->params)) ? $this->state->params : new JObject;
 
 ?>
 <div class="row">
@@ -21,12 +23,4 @@ $params     = (isset($this->state->params)) ? $this->state->params : new \JObjec
 <!-- Begin Content -->
 <div class="col-md-10">
 <div id="j-main-container" class="j-main-container">
-	<div id="filter-bar hidden-phone" class="btn-toolbar">
-		<div class="js-stools-field-filter">
-			<?php foreach($this->form->getFieldset('search') as $field): ?>
-				<?php echo $field->input; ?>
-			<?php endforeach; ?>
-		</div>
-			<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
-	</div>
-
+	<?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
