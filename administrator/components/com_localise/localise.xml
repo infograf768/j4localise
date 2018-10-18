@@ -11,7 +11,7 @@
 	<version>5.0.0-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
-	<namespace>Joomla\Component\Localise</namespace>
+	<namespace path="src">Joomla\Component\Localise</namespace>
 	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
@@ -45,25 +45,19 @@
 			<menu link="option=com_localise&amp;view=packages" img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
 		</submenu>
 		<files folder="component/admin">
-			<folder>Controller</folder>
 			<folder>customisedref</folder>
 			<folder>develop</folder>
-			<folder>Field</folder>
 			<folder>forms</folder>
-			<folder>Helper</folder>
 			<folder>language</folder>
 			<folder>layouts</folder>
-			<folder>Model</folder>
 			<folder>packages</folder>
 			<folder>services</folder>
 			<folder>sql</folder>
-			<folder>Table</folder>
+			<folder>src</folder>
 			<folder>tmpl</folder>
 			<folder>vendor</folder>
-			<folder>View</folder>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>dispatcher.php</filename>
 			<filename>install.php</filename>
 			<filename>localise.php</filename>
 		</files>
