@@ -12,12 +12,13 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Version;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 \JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-
+HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
 \JHtml::_('behavior.formvalidator');
 \JHtml::_('behavior.keepalive');
-\JHTML::_('stylesheet', 'com_localise/localise.css', null, true);
+
 
 $params            = ComponentHelper::getParams('com_localise');
 $ref_tag           = $params->get('reference', 'en-GB');

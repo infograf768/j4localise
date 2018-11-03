@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Localise\Administrator\Field">
 	<fields name="select">
 		<fieldset name="select">
 			<field
@@ -7,7 +7,6 @@
 				name="client"
 				type="client"
 				hidden="true"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
 			</field>
@@ -16,7 +15,6 @@
 				name="tag"
 				type="language"
 				hidden="true"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
 			</field>

@@ -8,9 +8,12 @@
  */
 
 defined('_JEXEC') or die;
-use Joomla\CMS\Component\ComponentHelper;
 
-\JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
+
 \JHtml::_('formbehavior.chosen', 'select');
 \JHtml::_('behavior.framework', true);
 \JHtml::_('bootstrap.tooltip');

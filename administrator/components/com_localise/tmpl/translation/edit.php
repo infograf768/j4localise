@@ -9,12 +9,13 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Version;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
 \JHtml::_('behavior.formvalidator');
-\JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
+HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
 \JHtml::_('jquery.framework');
 
 $parts = explode('-', $this->state->get('translation.reference'));

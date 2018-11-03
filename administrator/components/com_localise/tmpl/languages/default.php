@@ -9,8 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 
-\JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
+HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
 \JHtml::_('formbehavior.chosen', 'select');
 \JHtml::_('jquery.framework');
 \JHtml::_('behavior.framework', true);

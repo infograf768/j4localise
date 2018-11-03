@@ -11,8 +11,10 @@ namespace Joomla\Component\Localise\Administrator\Field;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.html.html');
+
+//jimport('joomla.html.html');
 
 /**
  * Form Field Ini class.
@@ -34,7 +36,7 @@ class IniField extends FormField
 	/**
 	 * Base path for editor files
 	 */
-	protected $basePath = 'media/editors/codemirror/';
+	protected $basePath = 'media/vendor/codemirror/';
 
 	/**
 	 * Method to get the field input.
@@ -46,12 +48,13 @@ class IniField extends FormField
 		\JHtml::_('behavior.framework');
 
 		// Load Codemirror
-		\JHtml::_('script', 'media/vendor/codemirror/lib/codemirror.js', false, false, false, false);
-		\JHtml::_('stylesheet', 'media/vendor/codemirror/lib/codemirror.css');
+		HTMLHelper::_('script', 'vendor/codemirror/lib/codemirror.js', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('stylesheet', 'vendor/codemirror/lib/codemirror.css', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('webcomponent', 'system/webcomponents/joomla-editor-codemirror.min.js', array('version' => 'auto', 'relative' => true));
 
 		// Load Joomla language ini parser
-		\JHtml::_('script', 'media/com_localise/js/parseini.js', false, false, false, false);
-		\JHtml::_('stylesheet', 'media/com_localise/css/localise.css');
+		HTMLHelper::_('script', 'com_localise/parseini.js', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('stylesheet', 'com_localise/localise.css', array('version' => 'auto', 'relative' => true));
 
 		$rows   = (string) $this->element['rows'];
 		$cols   = (string) $this->element['cols'];

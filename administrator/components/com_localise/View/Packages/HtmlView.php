@@ -12,7 +12,9 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ContentHelper;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -32,6 +34,10 @@ class HtmlView extends BaseHtmlView
 	protected $form;
 
 	protected $state;
+	
+	public $filterForm;
+	
+	public $activeFilters;
 
 	/**
 	 * Display the view
@@ -43,14 +49,14 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 		// Get the data
-		$app				= Factory::getApplication();
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
-		$this->form       = $this->get('Form');
+		$app				 = Factory::getApplication();
+		$this->items		 = $this->get('Items');
+		$this->pagination	 = $this->get('Pagination');
+		$this->state		 = $this->get('State');
+		$this->form          = $this->get('Form');
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
-		$this->file			= $app->input->get('file');
+		$this->file			 = $app->input->get('file');
 
 		LocaliseHelper::addSubmenu('packages');
 
@@ -81,7 +87,7 @@ class HtmlView extends BaseHtmlView
 	protected function prepareDocument()
 	{
 		$document = Factory::getDocument();
-		$document->setTitle(\JText::sprintf('COM_LOCALISE_TITLE', \JText::_('COM_LOCALISE_TITLE_PACKAGES')));
+		$document->setTitle(Text::sprintf('COM_LOCALISE_TITLE', Text::_('COM_LOCALISE_TITLE_PACKAGES')));
 	}
 
 	/**
@@ -93,9 +99,9 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		$canDo = \JHelperContent::getActions('com_localise', 'component');
+		$canDo = ContentHelper::getActions('com_localise', 'component');
 
-		ToolBarHelper::title(\JText::sprintf('COM_LOCALISE_HEADER_MANAGER', \JText::_('COM_LOCALISE_HEADER_PACKAGES')), 'comments-2 langmanager');
+		ToolBarHelper::title(Text::sprintf('COM_LOCALISE_HEADER_MANAGER', Text::_('COM_LOCALISE_HEADER_PACKAGES')), 'comments-2 langmanager');
 
 		if ($canDo->get('localise.create'))
 		{
@@ -150,10 +156,10 @@ class HtmlView extends BaseHtmlView
 	protected function getSortFields()
 	{
 		return array(
-			'title'    => \JText::_('COM_LOCALISE_HEADING_PACKAGES_TITLE'),
-			'language' => \JText::_('COM_LOCALISE_LABEL_PACKAGE_LANGUAGE'),
-			'version'  => \JText::_('COM_LOCALISE_LABEL_PACKAGE_VERSION'),
-			'core'     => \JText::_('COM_LOCALISE_HEADING_PACKAGES_TYPE'),
+			'title'    => Text::_('COM_LOCALISE_HEADING_PACKAGES_TITLE'),
+			'language' => Text::_('COM_LOCALISE_LABEL_PACKAGE_LANGUAGE'),
+			'version'  => Text::_('COM_LOCALISE_LABEL_PACKAGE_VERSION'),
+			'core'     => Text::_('COM_LOCALISE_HEADING_PACKAGES_TYPE'),
 		);
 	}
 }

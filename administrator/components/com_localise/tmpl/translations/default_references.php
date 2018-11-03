@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Version;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -185,17 +186,8 @@ $has_installation  = LocaliseHelper::hasInstallation();
 		$report .= \JText::_('COM_LOCALISE_REFERENCES_REPORT_NO_DEVELOP');
 	}
 ?>
-<div class="accordion" id="accordionReferences">
-	<div class="accordion-group">
-		<div class="accordion-heading alert-info">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="accordionReferences" href="#references">
-				<?php echo \JText::_('COM_LOCALISE_SLIDER_TRANSLATIONS_REFERENCES'); ?>
-			</a>
-		</div>
-		<div id="references" class="accordion-body collapse">
-			<div class="accordion-inner">
-				<?php echo $report; ?>
-			</div>
-		</div>
-	</div>
-</div>
+
+<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-translations', JText::_('COM_LOCALISE_SLIDER_TRANSLATIONS_REFERENCES'), 'references'); ?>
+<?php echo $report; ?>
+<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
+<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>

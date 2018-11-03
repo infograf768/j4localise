@@ -18,7 +18,7 @@ use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Factory;
 
 \JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
+//include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -48,7 +48,7 @@ class LanguageField extends ListField
 	 */
 	protected function getOptions()
 	{
-		$app  = Factory::getApplication();
+		$app   = Factory::getApplication();
 		$state = $app->getUserState('com_localise.select');
 		$attributes = '';
 

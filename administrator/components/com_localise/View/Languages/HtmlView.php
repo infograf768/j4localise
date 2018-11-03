@@ -30,6 +30,10 @@ class HtmlView extends BaseHtmlView
 	protected $state;
 
 	protected $form;
+	
+	public $filterForm;
+	
+	public $activeFilters;
 
 	/**
 	 * Display the view
@@ -49,6 +53,9 @@ class HtmlView extends BaseHtmlView
 		$this->activeFilters = $this->get('ActiveFilters');
 
 		LocaliseHelper::addSubmenu('languages');
+		
+		unset($this->activeFilters['client']);
+		unset($this->activeFilters['tag']);
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

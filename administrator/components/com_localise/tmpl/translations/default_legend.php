@@ -8,16 +8,12 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
-<div class="accordion" id="accordionLegend">
-	<div class="accordion-group">
-		<div class="accordion-heading alert-info">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="accordionLegend" href="#legend">
-				<?php echo JText::_('COM_LOCALISE_SLIDER_TRANSLATIONS_LEGEND'); ?>
-			</a>
-		</div>
-		<div id="legend" class="accordion-body collapse">
-			<div class="accordion-inner">
+<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-translations',array('active' => '')); ?>
+<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-translations', JText::_('COM_LOCALISE_SLIDER_TRANSLATIONS_LEGEND'), 'legend'); ?>
+
 				<table width="100%" class="adminlist">
 					<thead>
 					<tr>
@@ -183,7 +179,5 @@ defined('_JEXEC') or die;
 					</tr>
 					</tbody>
 				</table>
-			</div>
-		</div>
-	</div>
-</div>
+<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
+

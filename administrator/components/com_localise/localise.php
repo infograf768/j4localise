@@ -18,17 +18,17 @@ if (!Factory::getUser()->authorise('core.manage', 'com_localise'))
 }
 
 // Include helper files
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/helper/defines.php';
-require_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/localisehelper.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/LocaliseHelper.php';
 //require_once JPATH_COMPONENT . '/helper/localisehelper.php';
 
 // Load Composer Autoloader
 
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/vendor/autoload.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
 \JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
 \JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
 \JLoader::register('JPath', JPATH_LIBRARIES . '/joomla/filesystem/path.php');
-\JLoader::register('LocaliseHelper', JPATH_COMPONENT . '/helper/localisehelper.php');
+\JLoader::register('LocaliseHelper', JPATH_COMPONENT . '/Helper/LocaliseHelper.php');
 
 // Get the controller
 $controller = \JControllerLegacy::getInstance('Localise');

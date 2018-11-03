@@ -138,7 +138,7 @@
 			name="source"
 			type="ini"
 			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-			class="span12"
+			class="col-md-10"
 			rows="20"
 			cols="80"
 			filter="raw" />
