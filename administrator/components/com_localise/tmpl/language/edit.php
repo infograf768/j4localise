@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 \JHtml::_('behavior.formvalidator');
 \JHtml::_('formbehavior.chosen', 'select');
@@ -22,7 +23,7 @@ $isNew     = empty($this->item->id);
 $tag       = $this->item->tag ;
 $client    = $this->item->client;
 
-\JHtml::_('script', 'media/com_localise/js/language-form.js', false, false, false, false);
+HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', 'relative' => true]);
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -44,9 +45,9 @@ $client    = $this->item->client;
 				<p><em> <?php echo \JText::sprintf('COM_LOCALISE_COPY_REF_TO_NEW_LANG_TIP', $ref_tag, $tag); ?></em></p>
 			<?php endif; ?>
 			<fieldset>
-				<?php echo \JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
+				<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
 					<?php if ($this->ftp) : ?>
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'ftp', \JText::_($ftpSets['ftp']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'ftp', \JText::_($ftpSets['ftp']->label, true)); ?>
 
 						<?php if (!empty($ftpSets['ftp']->description)):?>
 							<p class="tip"><?php echo \JText::_($ftpSets['ftp']->description); ?></p>
@@ -67,11 +68,11 @@ $client    = $this->item->client;
 						</div>
 						<?php endforeach; ?>
 
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
 					<?php endif; ?>
 
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'default', \JText::_($fieldSets['default']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'default', \JText::_($fieldSets['default']->label, true)); ?>
 
 						<div class="span6">
 						<?php if (!empty($fieldSets['default']->description)) : ?>
@@ -116,9 +117,9 @@ $client    = $this->item->client;
 							<?php endif;?>
 						</div>
 
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'author', \JText::_($fieldSets['author']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'author', \JText::_($fieldSets['author']->label, true)); ?>
 
 						<?php if (!empty($fieldSets['author']->description)):?>
 							<p class="tip"><?php echo \JText::_($fieldSets['author']->description); ?></p>
@@ -135,9 +136,9 @@ $client    = $this->item->client;
 						</div>
 						<?php endforeach; ?>
 
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'permissions', \JText::_($fieldSets['permissions']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'permissions', \JText::_($fieldSets['permissions']->label, true)); ?>
 
 						<?php if (!empty($fieldSets['permissions']->description)):?>
 							<p class="tip"><?php echo \JText::_($fieldSets['permissions']->description); ?></p>
@@ -151,12 +152,12 @@ $client    = $this->item->client;
 						</div>
 						<?php endforeach; ?>
 
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
 					<input type="hidden" name="task" value="" />
-					<?php echo \JHtml::_('form.token'); ?>
+					<?php echo HTMLHelper::_('form.token'); ?>
 
-				<?php echo \JHtml::_('bootstrap.endTabSet'); ?>
+				<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 			</fieldset>
 		</div>
 		<!-- End Localise Language -->
