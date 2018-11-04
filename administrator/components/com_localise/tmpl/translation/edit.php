@@ -13,10 +13,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Version;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 
-\JHtml::_('behavior.formvalidator');
+HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
-\JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 
 $parts = explode('-', $this->state->get('translation.reference'));
 $src   = $parts[0];
@@ -50,7 +51,7 @@ $installed_version = $installed_version->getShortVersion();
 	if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
 	{
 		Factory::getApplication()->enqueueMessage(
-		\JText::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
+		Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
 		'notice');
 	}
 
@@ -98,8 +99,8 @@ $sections  = $this->form->getFieldsets('strings');
 $ftpSets   = $this->formftp->getFieldsets();
 
 // Prepare Bing translation
-\JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
-\JText::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
+Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
+Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 ?>
 <script type="text/javascript">
 	Localise.language_src = '<?php echo $src; ?>';
@@ -144,14 +145,14 @@ $ftpSets   = $this->formftp->getFieldsets();
 		<!-- Begin Localise Translation -->
 		<div class="col-md-12 form-horizontal">
 			<fieldset>
-				<?php echo \JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
+				<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
 					<?php if ($this->ftp) : ?>
-						<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'ftp', \JText::_($ftpSets['ftp']->label, true)); ?>
+						<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 							<?php if (!empty($ftpSets['ftp']->description)):?>
-								<p class="tip"><?php echo \JText::_($ftpSets['ftp']->description); ?></p>
+								<p class="tip"><?php echo Text::_($ftpSets['ftp']->description); ?></p>
 							<?php endif;?>
 							<?php if ($this->ftp instanceof Exception): ?>
-								<p class="error"><?php echo \JText::_($this->ftp->message); ?></p>
+								<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 							<?php endif; ?>
 							<?php foreach($this->formftp->getFieldset('ftp',false) as $field) : ?>
 								<div class="control-group">
@@ -163,11 +164,11 @@ $ftpSets   = $this->formftp->getFieldsets();
 									</div>
 								</div>
 							<?php endforeach; ?>
-						<?php echo \JHtml::_('bootstrap.endTab'); ?>
+						<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 					<?php endif; ?>
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'default', \JText::_($fieldSets['default']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
 						<?php if (!empty($fieldSets['default']->description)) : ?>
-							<p class="alert alert-info"><?php echo \JText::_($fieldSets['default']->description); ?></p>
+							<p class="alert alert-info"><?php echo Text::_($fieldSets['default']->description); ?></p>
 						<?php endif;?>
 						<?php foreach($this->form->getFieldset('default') as $field) : ?>
 							<div class="control-group">
@@ -179,32 +180,23 @@ $ftpSets   = $this->formftp->getFieldsets();
 								</div>
 							</div>
 						<?php endforeach; ?>
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'strings', \JText::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
-						<div class="accordion" id="com_localise_legend_translation">
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle alert-info" data-toggle="collapse" data-parent="com_localise_legend_translation" href="#legend">
-										<?php echo \JText::_($fieldSets['legend']->label);?>
-									</a>
-								</div>
-								<div id="legend" class="accordion-body collapse">
-									<div class="accordion-inner">
-										<?php if (!empty($fieldSets['legend']->description)) : ?>
-											<p class="tip"><?php echo \JText::_($fieldSets['legend']->description); ?></p>
-										<?php endif; ?>
-										<ul class="adminformlist">
-										<?php foreach($this->form->getFieldset('legend') as $field) : ?>
-											<li>
-												<?php echo $field->label; ?>
-												<?php echo $field->input; ?>
-											</li>
-										<?php endforeach; ?>
-										</ul>
-									</div>
-								</div>
+					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
+						<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-legend', array('active' => '')); ?>
+						<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-legend', Text::_($fieldSets['legend']->label), 'legend'); ?>
+							<div>
+								<p class="tip"><?php echo Text::_('COM_LOCALISE_LABEL_TRANSLATION_KEY'); ?></p>
+								<ul class="adminformlist">
+									<?php foreach($this->form->getFieldset('legend') as $field) : ?>
+										<li>
+											<?php echo $field->input; ?>
+										</li>
+									<?php endforeach; ?>
+								</ul>
 							</div>
-						</div>
+						<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
+						<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
+
 						<div class="key">
 							<div id="translationbar">
 								<?php //if ($istranslation) : ?>
@@ -213,7 +205,7 @@ $ftpSets   = $this->formftp->getFieldsets();
 											<?php if ($field->type != "Spacer") : ?>
 												<?php
 													$field->value = $filter;
-													echo \JText::_('JSEARCH_FILTER_LABEL');
+													echo Text::_('JSEARCH_FILTER_LABEL');
 													echo $field->input;
 												?>
 											<?php else : ?>
@@ -222,17 +214,17 @@ $ftpSets   = $this->formftp->getFieldsets();
 										<?php endforeach; ?>
 									</div>
 								<?php //endif; ?>
-								<a href="javascript:void(0);" class="btn bnt-small" onclick="returnAll();">
-									<i class="icon-reset"></i> <?php echo \JText::_('COM_LOCALISE_BUTTON_RESET_ALL');?>
+								<a href="javascript:void(0);" class="btn btn-small" onclick="returnAll();">
+									<i class="icon-reset"></i> <?php echo Text::_('COM_LOCALISE_BUTTON_RESET_ALL');?>
 								</a>
 							</div>
 							<?php
 								if (count($sections) > 1) :
 									echo '<div class="clearfix"></div>';
-									echo \JHtml::_('bootstrap.startAccordion', 'localise-translation-sliders');
+									echo HTMLHelper::_('bootstrap.startAccordion', 'localise-translation-sliders');
 									$i = 0;
 									foreach ($sections as $name => $fieldSet) :
-										echo \JHtml::_('bootstrap.addSlide', 'localise-translation-sliders', \JText::_($fieldSet->label), 'collapse' . $i++);
+										echo HTMLHelper::_('bootstrap.addSlide', 'localise-translation-sliders', Text::_($fieldSet->label), 'collapse' . $i++);
 							?>
 							<ul class="adminformlist">
 								<?php foreach ($this->form->getFieldset($name) as $field) : ?>
@@ -288,9 +280,9 @@ $ftpSets   = $this->formftp->getFieldsets();
 								<?php endforeach; ?>
 							</ul>
 							<?php
-								echo JHtml::_('bootstrap.endSlide');
+								echo HTMLHelper::_('bootstrap.endSlide');
 								endforeach;
-								echo JHtml::_('bootstrap.endAccordion');
+								echo HTMLHelper::_('bootstrap.endAccordion');
 							?>
 							<?php else : ?>
 								<ul class="adminformlist">
@@ -349,10 +341,10 @@ $ftpSets   = $this->formftp->getFieldsets();
 								</ul>
 							<?php endif;?>
 						</div>
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
-					<?php echo \JHtml::_('bootstrap.addTab', 'myTab', 'permissions', \JText::_($fieldSets['permissions']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
 						<?php if (!empty($fieldSets['permissions']->description)):?>
-							<p class="tip"><?php echo \JText::_($fieldSets['permissions']->description); ?></p>
+							<p class="tip"><?php echo Text::_($fieldSets['permissions']->description); ?></p>
 						<?php endif;?>
 						<?php foreach($this->form->getFieldset('permissions') as $field) : ?>
 							<div class="control-group form-vertical">
@@ -361,12 +353,12 @@ $ftpSets   = $this->formftp->getFieldsets();
 								</div>
 							</div>
 						<?php endforeach; ?>
-					<?php echo \JHtml::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
 					<input type="hidden" name="task" value="" />
-					<?php echo \JHtml::_('form.token'); ?>
+					<?php echo HTMLHelper::_('form.token'); ?>
 
-				<?php echo \JHtml::_('bootstrap.endTabSet'); ?>
+				<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 			</fieldset>
 		</div>
 		<!-- End Localise Translation -->

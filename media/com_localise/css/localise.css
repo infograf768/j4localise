@@ -320,3 +320,6 @@ color:#8B0000 !important;
     display: block;
     padding: 8px 15px;
 }
+.accordion .card-header {
+	background-color: #cfe6e9;
+}
