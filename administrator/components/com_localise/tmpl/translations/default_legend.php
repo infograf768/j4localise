@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-translations',array('active' => '')); ?>
+<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-translations', array('active' => '')); ?>
 <?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-translations', JText::_('COM_LOCALISE_SLIDER_TRANSLATIONS_LEGEND'), 'legend'); ?>
 
 				<table width="100%" class="adminlist">
@@ -180,4 +180,5 @@ use Joomla\CMS\HTML\HTMLHelper;
 					</tbody>
 				</table>
 <?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
+<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
 
