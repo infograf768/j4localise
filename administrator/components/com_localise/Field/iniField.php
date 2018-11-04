@@ -45,11 +45,12 @@ class IniField extends FormField
 	 */
 	protected function getInput()
 	{
-		\JHtml::_('behavior.framework');
+		HTMLHelper::_('behavior.framework');
+		$basePath = 'media/vendor/codemirror/';
 
 		// Load Codemirror
-		HTMLHelper::_('script', 'vendor/codemirror/lib/codemirror.js', array('version' => 'auto', 'relative' => true));
-		HTMLHelper::_('stylesheet', 'vendor/codemirror/lib/codemirror.css', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('script', $basePath . 'lib/codemirror.js', array('version' => 'auto'));
+		HTMLHelper::_('stylesheet', $basePath . 'lib/codemirror.css', array('version' => 'auto'));
 		HTMLHelper::_('webcomponent', 'system/webcomponents/joomla-editor-codemirror.min.js', array('version' => 'auto', 'relative' => true));
 
 		// Load Joomla language ini parser
