@@ -11,6 +11,8 @@ namespace Joomla\Component\Localise\Administrator\Field;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
 //include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
@@ -59,20 +61,20 @@ class ClientField extends FormField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', $option->attributes('value'), \JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$options[] = \JHtml::_('select.option', 'site', \JText::_('COM_LOCALISE_OPTION_CLIENT_SITE'),
+		$options[] = HTMLHelper::_('select.option', 'site', Text::_('COM_LOCALISE_OPTION_CLIENT_SITE'),
 					array('option.attr' => 'attributes', 'attr' => '')
 					);
 
-		$options[] = \JHtml::_('select.option', 'administrator', \JText::_('COM_LOCALISE_OPTION_CLIENT_ADMINISTRATOR'),
+		$options[] = HTMLHelper::_('select.option', 'administrator', Text::_('COM_LOCALISE_OPTION_CLIENT_ADMINISTRATOR'),
 					array('option.attr' => 'attributes', 'attr' => '')
 					);
 
 		if (LocaliseHelper::hasInstallation())
 		{
-			$options[] = \JHtml::_('select.option', 'installation', \JText::_('COM_LOCALISE_OPTION_CLIENT_INSTALLATION'),
+			$options[] = HTMLHelper::_('select.option', 'installation', Text::_('COM_LOCALISE_OPTION_CLIENT_INSTALLATION'),
 						array('option.attr' => 'attributes', 'attr' => '')
 						);
 		}
@@ -81,14 +83,14 @@ class ClientField extends FormField
 
 		if ((string) $this->element['readonly'] == 'true')
 		{
-			$return[] = \JHtml::_('select.genericlist', $options, '', array('id' => $this->id,
+			$return[] = HTMLHelper::_('select.genericlist', $options, '', array('id' => $this->id,
 						'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
 						);
 			$return[] = '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '"/>';
 		}
 		else
 		{
-			$return[] = \JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id,
+			$return[] = HTMLHelper::_('select.genericlist', $options, $this->name, array('id' => $this->id,
 						'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
 						);
 		}

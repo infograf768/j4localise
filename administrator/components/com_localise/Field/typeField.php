@@ -10,9 +10,10 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\ListField;
-
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 FormHelper::loadFieldClass('list');
 
@@ -52,34 +53,34 @@ class TypeField extends ListField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', $option->attributes('value'), \JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$options[] = \JHtml::_('select.option', 'component', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_COMPONENT'),
+		$options[] = HTMLHelper::_('select.option', 'component', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_COMPONENT'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-component"')
 						);
-		$options[] = \JHtml::_('select.option', 'module', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_MODULE'),
+		$options[] = HTMLHelper::_('select.option', 'module', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_MODULE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-module"')
 						);
-		$options[] = \JHtml::_('select.option', 'plugin', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_PLUGIN'),
+		$options[] = HTMLHelper::_('select.option', 'plugin', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_PLUGIN'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-plugin"')
 						);
-		$options[] = \JHtml::_('select.option', 'template', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_TEMPLATE'),
+		$options[] = HTMLHelper::_('select.option', 'template', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_TEMPLATE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-template"')
 						);
-		$options[] = \JHtml::_('select.option', 'package', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_PACKAGE'),
+		$options[] = HTMLHelper::_('select.option', 'package', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_PACKAGE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-package"')
 						);
-		$options[] = \JHtml::_('select.option', 'library', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_LIBRARY'),
+		$options[] = HTMLHelper::_('select.option', 'library', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_LIBRARY'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-library"')
 						);
-		$options[] = \JHtml::_('select.option', 'file', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_FILE'),
+		$options[] = HTMLHelper::_('select.option', 'file', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_FILE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-file"')
 						);
-		$options[] = \JHtml::_('select.option', 'joomla', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_JOOMLA'),
+		$options[] = HTMLHelper::_('select.option', 'joomla', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_JOOMLA'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-joomla"')
 						);
-		$options[] = \JHtml::_('select.option', 'override', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_OVERRIDE'),
+		$options[] = HTMLHelper::_('select.option', 'override', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_OVERRIDE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-override"')
 						);
 

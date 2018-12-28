@@ -6,12 +6,15 @@
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
- 
+
 namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
 
 /**
  * Form Field Key class.
@@ -77,7 +80,7 @@ class KeyField extends FormField
 
 			if ($istranslation == '1')
 			{
-				$title = \JText::_('COM_LOCALISE_REVISED');
+				$title = Text::_('COM_LOCALISE_REVISED');
 			}
 			else
 			{
@@ -171,7 +174,7 @@ class KeyField extends FormField
 				$label = '<label id="' . $label_id . '-lbl" for="' . $label_for . '" class="' . $class . '">';
 			}
 
-			\JText::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
+			Text::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
 
 			$label .= $this->element['label'] . '<br />' . (string) $this->element['description'];
 			$label .= '</label>';
@@ -186,11 +189,11 @@ class KeyField extends FormField
 			{
 				$onclick = '';
 				$button  = '<span style="width:5%;">'
-						. \JHtml::_('image', 'com_localise/icon-16-arrow-gray.png', '', array('class' => 'pointer'), true) . '</span>';
+						. HTMLHelper::_('image', 'com_localise/icon-16-arrow-gray.png', '', array('class' => 'pointer'), true) . '</span>';
 
 				$onclick2 = '';
 				$button2  = '<span style="width:5%;">'
-						. \JHtml::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
+						. HTMLHelper::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
 				$input  = '';
 				$input .= '<textarea name="' . $textarea_name;
 				$input .= '" id="' . $textarea_id . '" class="width-45 ' . $status . ' ">';
@@ -198,7 +201,7 @@ class KeyField extends FormField
 			}
 			else
 			{
-				$token    = \JSession::getFormToken();
+				$token    = Session::getFormToken();
 
 					$onclick  = "";
 					$onclick .= "javascript:document.getElementById('" . $id . "').value='";
@@ -210,14 +213,14 @@ class KeyField extends FormField
 
 				$button   = '';
 				$button  .= '<i class="icon-reset hasTooltip return pointer" title="';
-				$button  .= \JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT');
+				$button  .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT');
 				$button  .= '" onclick="' . $onclick . '"></i>';
 
 /*				$button2   = '';
 				$button2  .= '<input type="hidden" id="' . $id . 'text" value=\'';
 				$button2  .= addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . '\' />';
 				$button2  .= '<i class="icon-translate-bing hasTooltip translate pointer" title="';
-				$button2  .= \JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE');
+				$button2  .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE');
 				$button2  .= '" onclick="' . $onclick2 . '" rel="' . $id . '"></i>';
 */
 				$onkeyup = "javascript:";
@@ -287,7 +290,7 @@ class KeyField extends FormField
 				$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '">';
 			}
 
-			\JText::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
+			Text::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
 			$label .= $this->element['label'] . '<br />' . $this->element['description'];
 			$label .= '</label>';
 
@@ -312,13 +315,13 @@ class KeyField extends FormField
 							if (document.getElementById('" . $this->id . "').getAttribute('value')=='') {document.getElementById('" . $this->id . "').setAttribute('class','width-45 untranslated');}
 							else {document.getElementById('" . $this->id . "').setAttribute('class','width-45 " . $status . "');}";
 			$button  = '<i class="icon-reset hasTooltip return pointer"
-			 title="' . \JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT') . '"
+			 title="' . Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT') . '"
 			 onclick="' . $onclick . '"></i>';
 
 			// No sense translate the reference keys by the same language.
 			$onclick2 = '';
 			$button2  = '<span style="width:5%;">'
-						. \JHtml::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
+						. HTMLHelper::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
 
 			if ($istextchange == 1 || $isextraindev == 1)
 			{

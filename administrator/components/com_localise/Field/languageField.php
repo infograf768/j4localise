@@ -10,17 +10,16 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormHelper;
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\LanguageHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
 
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-//include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
-
-jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 /**
@@ -62,7 +61,7 @@ class LanguageField extends ListField
 		$admin     = LanguageHelper::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
 		$site      = LanguageHelper::getKnownLanguages(LOCALISEPATH_SITE);
 
-		if (\JFolder::exists(LOCALISEPATH_INSTALLATION))
+		if (Folder::exists(LOCALISEPATH_INSTALLATION))
 		{
 			$install = LanguageHelper::getKnownLanguages(LOCALISEPATH_INSTALLATION);
 		}
@@ -101,19 +100,19 @@ class LanguageField extends ListField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', $option->attributes('value'), \JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
 		foreach ($languages as $language)
 		{
-			$options[] = \JHtml::_(
+			$options[] = HTMLHelper::_(
 				'select.option',
 				$language->tag,
 				$language->name,
 				array(
 					'option.attr' => 'attributes',
 					'attr' => 'class="' . ($language->tag == $reference ? 'iconlist-16-reference" title="'
-						. \JText::_('COM_LOCALISE_TOOLTIP_FIELD_LANGUAGE_REFERENCE') . '"' : '"'
+						. Text::_('COM_LOCALISE_TOOLTIP_FIELD_LANGUAGE_REFERENCE') . '"' : '"'
 					)
 				)
 			);

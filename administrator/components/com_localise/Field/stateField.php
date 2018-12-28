@@ -10,8 +10,10 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 FormHelper::loadFieldClass('list');
 
@@ -51,21 +53,21 @@ class StateField extends ListField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', $option->attributes('value'), \JText::_(trim($option)),
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)),
 						array('option.attr' => 'attributes', 'attr' => 'class="localise-icon inlanguage"')
 						);
 		}
 
-		$options[] = \JHtml::_('select.option', 'inlanguage', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_INLANGUAGE'),
+		$options[] = HTMLHelper::_('select.option', 'inlanguage', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_INLANGUAGE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-inlanguage inlanguage"')
 						);
-		$options[] = \JHtml::_('select.option', 'unexisting', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_UNEXISTING'),
+		$options[] = HTMLHelper::_('select.option', 'unexisting', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_UNEXISTING'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-unexisting unexisting"')
 						);
-		$options[] = \JHtml::_('select.option', 'notinreference', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_NOTINREFERENCE'),
+		$options[] = HTMLHelper::_('select.option', 'notinreference', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_NOTINREFERENCE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-notinreference notinreference"')
 						);
-		$options[] = \JHtml::_('select.option', 'error', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_ERROR'),
+		$options[] = HTMLHelper::_('select.option', 'error', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_ERROR'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-error error"')
 						);
 

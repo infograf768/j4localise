@@ -10,15 +10,15 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\LanguageHelper;
+use Joomla\Utilities\ArrayHelper;
 
 FormHelper::loadFieldClass('list');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
 
-jimport('joomla.filesystem.folder');
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
 
 /**
@@ -49,7 +49,7 @@ class ReferenceLanguageField extends ListField
 		$admin = LanguageHelper::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
 		$site  = LanguageHelper::getKnownLanguages(LOCALISEPATH_SITE);
 
-		if (\JFolder::exists(LOCALISEPATH_INSTALLATION))
+		if (Folder::exists(LOCALISEPATH_INSTALLATION))
 		{
 			$installation = LanguageHelper::getKnownLanguages(LOCALISEPATH_INSTALLATION);
 			$languages    = array_intersect_key($admin, $site, $installation);
@@ -70,7 +70,7 @@ class ReferenceLanguageField extends ListField
 
 		foreach ($languages as $language)
 		{
-			$options[] = \JHtml::_('select.option', $language->tag, $language->name);
+			$options[] = HTMLHelper::_('select.option', $language->tag, $language->name);
 		}
 
 		return $options;

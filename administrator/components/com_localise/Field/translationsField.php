@@ -10,14 +10,15 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
-
+use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.html.html');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-jimport('joomla.filesystem.folder');
+
 FormHelper::loadFieldClass('groupedlist');
 
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
@@ -62,15 +63,15 @@ class TranslationsField extends \JFormFieldGroupedList
 		{
 			$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
 
-			if (\JFolder::exists($path))
+			if (Folder::exists($path))
 			{
-				$tags = \JFolder::folders($path, '.', false, false, array('overrides', '.svn', 'CVS', '.DS_Store', '__MACOSX'));
+				$tags = Folder::folders($path, '.', false, false, array('overrides', '.svn', 'CVS', '.DS_Store', '__MACOSX'));
 
 				if ($tags)
 				{
 					foreach ($tags as $tag)
 					{
-						$files = \JFolder::files("$path/$tag", ".ini$");
+						$files = Folder::files("$path/$tag", ".ini$");
 
 						foreach ($files as $file)
 						{
@@ -79,7 +80,7 @@ class TranslationsField extends \JFormFieldGroupedList
 							if ($basename == 'ini')
 							{
 								$key      = 'joomla';
-								$value    = \JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA');
+								$value    = Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA');
 								$origin   = LocaliseHelper::getOrigin('', strtolower($client));
 								$disabled = $origin != $package && $origin != '_thirdparty';
 							}
@@ -91,7 +92,7 @@ class TranslationsField extends \JFormFieldGroupedList
 								$disabled = $origin != $package && $origin != '_thirdparty';
 							}
 
-							$groups[$client][$key] = \JHtml::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
+							$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
 						}
 					}
 				}
@@ -108,14 +109,14 @@ class TranslationsField extends \JFormFieldGroupedList
 			$client     = ucfirst($scan['client']);
 			$path       = $scan['path'];
 			$folder     = $scan['folder'];
-			$extensions = \JFolder::folders($path);
+			$extensions = Folder::folders($path);
 
 			foreach ($extensions as $extension)
 			{
-				if (\JFolder::exists("$path$extension$folder/language"))
+				if (Folder::exists("$path$extension$folder/language"))
 				{
 					// Scan extensions folder
-					$tags = \JFolder::folders("$path$extension$folder/language");
+					$tags = Folder::folders("$path$extension$folder/language");
 
 					foreach ($tags as $tag)
 					{
@@ -127,10 +128,10 @@ class TranslationsField extends \JFormFieldGroupedList
 							$disabled = $origin != $package && $origin != '_thirdparty';
 
 							/* @ Todo: $disabled prevents choosing some core files when creating package.
-							 $groups[$client]["$prefix$extension$suffix"] = \JHtml::_(
+							 $groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
 							'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
 							*/
-							$groups[$client]["$prefix$extension$suffix"] = \JHtml::_(
+							$groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
 									'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
 							);
 						}

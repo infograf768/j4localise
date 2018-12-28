@@ -11,24 +11,23 @@ namespace Joomla\Component\Localise\Administrator\Helper;
 
 defined('_JEXEC') or die;
 
-use Joomla\Github\Github;
-use Joomla\Component\Localise\Administrator\Model\TranslationModel;
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Version;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Version;
 use Joomla\Component\Localise\Administrator\Model\PackagesModel;
+use Joomla\Component\Localise\Administrator\Model\TranslationModel;
+use Joomla\Github\Github;
+use Joomla\Registry\Registry;
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.path');
+
 jimport("joomla.utilities.date");
-require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
 
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-\JLoader::register('JPath', JPATH_LIBRARIES . '/joomla/filesystem/path.php');
+require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
 
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
 
@@ -69,19 +68,19 @@ abstract class LocaliseHelper
 	public static function addSubmenu($vName)
 	{
 		\JHtmlSidebar::addEntry(
-			\JText::_('COM_LOCALISE_SUBMENU_LANGUAGES'),
+			Text::_('COM_LOCALISE_SUBMENU_LANGUAGES'),
 			'index.php?option=com_localise&view=languages',
 			$vName == 'languages'
 		);
 
 		\JHtmlSidebar::addEntry(
-			\JText::_('COM_LOCALISE_SUBMENU_TRANSLATIONS'),
+			Text::_('COM_LOCALISE_SUBMENU_TRANSLATIONS'),
 			'index.php?option=com_localise&view=translations',
 			$vName == 'translations'
 		);
 
 		\JHtmlSidebar::addEntry(
-			\JText::_('COM_LOCALISE_SUBMENU_PACKAGES'),
+			Text::_('COM_LOCALISE_SUBMENU_PACKAGES'),
 			'index.php?option=com_localise&view=packages',
 			$vName == 'packages'
 		);
@@ -109,7 +108,7 @@ abstract class LocaliseHelper
 				$path = dirname($path);
 			}
 
-			return is_writable($path) || \JPATH::isOwner($path) || \JPATH::canChmod($path);
+			return is_writable($path) || Path::isOwner($path) || Path::canChmod($path);
 		}
 	}
 
@@ -312,7 +311,7 @@ abstract class LocaliseHelper
 			// Scan plugins folders
 			if (preg_match("/$filter_type/", 'plugin'))
 			{
-				$plugin_types = \JFolder::folders(JPATH_PLUGINS);
+				$plugin_types = Folder::folders(JPATH_PLUGINS);
 
 				foreach ($plugin_types as $plugin_type)
 				{
@@ -566,7 +565,7 @@ abstract class LocaliseHelper
 		if (!$client && !$filename)
 		{
 			return '';
-		}	
+		}
 
 		if ($filename == 'override')
 		{
@@ -833,14 +832,14 @@ abstract class LocaliseHelper
 						. $gh_data['github_client']
 						. '/'
 						. $customisedref;
-				$custom_client_path = \JFolder::makeSafe($custom_client_path);
+				$custom_client_path = Folder::makeSafe($custom_client_path);
 			}
 
 			// If reference tag is not en-GB is not required try it
 			if ($ref_tag != 'en-GB' && $allow_develop == 1)
 			{
 				Factory::getApplication()->enqueueMessage(
-					\JText::_('COM_LOCALISE_ERROR_GETTING_UNALLOWED_CONFIGURATION'),
+					Text::_('COM_LOCALISE_ERROR_GETTING_UNALLOWED_CONFIGURATION'),
 					'warning');
 
 				return false;
@@ -850,7 +849,7 @@ abstract class LocaliseHelper
 			if ($saved_ref != '0' && !in_array($customisedref, $versions) && $allow_develop == 1)
 			{
 				Factory::getApplication()->enqueueMessage(
-					\JText::sprintf('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES', $customisedref),
+					Text::sprintf('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES', $customisedref),
 					'warning');
 
 				$option    = '0';
@@ -867,7 +866,7 @@ abstract class LocaliseHelper
 				$customisedref = $installed_version;
 
 				Factory::getApplication()->enqueueMessage(
-					\JText::sprintf('COM_LOCALISE_NOTICE_DISABLED_ALLOW_DEVELOP_WITHOUT_LOCAL_SET',
+					Text::sprintf('COM_LOCALISE_NOTICE_DISABLED_ALLOW_DEVELOP_WITHOUT_LOCAL_SET',
 						$last_source,
 						$installed_version,
 						$gh_client
@@ -899,7 +898,7 @@ abstract class LocaliseHelper
 			$xml_file = $custom_client_path . '/en-GB.xml';
 
 			// Unrequired move or update files again
-			if ($saved_ref != '0' && $installed_version == $last_source && \JFile::exists($xml_file))
+			if ($saved_ref != '0' && $installed_version == $last_source && File::exists($xml_file))
 			{
 				return false;
 			}
@@ -917,9 +916,9 @@ abstract class LocaliseHelper
 			$gh_paths['installation']  = 'installation/language/en-GB';
 
 			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
-			$reference_client_path = \JFolder::makeSafe($reference_client_path);
+			$reference_client_path = Folder::makeSafe($reference_client_path);
 
-			if (\JFile::exists($xml_file))
+			if (File::exists($xml_file))
 			{
 				// We have done this trunk and is not required get the files from Github again.
 				$update_files = self::updateSourcereference($gh_client, $custom_client_path);
@@ -965,13 +964,13 @@ abstract class LocaliseHelper
 			catch (\Exception $e)
 			{
 				Factory::getApplication()->enqueueMessage(
-					\JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
+					Text::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
 					'warning');
 
 				return false;
 			}
 
-			if (!\JFolder::exists($custom_client_path))
+			if (!Folder::exists($custom_client_path))
 			{
 				$create_folder = self::createFolder($gh_data, $index = 'true');
 
@@ -989,8 +988,8 @@ abstract class LocaliseHelper
 			foreach ($repostoryfiles as $repostoryfile)
 			{
 				$file_to_include = $repostoryfile->name;
-				$file_path = \JFolder::makeSafe($custom_client_path . '/' . $file_to_include);
-				$reference_file_path = \JFolder::makeSafe($reference_client_path . '/' . $file_to_include);
+				$file_path = Folder::makeSafe($custom_client_path . '/' . $file_to_include);
+				$reference_file_path = Folder::makeSafe($reference_client_path . '/' . $file_to_include);
 
 				$custom_file = $github->repositories->contents->get(
 						$gh_user,
@@ -1005,12 +1004,12 @@ abstract class LocaliseHelper
 				{
 					$file_to_include = $repostoryfile->name;
 					$file_contents   = base64_decode($custom_file->content);
-					\JFile::write($file_path, $file_contents);
+					File::write($file_path, $file_contents);
 
-					if (!\JFile::exists($file_path))
+					if (!File::exists($file_path))
 					{
 						Factory::getApplication()->enqueueMessage(
-							\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_DEV_FILE'),
+							Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_DEV_FILE'),
 							'warning');
 
 						return false;
@@ -1029,13 +1028,13 @@ abstract class LocaliseHelper
 					{
 						if ($file_to_delete != 'index.html')
 						{
-							$file_path = \JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
-							\JFile::delete($file_path);
+							$file_path = Folder::makeSafe($custom_client_path . "/" . $file_to_delete);
+							File::delete($file_path);
 
-							if (\JFile::exists($file_path))
+							if (File::exists($file_path))
 							{
 								Factory::getApplication()->enqueueMessage(
-									\JText::_('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT'),
+									Text::_('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT'),
 									'warning');
 
 								return false;
@@ -1045,7 +1044,7 @@ abstract class LocaliseHelper
 				}
 			}
 
-			if (\JFile::exists($xml_file))
+			if (File::exists($xml_file))
 			{
 				// We have done this trunk.
 
@@ -1060,20 +1059,20 @@ abstract class LocaliseHelper
 				$save_last = self::saveLastsourcereference($gh_data['github_client'], $customisedref);
 
 				Factory::getApplication()->enqueueMessage(
-					\JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_SOURCE_FULL_SET', $customisedref),
+					Text::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_SOURCE_FULL_SET', $customisedref),
 					'notice');
 
 				return true;
 			}
 
 			Factory::getApplication()->enqueueMessage(
-				\JText::sprintf('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_GET_A_FULL_SOURCE_SET', $customisedref),
+				Text::sprintf('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_GET_A_FULL_SOURCE_SET', $customisedref),
 				'warning');
 
 			return false;
 		}
 
-		Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
 
 		return false;
 	}
@@ -1163,7 +1162,7 @@ abstract class LocaliseHelper
 					{
 						$versions[] = $tag_name;
 						Factory::getApplication()->enqueueMessage(
-							\JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							Text::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
 							'notice');
 					}
 				}
@@ -1173,7 +1172,7 @@ abstract class LocaliseHelper
 					{
 						$versions[] = $tag_name;
 						Factory::getApplication()->enqueueMessage(
-							\JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							Text::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
 							'notice');
 					}
 				}
@@ -1182,7 +1181,7 @@ abstract class LocaliseHelper
 		catch (\Exception $e)
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_RELEASES'),
+				Text::_('COM_LOCALISE_ERROR_GITHUB_GETTING_RELEASES'),
 				'warning');
 		}
 
@@ -1198,7 +1197,7 @@ abstract class LocaliseHelper
 			}
 		}
 
-		\JFile::write($versions_path, $versions_file);
+		File::write($versions_path, $versions_file);
 
 		return $versions;
 	}
@@ -1223,7 +1222,7 @@ abstract class LocaliseHelper
 
 		$file_contents = $customisedref . "\n";
 
-		if (!\JFile::write($last_reference_file, $file_contents))
+		if (!File::write($last_reference_file, $file_contents))
 		{
 			return false;
 		}
@@ -1254,7 +1253,7 @@ abstract class LocaliseHelper
 							. $client
 							. '_last_source_ref.txt';
 
-			if (\JFile::exists($last_reference_file))
+			if (File::exists($last_reference_file))
 			{
 				$file_contents = file_get_contents($last_reference_file);
 				$lines = preg_split("/\\r\\n|\\r|\\n/", $file_contents);
@@ -1321,25 +1320,25 @@ abstract class LocaliseHelper
 	public static function updateSourcereference($client, $custom_client_path)
 	{
 		$develop_client_path   = JPATH_ROOT . '/media/com_localise/develop/github/joomla-cms/en-GB/' . $client;
-		$develop_client_path   = \JFolder::makeSafe($develop_client_path);
+		$develop_client_path   = Folder::makeSafe($develop_client_path);
 
 		$custom_ini_files_list = self::getInifileslist($custom_client_path);
 		$last_ini_files_list   = self::getInifileslist($develop_client_path);
 
 		$files_to_exclude = array();
 
-		if (!\JFile::exists($develop_client_path . '/en-GB.xml'))
+		if (!File::exists($develop_client_path . '/en-GB.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
+				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
 				'warning');
 
 			return false;
 		}
-		elseif (!\JFile::exists($custom_client_path . '/en-GB.xml'))
+		elseif (!File::exists($custom_client_path . '/en-GB.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
+				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
 				'warning');
 
 			return false;
@@ -1356,9 +1355,9 @@ abstract class LocaliseHelper
 
 			foreach ($files_to_exclude as $file_to_delete)
 			{
-				$custom_file_path = \JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
+				$custom_file_path = Folder::makeSafe($custom_client_path . "/" . $file_to_delete);
 
-				if (!\JFile::delete($custom_file_path))
+				if (!File::delete($custom_file_path))
 				{
 					$errors++;
 				}
@@ -1367,7 +1366,7 @@ abstract class LocaliseHelper
 			if ($errors > 0)
 			{
 				Factory::getApplication()->enqueueMessage(
-					\JText::sprintf('COM_LOCALISE_ERROR_DELETING_EXTRA_SOURCE_FILES', $errors),
+					Text::sprintf('COM_LOCALISE_ERROR_DELETING_EXTRA_SOURCE_FILES', $errors),
 					'warning');
 
 				return false;
@@ -1393,25 +1392,25 @@ abstract class LocaliseHelper
 	public static function updateSourcereferencedirectly($client, $custom_client_path, $reference_client_path)
 	{
 		$develop_client_path   = JPATH_ROOT . '/media/com_localise/develop/github/joomla-cms/en-GB/' . $client;
-		$develop_client_path   = \JFolder::makeSafe($develop_client_path);
+		$develop_client_path   = Folder::makeSafe($develop_client_path);
 
 		$custom_ini_files_list = self::getInifileslist($custom_client_path);
 		$last_ini_files_list   = self::getInifileslist($develop_client_path);
 
 		$files_to_exclude = array();
 
-		if (!\JFile::exists($develop_client_path . '/en-GB.xml'))
+		if (!File::exists($develop_client_path . '/en-GB.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
+				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
 				'warning');
 
 			return false;
 		}
-		elseif (!\JFile::exists($custom_client_path . '/en-GB.xml'))
+		elseif (!File::exists($custom_client_path . '/en-GB.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
+				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
 				'warning');
 
 			return false;
@@ -1426,19 +1425,19 @@ abstract class LocaliseHelper
 		{
 			foreach ($files_to_exclude as $file_to_delete)
 			{
-				$custom_file_path = \JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
-				$actual_file_path = \JFolder::makeSafe($reference_client_path . "/" . $file_to_delete);
+				$custom_file_path = Folder::makeSafe($custom_client_path . "/" . $file_to_delete);
+				$actual_file_path = Folder::makeSafe($reference_client_path . "/" . $file_to_delete);
 
-				\JFile::delete($custom_file_path);
+				File::delete($custom_file_path);
 
 				// Also verify if the same file is also present in core language folder.
 
-				if (\JFile::exists($actual_file_path))
+				if (File::exists($actual_file_path))
 				{
-					\JFile::delete($actual_file_path);
+					File::delete($actual_file_path);
 
 					Factory::getApplication()->enqueueMessage(
-					\JText::sprintf('COM_LOCALISE_OLD_FILE_DELETED', $file_to_delete),
+					Text::sprintf('COM_LOCALISE_OLD_FILE_DELETED', $file_to_delete),
 					'notice');
 				}
 			}
@@ -1455,7 +1454,7 @@ abstract class LocaliseHelper
 			$file_contents = file_get_contents($source_path);
 			$target_path = $reference_client_path . '/' . $customised_source_file;
 
-			if (!\JFile::write($target_path, $file_contents))
+			if (!File::write($target_path, $file_contents))
 			{
 				$errors++;
 			}
@@ -1464,7 +1463,7 @@ abstract class LocaliseHelper
 		if ($errors > 0)
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::sprintf('COM_LOCALISE_ERROR_SAVING_FILES_AT_CORE_FOLDER', $errors),
+				Text::sprintf('COM_LOCALISE_ERROR_SAVING_FILES_AT_CORE_FOLDER', $errors),
 				'warning');
 
 			return false;
@@ -1502,7 +1501,7 @@ abstract class LocaliseHelper
 			if ($ref_tag != 'en-GB')
 			{
 				Factory::getApplication()->enqueueMessage(
-					\JText::_('COM_LOCALISE_ERROR_GETTING_ALLOWED_REFERENCE_TAG'),
+					Text::_('COM_LOCALISE_ERROR_GETTING_ALLOWED_REFERENCE_TAG'),
 					'warning');
 
 				return false;
@@ -1512,10 +1511,10 @@ abstract class LocaliseHelper
 						. '/media/com_localise/develop/github/joomla-cms/en-GB/'
 						. $gh_data['github_client'];
 
-			$develop_client_path = \JFolder::makeSafe($develop_client_path);
+			$develop_client_path = Folder::makeSafe($develop_client_path);
 			$xml_file            = $develop_client_path . '/en-GB.xml';
 
-			if (!\JFile::exists($xml_file))
+			if (!File::exists($xml_file))
 			{
 				$get_files = 1;
 			}
@@ -1558,7 +1557,7 @@ abstract class LocaliseHelper
 			$gh_paths['installation']  = 'installation/language/en-GB';
 
 			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
-			$reference_client_path = \JFolder::makeSafe($reference_client_path);
+			$reference_client_path = Folder::makeSafe($reference_client_path);
 
 			$options = new Registry;
 
@@ -1591,7 +1590,7 @@ abstract class LocaliseHelper
 			catch (\Exception $e)
 			{
 				Factory::getApplication()->enqueueMessage(
-					\JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
+					Text::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
 					'warning');
 
 				return false;
@@ -1607,14 +1606,14 @@ abstract class LocaliseHelper
 			foreach ($repostoryfiles as $repostoryfile)
 			{
 				$file_to_include     = $repostoryfile->name;
-				$file_path           = \JFolder::makeSafe($develop_client_path . '/' . $file_to_include);
-				$reference_file_path = \JFolder::makeSafe($reference_client_path . '/' . $file_to_include);
+				$file_path           = Folder::makeSafe($develop_client_path . '/' . $file_to_include);
+				$reference_file_path = Folder::makeSafe($reference_client_path . '/' . $file_to_include);
 
 				if (	(array_key_exists($file_to_include, $sha_files_list)
 					&& ($sha_files_list[$file_to_include] != $repostoryfile->sha))
 					|| empty($sha_files_list)
 					|| !array_key_exists($file_to_include, $sha_files_list)
-					|| !\JFile::exists($file_path))
+					|| !File::exists($file_path))
 				{
 					$in_dev_file = $github->repositories->contents->get(
 							$gh_user,
@@ -1630,40 +1629,40 @@ abstract class LocaliseHelper
 
 				$files_to_include[] = $file_to_include;
 				$sha_path  = JPATH_COMPONENT_ADMINISTRATOR . '/develop/gh_joomla_' . $gh_client . '_files.txt';
-				$sha_path  = \JFolder::makeSafe($sha_path);
+				$sha_path  = Folder::makeSafe($sha_path);
 
 				if (!empty($in_dev_file) && isset($in_dev_file->content))
 				{
 					$file_to_include = $repostoryfile->name;
 					$file_contents = base64_decode($in_dev_file->content);
-					\JFile::write($file_path, $file_contents);
+					File::write($file_path, $file_contents);
 
-					if (!\JFile::exists($file_path))
+					if (!File::exists($file_path))
 					{
 						Factory::getApplication()->enqueueMessage(
-							\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_DEV_FILE'),
+							Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_DEV_FILE'),
 							'warning');
 
 						return false;
 					}
 
-					if (!\JFile::exists($reference_file_path)
+					if (!File::exists($reference_file_path)
 						&& ($gh_client == 'administrator' || $gh_client == 'site'))
 					{
 						// Adding files only present in develop to core reference location.
-						\JFile::write($reference_file_path, $file_contents);
+						File::write($reference_file_path, $file_contents);
 
-						if (!\JFile::exists($reference_file_path))
+						if (!File::exists($reference_file_path))
 						{
 							Factory::getApplication()->enqueueMessage(
-								\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_ADD_NEW_FILES'),
+								Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_ADD_NEW_FILES'),
 								'warning');
 
 							return false;
 						}
 
 						Factory::getApplication()->enqueueMessage(
-							\JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_FILE_ADDED', $file_to_include, $gh_branch, $gh_client),
+							Text::sprintf('COM_LOCALISE_NOTICE_GITHUB_FILE_ADDED', $file_to_include, $gh_branch, $gh_client),
 							'notice');
 					}
 				}
@@ -1671,12 +1670,12 @@ abstract class LocaliseHelper
 				// Saved for each time due few times get all the github files at same time can crash.
 				// This one can help to remember the last one saved correctly and next time continue from there.
 				$sha .= $repostoryfile->name . "::" . $repostoryfile->sha . "\n";
-				\JFile::write($sha_path, $sha);
+				File::write($sha_path, $sha);
 
-				if (!\JFile::exists($sha_path))
+				if (!File::exists($sha_path))
 				{
 					Factory::getApplication()->enqueueMessage(
-						\JText::_('COM_LOCALISE_ERROR_GITHUB_NO_SHA_FILE_PRESENT'),
+						Text::_('COM_LOCALISE_ERROR_GITHUB_NO_SHA_FILE_PRESENT'),
 						'warning');
 
 					return false;
@@ -1694,30 +1693,30 @@ abstract class LocaliseHelper
 					{
 						if ($file_to_delete != 'index.html')
 						{
-							$file_path = \JFolder::makeSafe($develop_client_path . "/" . $file_to_delete);
-							\JFile::delete($file_path);
+							$file_path = Folder::makeSafe($develop_client_path . "/" . $file_to_delete);
+							File::delete($file_path);
 
-							if (\JFile::exists($file_path))
+							if (File::exists($file_path))
 							{
 								Factory::getApplication()->enqueueMessage(
-									\JText::sprintf('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT', $file_to_delete),
+									Text::sprintf('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT', $file_to_delete),
 									'warning');
 
 								return false;
 							}
 
 							Factory::getApplication()->enqueueMessage(
-								\JText::sprintf('COM_LOCALISE_GITHUB_FILE_NOT_PRESENT_IN_DEV_YET', $file_to_delete),
+								Text::sprintf('COM_LOCALISE_GITHUB_FILE_NOT_PRESENT_IN_DEV_YET', $file_to_delete),
 								'notice');
 						}
 					}
 				}
 			}
 
-			if (!\JFile::exists($xml_file))
+			if (!File::exists($xml_file))
 			{
 				Factory::getApplication()->enqueueMessage(
-					\JText::sprintf('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_GET_A_FULL_SET', $gh_branch),
+					Text::sprintf('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_GET_A_FULL_SET', $gh_branch),
 					'warning');
 
 				return false;
@@ -1726,13 +1725,13 @@ abstract class LocaliseHelper
 			self::saveLastupdate($client_to_update);
 
 			Factory::getApplication()->enqueueMessage(
-				\JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_TARGET_FULL_SET', $gh_branch),
+				Text::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_TARGET_FULL_SET', $gh_branch),
 				'notice');
 
 			return true;
 		}
 
-		Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
 
 		return false;
 	}
@@ -1845,9 +1844,9 @@ abstract class LocaliseHelper
 					. $client;
 
 		$ref_file            = basename($refpath);
-		$develop_file_path   = \JFolder::makeSafe("$develop_client_path/$ref_file");
+		$develop_file_path   = Folder::makeSafe("$develop_client_path/$ref_file");
 
-		if (\JFile::exists($develop_file_path) && $allow_develop == 1 && $ref_tag == 'en-GB')
+		if (File::exists($develop_file_path) && $allow_develop == 1 && $ref_tag == 'en-GB')
 		{
 			$devpath = $develop_file_path;
 		}
@@ -1882,9 +1881,9 @@ abstract class LocaliseHelper
 					. $customisedref;
 
 		$ref_file         = basename($refpath);
-		$custom_file_path = \JFolder::makeSafe("$custom_client_path/$ref_file");
+		$custom_file_path = Folder::makeSafe("$custom_client_path/$ref_file");
 
-		if (\JFile::exists($custom_file_path) && $allow_develop == 1 && $ref_tag == 'en-GB' && $customisedref != 0)
+		if (File::exists($custom_file_path) && $allow_develop == 1 && $ref_tag == 'en-GB' && $customisedref != 0)
 		{
 			$custom_path = $custom_file_path;
 		}
@@ -1915,7 +1914,7 @@ abstract class LocaliseHelper
 		$allow_develop      = $params->get('gh_allow_develop', 0);
 		$combined_content   = '';
 
-		if (\JFile::exists($devpath) && \JFile::exists($refpath) && $allow_develop == 1 && $ref_tag == 'en-GB')
+		if (File::exists($devpath) && File::exists($refpath) && $allow_develop == 1 && $ref_tag == 'en-GB')
 		{
 			$ref_sections      = self::parseSections($refpath);
 			$keys_in_reference = array_keys($ref_sections['keys']);
@@ -1967,7 +1966,7 @@ abstract class LocaliseHelper
 	{
 		if (!empty($client_path))
 		{
-			$files = \JFolder::files($client_path, ".ini$");
+			$files = Folder::files($client_path, ".ini$");
 
 			return $files;
 		}
@@ -1988,7 +1987,7 @@ abstract class LocaliseHelper
 	{
 		if (!empty($develop_client_path))
 		{
-			$files = \JFolder::files($develop_client_path);
+			$files = Folder::files($develop_client_path);
 
 			return $files;
 		}
@@ -2009,9 +2008,9 @@ abstract class LocaliseHelper
 	{
 		$sha_files = array();
 		$gh_client = $gh_data['github_client'];
-		$sha_path  = \JFolder::makeSafe(JPATH_COMPONENT_ADMINISTRATOR . '/develop/gh_joomla_' . $gh_client . '_files.txt');
+		$sha_path  = Folder::makeSafe(JPATH_COMPONENT_ADMINISTRATOR . '/develop/gh_joomla_' . $gh_client . '_files.txt');
 
-		if (\JFile::exists($sha_path))
+		if (File::exists($sha_path))
 		{
 			$file_contents = file_get_contents($sha_path);
 			$lines = preg_split("/\\r\\n|\\r|\\n/", $file_contents);
@@ -2191,7 +2190,7 @@ abstract class LocaliseHelper
 
 			catch (\JDatabaseExceptionExecuting $e)
 			{
-				Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_SEARCHING_REVISED_VALUES'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_SEARCHING_REVISED_VALUES'), 'warning');
 
 				return null;
 			}
@@ -2281,7 +2280,7 @@ abstract class LocaliseHelper
 
 			catch (\JDatabaseExceptionExecuting $e)
 			{
-				Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_UPDATING_REVISED_VALUES'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_UPDATING_REVISED_VALUES'), 'warning');
 
 				return false;
 			}
@@ -2344,7 +2343,7 @@ abstract class LocaliseHelper
 
 			catch (\JDatabaseExceptionExecuting $e)
 			{
-				Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_SAVING_REVISED_VALUES'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_SAVING_REVISED_VALUES'), 'warning');
 
 				return false;
 			}
@@ -2376,13 +2375,13 @@ abstract class LocaliseHelper
 					. '/'
 					. $source_ref;
 
-		$full_path = \JFolder::makeSafe($full_path);
+		$full_path = Folder::makeSafe($full_path);
 
-			if (!\JFolder::create($full_path))
+			if (!Folder::create($full_path))
 			{
 			}
 
-			if (\JFolder::exists($full_path))
+			if (Folder::exists($full_path))
 			{
 				if ($index == 'true')
 				{
@@ -2393,7 +2392,7 @@ abstract class LocaliseHelper
 						return true;
 					}
 
-				Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_INDEX_FILE'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_INDEX_FILE'), 'warning');
 
 				return false;
 				}
@@ -2402,7 +2401,7 @@ abstract class LocaliseHelper
 			}
 			else
 			{
-				Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_FOLDERS'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_FOLDERS'), 'warning');
 
 				return false;
 			}
@@ -2424,16 +2423,16 @@ abstract class LocaliseHelper
 	{
 		if (!empty($full_path))
 		{
-		$path = \JFolder::makeSafe($full_path . '/index.html');
+		$path = Folder::makeSafe($full_path . '/index.html');
 
 		$index_content = '<!DOCTYPE html><title></title>';
 
-			if (!\JFile::exists($path))
+			if (!File::exists($path))
 			{
-				\JFile::write($path, $index_content);
+				File::write($path, $index_content);
 			}
 
-			if (!\JFile::exists($path))
+			if (!File::exists($path))
 			{
 				return false;
 			}

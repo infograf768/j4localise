@@ -10,8 +10,10 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 FormHelper::loadFieldClass('list');
 
@@ -51,13 +53,13 @@ class DevelopField extends ListField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', $option->attributes('value'), \JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$options[] = \JHtml::_('select.option', 'complete', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_COMPLETE'),
+		$options[] = HTMLHelper::_('select.option', 'complete', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_COMPLETE'),
 					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-equal"')
 					);
-		$options[] = \JHtml::_('select.option', 'incomplete', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_INCOMPLETE'),
+		$options[] = HTMLHelper::_('select.option', 'incomplete', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_INCOMPLETE'),
 					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-changed"')
 					);
 

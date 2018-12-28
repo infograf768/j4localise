@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 FormHelper::loadFieldClass('list');
 
@@ -51,25 +53,25 @@ class KeystatusField extends ListField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', '', \JText::_(trim($option)),
+			$options[] = HTMLHelper::_('select.option', '', Text::_(trim($option)),
 						array('option.attr' => 'attributes', 'attr' => 'class="filter-select"')
 						);
 		}
 
-		$options[] = \JHtml::_('select.option', 'allkeys', \JText::_('JALL'),
+		$options[] = HTMLHelper::_('select.option', 'allkeys', Text::_('JALL'),
 						array('option.attr' => 'attributes', 'attr' => 'class="allkeys"')
 						);
 
-		$options[] = \JHtml::_('select.option', 'translatedkeys', \JText::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED'),
+		$options[] = HTMLHelper::_('select.option', 'translatedkeys', Text::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="translated"')
 						);
-		$options[] = \JHtml::_('select.option', 'untranslatedkeys', \JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED'),
+		$options[] = HTMLHelper::_('select.option', 'untranslatedkeys', Text::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="untranslated"')
 						);
-		$options[] = \JHtml::_('select.option', 'unchangedkeys', \JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED'),
+		$options[] = HTMLHelper::_('select.option', 'unchangedkeys', Text::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="unchanged"')
 						);
-		$options[] = \JHtml::_('select.option', 'textchangedkeys', \JText::_('COM_LOCALISE_TEXT_TRANSLATION_TEXTCHANGED'),
+		$options[] = HTMLHelper::_('select.option', 'textchangedkeys', Text::_('COM_LOCALISE_TEXT_TRANSLATION_TEXTCHANGED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="textchanged"')
 						);
 

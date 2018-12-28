@@ -10,8 +10,10 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 FormHelper::loadFieldClass('list');
 
@@ -51,13 +53,13 @@ class StorageField extends ListField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', $option->attributes('value'), \JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$options[] = \JHtml::_('select.option', 'global', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_GLOBAL'),
+		$options[] = HTMLHelper::_('select.option', 'global', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_GLOBAL'),
 					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-global"')
 					);
-		$options[] = \JHtml::_('select.option', 'local', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_LOCAL'),
+		$options[] = HTMLHelper::_('select.option', 'local', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_LOCAL'),
 					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-local"')
 					);
 

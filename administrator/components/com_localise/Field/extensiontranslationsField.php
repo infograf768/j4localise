@@ -10,16 +10,19 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Field\GroupedlistField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\Utilities\ArrayHelper;
 
 FormHelper::loadFieldClass('groupedlist');
 
 jimport('joomla.html.html');
-jimport('joomla.filesystem.folder');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
+
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
 
 
@@ -73,15 +76,15 @@ class ExtensionTranslationsField extends GroupedlistField
 		{
 			$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
 
-			if (\JFolder::exists($path))
+			if (Folder::exists($path))
 			{
-				$tags = \JFolder::folders($path, '.', false, false, array('overrides', '.svn', 'CVS', '.DS_Store', '__MACOSX'));
+				$tags = Folder::folders($path, '.', false, false, array('overrides', '.svn', 'CVS', '.DS_Store', '__MACOSX'));
 
 				if ($tags)
 				{
 					foreach ($tags as $tag)
 					{
-						$files = \JFolder::files("$path/$tag", ".ini$");
+						$files = Folder::files("$path/$tag", ".ini$");
 
 						$files = str_replace($tag . '.', '', $files);
 						$files = array_diff($files, $coreadminfiles);
@@ -96,7 +99,7 @@ class ExtensionTranslationsField extends GroupedlistField
 							$origin   = LocaliseHelper::getOrigin($key, strtolower($client));
 							$disabled = $origin != $package && $origin != '_thirdparty';
 
-							$groups[$client][$key] = \JHtml::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
+							$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
 						}
 					}
 				}
@@ -113,7 +116,7 @@ class ExtensionTranslationsField extends GroupedlistField
 			$client     = ucfirst($scan['client']);
 			$path       = $scan['path'];
 			$folder     = $scan['folder'];
-			$extensions = \JFolder::folders($path);
+			$extensions = Folder::folders($path);
 
 			foreach ($extensions as $extension)
 			{
@@ -121,16 +124,16 @@ class ExtensionTranslationsField extends GroupedlistField
 				if ($extension != 'mod_version' && $extension != 'mod_multilangstatus'
 					&& $extension != 'atum' && $extension != 'cassiopeia' && $extension != 'languagecode')
 				{
-					if (\JFolder::exists("$path$extension/language"))
+					if (Folder::exists("$path$extension/language"))
 					{
 						// Scan extensions folder
-						$tags = \JFolder::folders("$path$extension/language");
+						$tags = Folder::folders("$path$extension/language");
 
 						foreach ($tags as $tag)
 						{
 							$file = "$path$extension/language/$tag/$tag.$prefix$extension$suffix.ini";
 
-							if (\JFile::exists($file))
+							if (File::exists($file))
 							{
 								$origin   = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
 								$disabled = $origin != $package && $origin != '_thirdparty';
@@ -139,7 +142,7 @@ class ExtensionTranslationsField extends GroupedlistField
 							 $groups[$client]["$prefix$extension$suffix"] = JHtml::_(
 							'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
 							*/
-							$groups[$client]["$prefix$extension$suffix"] = \JHtml::_(
+							$groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
 									'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
 							);
 							}
@@ -153,7 +156,7 @@ class ExtensionTranslationsField extends GroupedlistField
 		{
 			if (count($groups[$client]) == 0)
 			{
-				$groups[$client][] = \JHtml::_('select.option', '',  \JText::_('COM_LOCALISE_NOTRANSLATION'), 'value', 'text', true);
+				$groups[$client][] = HTMLHelper::_('select.option', '',  Text::_('COM_LOCALISE_NOTRANSLATION'), 'value', 'text', true);
 			}
 			else
 			{

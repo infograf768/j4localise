@@ -47,7 +47,6 @@ class IniField extends FormField
 	{
 		HTMLHelper::_('behavior.framework');
 		$basePath = 'media/vendor/codemirror/';
-
 		// Load Codemirror
 		HTMLHelper::_('script', $basePath . 'lib/codemirror.js', array('version' => 'auto'));
 		HTMLHelper::_('stylesheet', $basePath . 'lib/codemirror.css', array('version' => 'auto'));

@@ -11,6 +11,7 @@ namespace Joomla\Component\Localise\Administrator\Field;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 
 /**
  * Form Field Search class.
@@ -38,12 +39,12 @@ class SearchField extends FormField
 	{
 		$html = '<div class="filter-search btn-group pull-left">';
 		$html .= '<input class="hasTooltip" type="text" name="' . $this->name . '" id="' . $this->id . '" placeholder="'
-				. \JText::_($this->element['placeholder']) . '" value="' . $this->value
-				. '" title="' . \JText::_('JSEARCH_FILTER') . '" onchange="this.form.submit();" />';
+				. Text::_($this->element['placeholder']) . '" value="' . $this->value
+				. '" title="' . Text::_('JSEARCH_FILTER') . '" onchange="this.form.submit();" />';
 		$html .= '</div><div class="btn-group pull-left">';
-		$html .= '<button type="submit" class="btn hasTooltip" rel="tooltip" title="' . \JText::_('JSEARCH_FILTER_SUBMIT') . '">
+		$html .= '<button type="submit" class="btn hasTooltip" rel="tooltip" title="' . Text::_('JSEARCH_FILTER_SUBMIT') . '">
 				<i class="icon-search"></i></button>';
-		$html .= '<button type="button" class="btn hasTooltip" rel="tooltip" title="' . \JText::_('JSEARCH_FILTER_CLEAR')
+		$html .= '<button type="button" class="btn hasTooltip" rel="tooltip" title="' . Text::_('JSEARCH_FILTER_CLEAR')
 				. '" onclick="document.getElementById(\'' . $this->id . '\').value=\'\';this.form.submit();"><i class="icon-remove"></i></button>';
 		$html .= '</div>';
 

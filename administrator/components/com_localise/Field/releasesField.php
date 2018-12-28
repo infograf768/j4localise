@@ -12,16 +12,17 @@ defined('_JEXEC') or die;
 
 // Load Composer Autoloader
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
-\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
+
 
 use Joomla\Github\Github;
-use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
 
 FormHelper::loadFieldClass('list');
@@ -100,7 +101,7 @@ class ReleasesField extends ListField
 				$tag_part = explode(".", $tag_name);
 				$undoted  = str_replace('.', '', $tag_name);
 				$excluded = 0;
-				
+
 				$installed_version = new Version;
 				$installed_version = $installed_version->getShortVersion();
 
@@ -134,7 +135,7 @@ class ReleasesField extends ListField
 					{
 						$versions[] = $tag_name;
 						Factory::getApplication()->enqueueMessage(
-							\JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							Text::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
 							'notice');
 					}
 				}
@@ -144,7 +145,7 @@ class ReleasesField extends ListField
 					{
 						$versions[] = $tag_name;
 						Factory::getApplication()->enqueueMessage(
-							\JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							Text::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
 							'notice');
 					}
 				}
@@ -153,7 +154,7 @@ class ReleasesField extends ListField
 		catch (\Exception $e)
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_RELEASES'),
+				Text::_('COM_LOCALISE_ERROR_GITHUB_GETTING_RELEASES'),
 				'warning');
 		}
 
@@ -169,7 +170,7 @@ class ReleasesField extends ListField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = \JHtml::_('select.option', $option->attributes('value'), \JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
 		$versions_file = '';
@@ -178,7 +179,7 @@ class ReleasesField extends ListField
 		{
 			if (!empty($version))
 			{
-				$options[] = \JHtml::_('select.option', $version, \JText::sprintf('COM_LOCALISE_CUSTOMIZED_REFERENCE', $version),
+				$options[] = HTMLHelper::_('select.option', $version, Text::sprintf('COM_LOCALISE_CUSTOMIZED_REFERENCE', $version),
 							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-release"')
 							);
 
@@ -186,7 +187,7 @@ class ReleasesField extends ListField
 			}
 		}
 
-		\JFile::write($versions_path, $versions_file);
+		File::write($versions_path, $versions_file);
 
 		return $options;
 	}

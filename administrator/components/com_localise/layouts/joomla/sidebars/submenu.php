@@ -9,4 +9,6 @@
 
 defined('JPATH_BASE') or die;
 
-echo JLayoutHelper::render('joomla.sidebars.submenu',  $displayData, null, array('component' => 'none'));
+use Joomla\CMS\Layout\LayoutHelper;
+
+echo LayoutHelper::render('joomla.sidebars.submenu',  $displayData, null, array('component' => 'none'));
