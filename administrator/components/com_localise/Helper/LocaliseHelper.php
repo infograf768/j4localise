@@ -12,6 +12,7 @@ namespace Joomla\Component\Localise\Administrator\Helper;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -1485,7 +1486,7 @@ abstract class LocaliseHelper
 	{
 		if (!empty($gh_data))
 		{
-			$now                = new \JDate;
+			$now                = new Date;
 			$now                = $now->toSQL();
 			$params             = ComponentHelper::getParams('com_localise');
 			$client_to_update   = 'gh_' . $gh_data['github_client'] . '_last_update';
@@ -1520,11 +1521,11 @@ abstract class LocaliseHelper
 			}
 			elseif (!empty($last_stored_update))
 			{
-				$last_update = new \JDate($last_stored_update);
+				$last_update = new Date($last_stored_update);
 				$last_update = $last_update->toSQL();
 				$interval    = $params->get('gh_updates_interval', '1') == '1' ? 24 : 1;
 				$interval    = $last_update . " +" . $interval . " hours";
-				$next_update = new \JDate($interval);
+				$next_update = new Date($interval);
 				$next_update = $next_update->toSQL();
 
 				if ($now >= $next_update)
@@ -2046,7 +2047,7 @@ abstract class LocaliseHelper
 	 */
 	public static function saveLastupdate($client_to_update)
 	{
-		$now    = new \JDate;
+		$now    = new Date;
 		$now    = $now->toSQL();
 		$params = ComponentHelper::getParams('com_localise');
 		$params->set($client_to_update, $now);
