@@ -9,29 +9,32 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Access\Exception\Notallowed;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
 // Access check.
 if (!Factory::getUser()->authorise('core.manage', 'com_localise'))
 {
-	throw new \JAccessExceptionNotallowed(\JText::_('JERROR_ALERTNOAUTHOR'), 403);
+	throw new Notallowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
 // Include helper files
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/LocaliseHelper.php';
-//require_once JPATH_COMPONENT . '/helper/localisehelper.php';
 
 // Load Composer Autoloader
 
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
-\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-\JLoader::register('JPath', JPATH_LIBRARIES . '/joomla/filesystem/path.php');
-\JLoader::register('LocaliseHelper', JPATH_COMPONENT . '/Helper/LocaliseHelper.php');
+
 
 // Get the controller
-$controller = \JControllerLegacy::getInstance('Localise');
+$controller = BaseController::getInstance('Localise');
 
 // Execute the task.
 $controller->execute(Factory::getApplication()->input->get('task'));
