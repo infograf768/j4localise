@@ -196,7 +196,7 @@ Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 							</div>
 						<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
 						<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
-
+						
 						<div class="key">
 							<div id="translationbar">
 								<?php //if ($istranslation) : ?>
