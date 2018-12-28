@@ -69,7 +69,7 @@ class PackagesModel extends ListModel
 
 		parent::__construct($config);
 	}
-	
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -285,7 +285,7 @@ class PackagesModel extends ListModel
 		$selected = ArrayHelper::toInteger((array) $selected);
 
 		// Get a row instance.
-		$table = Table::getInstance('Localise', 'Joomla\\Component\\Localise\\Administrator\\Table\\');
+		$table = Table::getInstance('LocaliseTable', 'Joomla\\Component\\Localise\\Administrator\\Table\\');
 
 		foreach ($selected as $packageId)
 		{
