@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -100,22 +101,28 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		$canDo = ContentHelper::getActions('com_localise', 'component');
+		
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		ToolBarHelper::title(Text::sprintf('COM_LOCALISE_HEADER_MANAGER', Text::_('COM_LOCALISE_HEADER_PACKAGES')), 'comments-2 langmanager');
 
 		if ($canDo->get('localise.create'))
 		{
-			ToolBarHelper::addNew('package.add', 'COM_LOCALISE_NEW_CORE_PACKAGE');
-		}
+			$dropdown = $toolbar->dropdownButton('new')
+				->text('JTOOLBAR_NEW')
+				->toggleSplit(false)
+				->icon('fa fa-plus')
+				->buttonClass('btn btn-success');
 
-		if ($canDo->get('localise.create'))
-		{
-			ToolBarHelper::addNew('packagefile.add', 'COM_LOCALISE_NEW_FILE_PACKAGE');
-		}
-
-		if ($canDo->get('localise.create') || $canDo->get('localise.edit'))
-		{
-			ToolBarHelper::divider();
+			$childBar = $dropdown->getChildToolbar();
+		
+			$childBar->standardButton('save-new')
+				->text('COM_LOCALISE_NEW_CORE_PACKAGE')
+				->task('package.add');
+			$childBar->standardButton('save-new')
+				->text('COM_LOCALISE_NEW_FILE_PACKAGE')
+				->task('packagefile.add');
 		}
 
 		if ($canDo->get('localise.create'))
@@ -126,24 +133,20 @@ class HtmlView extends BaseHtmlView
 		if ($canDo->get('localise.delete'))
 		{
 			ToolBarHelper::deleteList('COM_LOCALISE_MSG_PACKAGES_VALID_DELETE', 'packages.delete');
-			ToolBarHelper::divider();
 		}
 
 		if ($canDo->get('localise.create'))
 		{
 			ToolBarHelper::modal('fileModal', 'icon-upload', 'COM_LOCALISE_BUTTON_IMPORT_XML');
-			ToolBarHelper::divider();
 			ToolBarHelper::custom('packages.export',  'out.png', 'out.png', 'COM_LOCALISE_BUTTON_EXPORT_XML', true, false);
-			ToolBarHelper::divider();
 		}
 
 		if ($canDo->get('core.admin'))
 		{
-			ToolBarHelper::preferences('com_localise');
-			ToolBarHelper::divider();
+			$toolbar->preferences('com_localise');
 		}
 
-		ToolBarHelper::help('screen.packages', true);
+		$toolbar->help('screen.packages', true);
 	}
 
 	/**

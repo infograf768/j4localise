@@ -15,14 +15,15 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
 
-jimport('joomla.filesystem.folder');
-
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
 
 /**
  * Languages Model class for the Localise component
@@ -89,7 +90,7 @@ class LanguagesModel extends ListModel
 		}
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
-		$search = \JFilterInput::getInstance()->clean($search, 'TRIM');
+		$search = InputFilter::getInstance()->clean($search, 'TRIM');
 		$search = strtolower($search);
 
 		if ($search)
@@ -126,10 +127,10 @@ class LanguagesModel extends ListModel
 		$app = Factory::getApplication();
 
 		// Get the form.
-		jimport('joomla.form.form');
-		\JForm::addFormPath(JPATH_COMPONENT . '/forms');
-		\JForm::addFieldPath(JPATH_COMPONENT . '/field');
-		$form = \JForm::getInstance('com_localise.languages', 'languages', array('control' => 'filters','event'   => 'onPrepareForm'));
+
+		Form::addFormPath(JPATH_COMPONENT . '/forms');
+		Form::addFieldPath(JPATH_COMPONENT . '/field');
+		$form = Form::getInstance('com_localise.languages', 'languages', array('control' => 'filters','event'   => 'onPrepareForm'));
 
 		// Check for an error.
 		if ($form instanceof Exception)
@@ -233,7 +234,7 @@ class LanguagesModel extends ListModel
 			{
 				if (empty($tag))
 				{
-					$folders = \JFolder::folders(
+					$folders = Folder::folders(
 						constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
 							'.',
 							false,
@@ -243,7 +244,7 @@ class LanguagesModel extends ListModel
 				}
 				else
 				{
-					$folders = \JFolder::folders(
+					$folders = Folder::folders(
 						constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
 							'^' . $tag . '$',
 							false,
@@ -339,7 +340,7 @@ class LanguagesModel extends ListModel
 			}
 		}
 
-		Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_PURGE_SUCCESS'));
+		Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_PURGE_SUCCESS'));
 
 		return true;
 	}

@@ -11,21 +11,22 @@ namespace Joomla\Component\Localise\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Access\Rules as JAccessRules;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Access\Rules as JAccessRules;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
-\JLoader::import('joomla.filesystem.file');
-\JLoader::import('joomla.client.helper');
-\JLoader::import('joomla.access.rules');
+//\JLoader::import('joomla.access.rules');
 
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
 
-\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-\JLoader::register('JPath', JPATH_LIBRARIES . '/joomla/filesystem/path.php');
 
 /**
  * Language model.
@@ -217,10 +218,10 @@ class LanguageModel extends AdminModel
 				$language->checked_out = 0;
 			}
 
-			$language->editor   = \JText::sprintf('COM_LOCALISE_TEXT_LANGUAGE_EDITOR', $user->name, $user->username);
+			$language->editor   = Text::sprintf('COM_LOCALISE_TEXT_LANGUAGE_EDITOR', $user->name, $user->username);
 			$language->writable = LocaliseHelper::isWritable($language->path);
 
-			if (\JFile::exists($language->path))
+			if (File::exists($language->path))
 			{
 				$xml = simplexml_load_file($language->path);
 
@@ -265,7 +266,7 @@ class LanguageModel extends AdminModel
 				}
 				else
 				{
-					$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILEEDIT', $language->path));
+					$this->setError(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILEEDIT', $language->path));
 				}
 			}
 		}
@@ -313,12 +314,12 @@ class LanguageModel extends AdminModel
 		$tag    = $data['tag'];
 
 		// Trim whitespace in $tag
-		$tag = \JFilterInput::getInstance()->clean($tag, 'TRIM');
+		$tag = InputFilter::getInstance()->clean($tag, 'TRIM');
 
 		// Check tag is correct
 		if (strpos($tag, '-') == false)
 		{
-			$this->setError(\JText::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
+			$this->setError(Text::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
 
 			return false;
 		}
@@ -328,7 +329,7 @@ class LanguageModel extends AdminModel
 		if (strlen($partstag[1]) > 2 || strtoupper($partstag[1]) != $partstag[1]
 			|| strlen($partstag[0]) > 3 || strtolower($partstag[0]) != $partstag[0])
 		{
-			$this->setError(\JText::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
+			$this->setError(Text::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
 
 			return false;
 		}
@@ -336,14 +337,14 @@ class LanguageModel extends AdminModel
 		// Checks that a custom language name has been entered
 		if ($data['name'] == "[Name of language] ([Country name])")
 		{
-			$this->setError(\JText::_('COM_LOCALISE_ERROR_LANGUAGE_NAME'));
+			$this->setError(Text::_('COM_LOCALISE_ERROR_LANGUAGE_NAME'));
 
 			return false;
 		}
 
 		$client = $data['client'];
 		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.xml";
-		$exists = \JFile::exists($path);
+		$exists = File::exists($path);
 		$parts = explode('.', $data['version']);
 		$small_version = implode('.', array($parts[0],$parts[1]));
 
@@ -416,14 +417,14 @@ class LanguageModel extends AdminModel
 			$ftp = \JClientHelper::getCredentials('ftp');
 
 			// Try to make the file writeable.
-			if ($exists && !$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0644'))
+			if ($exists && !$ftp['enabled'] && Path::isOwner($path) && !Path::setPermissions($path, '0644'))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_WRITABLE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGE_WRITABLE', $path));
 
 				return false;
 			}
 
-			$return = \JFile::write($path, $text);
+			$return = File::write($path, $text);
 
 			// Get the Localise parameters
 			$params = ComponentHelper::getParams('com_localise');
@@ -432,9 +433,9 @@ class LanguageModel extends AdminModel
 			$fileSavePermission = $params->get('filesavepermission', '0444');
 
 			// Try to make the template file unwriteable.
-			if (!$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, $fileSavePermission))
+			if (!$ftp['enabled'] && Path::isOwner($path) && !Path::setPermissions($path, $fileSavePermission))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_UNWRITABLE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGE_UNWRITABLE', $path));
 
 				return false;
 			}
@@ -442,7 +443,7 @@ class LanguageModel extends AdminModel
 			{
 				if (!$return)
 				{
-					$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILESAVE', $path));
+					$this->setError(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILESAVE', $path));
 
 					return false;
 				}
@@ -485,7 +486,7 @@ class LanguageModel extends AdminModel
 		}
 		else
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILERESET', $path));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILERESET', $path));
 
 			return false;
 		}
@@ -509,7 +510,7 @@ class LanguageModel extends AdminModel
 
 		if ($tag == $default)
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_CANNOT_REMOVE_DEFAULT_LANGUAGE', $path));
+			$this->setError(Text::sprintf('COM_LOCALISE_CANNOT_REMOVE_DEFAULT_LANGUAGE', $path));
 
 			return false;
 		}
@@ -527,28 +528,28 @@ class LanguageModel extends AdminModel
 
 		if ($installedPack != null)
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_CANNOT_REMOVE_INSTALLED_LANGUAGE', $tag));
+			$this->setError(Text::sprintf('COM_LOCALISE_CANNOT_REMOVE_INSTALLED_LANGUAGE', $tag));
 
 			return false;
 		}
 
 		if ($tag == 'en-GB')
 		{
-			$this->setError(\JText::_('COM_LOCALISE_CANNOT_REMOVE_ENGLISH_LANGUAGE'));
+			$this->setError(Text::_('COM_LOCALISE_CANNOT_REMOVE_ENGLISH_LANGUAGE'));
 
 			return false;
 		}
 
 		if (!Factory::getUser()->authorise('localise.delete', $this->option . '.' . $id))
 		{
-			$this->setError(\JText::_('COM_LOCALISE_CANNOT_REMOVE_LANGUAGE'));
+			$this->setError(Text::_('COM_LOCALISE_CANNOT_REMOVE_LANGUAGE'));
 
 			return false;
 		}
 
-		if (!\JFolder::delete($path))
+		if (!Folder::delete($path))
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGES_REMOVE', "$path"));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGES_REMOVE', "$path"));
 
 			return false;
 		}
@@ -593,26 +594,26 @@ class LanguageModel extends AdminModel
 		// en-GB should be left alone
 		if ($tag == $ref_tag || $tag == 'en-GB')
 		{
-			$app->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_LANGUAGE_COPY_FILES_NOT_PERMITTED'), 'error');
+			$app->enqueueMessage(Text::_('COM_LOCALISE_ERROR_LANGUAGE_COPY_FILES_NOT_PERMITTED'), 'error');
 
 			return false;
 		}
 
 		// Are there already ini files in the destination folder?
-		$inifiles = \JFolder::files($toPath, ".ini$");
+		$inifiles = Folder::files($toPath, ".ini$");
 
 		if (!empty($inifiles))
 		{
-			$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_NOT_ONLY_XML', $client, $tag), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGE_NOT_ONLY_XML', $client, $tag), 'error');
 
 			return false;
 		}
 
-		$refFiles = \JFolder::files($fromPath);
+		$refFiles = Folder::files($fromPath);
 
 		foreach ($refFiles as $file)
 		{
-			$ext = \JFile::getExt($file);
+			$ext = File::getExt($file);
 
 			// We do not want to copy existing xmls
 			if ($ext !== 'xml')
@@ -620,9 +621,9 @@ class LanguageModel extends AdminModel
 				// Changing prefix for the copied files
 				$destFile = str_replace($ref_tag, $tag, $file);
 
-				if (!\JFile::copy($fromPath . $file, $toPath . $destFile))
+				if (!File::copy($fromPath . $file, $toPath . $destFile))
 				{
-					$app->enqueueMessage(\JText::Sprintf('COM_LOCALISE_ERROR_LANGUAGE_COULD_NOT_COPY_FILES', $client, $ref_tag, $tag), 'error');
+					$app->enqueueMessage(Text::Sprintf('COM_LOCALISE_ERROR_LANGUAGE_COULD_NOT_COPY_FILES', $client, $ref_tag, $tag), 'error');
 
 					return false;
 				}
@@ -639,12 +640,12 @@ class LanguageModel extends AdminModel
 
 		$localisephpPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.localise.php";
 
-		if (\JFile::exists($localisephpPath))
+		if (File::exists($localisephpPath))
 		{
 			$language_data = file_get_contents($localisephpPath);
 			$language_data = str_replace($refclassname, $langclassname, $language_data);
 			$language_data = str_replace($refComment, $langComment, $language_data);
-			\JFile::write($localisephpPath, $language_data);
+			File::write($localisephpPath, $language_data);
 		}
 
 		return true;

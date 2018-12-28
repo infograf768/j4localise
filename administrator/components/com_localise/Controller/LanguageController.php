@@ -11,9 +11,12 @@ namespace Joomla\Component\Localise\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 /**
  * Language Controller class for the Localise component
@@ -120,7 +123,7 @@ class LanguageController extends FormController
 	public function delete()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or die(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
 
 		// Get the model.
 		$model = $this->getModel();
@@ -133,11 +136,11 @@ class LanguageController extends FormController
 		}
 		else
 		{
-			$msg = \JText::_('COM_LOCALISE_MSG_LANGUAGES_REMOVED');
+			$msg = Text::_('COM_LOCALISE_MSG_LANGUAGES_REMOVED');
 			$type = 'message';
 		}
 
-		$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=languages', false), $msg, $type);
+		$this->setRedirect(Route::_('index.php?option=com_localise&view=languages', false), $msg, $type);
 	}
 
 	/**
@@ -150,7 +153,7 @@ class LanguageController extends FormController
 	public function copy()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$app      = Factory::getApplication();
 		$model    = $this->getModel();
@@ -162,16 +165,16 @@ class LanguageController extends FormController
 		$tag     = $data['tag'];
 		$ref_tag = $params->get('reference', 'en-GB');
 
-		$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=language' . $this->getRedirectToItemAppend($recordId), false));
+		$this->setRedirect(Route::_('index.php?option=com_localise&view=language' . $this->getRedirectToItemAppend($recordId), false));
 
 		// Call model's copy method
 		if (!$model->copy())
 		{
-			$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_COULD_NOT_COPY_FILES', $client, $ref_tag, $tag), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_LANGUAGE_COULD_NOT_COPY_FILES', $client, $ref_tag, $tag), 'error');
 
 			return false;
 		}
 
-		$this->setMessage(\JText::sprintf('COM_LOCALISE_LANGUAGE_COPY_SUCCESS', $client, $ref_tag, $tag));
+		$this->setMessage(Text::sprintf('COM_LOCALISE_LANGUAGE_COPY_SUCCESS', $client, $ref_tag, $tag));
 	}
 }

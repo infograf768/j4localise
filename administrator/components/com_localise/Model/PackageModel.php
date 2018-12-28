@@ -12,21 +12,18 @@ namespace Joomla\Component\Localise\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Access\Rules as JAccessRules;
-
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-jimport('joomla.client.helper');
-
-\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-\JLoader::register('JPath', JPATH_LIBRARIES . '/joomla/filesystem/path.php');
-
 
 /**
  * Package Model class for the Localise component
@@ -240,7 +237,7 @@ class PackageModel extends AdminModel
 					$package->checked_out = 0;
 				}
 
-				$package->editor = \JText::sprintf('COM_LOCALISE_TEXT_PACKAGE_EDITOR', $user->name, $user->username);
+				$package->editor = Text::sprintf('COM_LOCALISE_TEXT_PACKAGE_EDITOR', $user->name, $user->username);
 
 				// Get the translations
 				$package->translations  = array();
@@ -289,7 +286,7 @@ class PackageModel extends AdminModel
 			else
 			{
 				$package = null;
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILEEDIT'), $table->path);
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILEEDIT'), $table->path);
 			}
 		}
 
@@ -443,13 +440,13 @@ class PackageModel extends AdminModel
 			$dom->appendChild($packageXml);
 
 			// Set FTP credentials, if given.
-			\JClientHelper::setCredentialsFromRequest('ftp');
-			$ftp = \JClientHelper::getCredentials('ftp');
+			ClientHelper::setCredentialsFromRequest('ftp');
+			$ftp = ClientHelper::getCredentials('ftp');
 
 			// Try to make the file writeable.
-			if (\JFile::exists($path) && !$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0644'))
+			if (File::exists($path) && !$ftp['enabled'] && Path::isOwner($path) && !Path::setPermissions($path, '0644'))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $path));
 
 				return false;
 			}
@@ -458,18 +455,18 @@ class PackageModel extends AdminModel
 			$dom->formatOutput = true;
 			$formattedXML = $dom->saveXML();
 
-			$return = \JFile::write($path, $formattedXML);
+			$return = File::write($path, $formattedXML);
 
 			// Try to make the file unwriteable.
-			if (!$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0444'))
+			if (!$ftp['enabled'] && Path::isOwner($path) && !Path::setPermissions($path, '0444'))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $path));
 
 				return false;
 			}
 			elseif (!$return)
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $path));
 
 				return false;
 			}
@@ -503,28 +500,28 @@ class PackageModel extends AdminModel
 		// Try to make the file writeable.
 
 		/*
-		if (!$ftp['enabled'] && \JPATH::isOwner($languagePath) && !\JPATH::setPermissions($languagePath, '0644'))
+		if (!$ftp['enabled'] && Path::isOwner($languagePath) && !Path::setPermissions($languagePath, '0644'))
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $languagePath));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $languagePath));
 
 			return false;
 		}
 
-		$return = \JFile::write($languagePath, $text);
+		$return = File::write($languagePath, $text);
 		*/
 
 		// Try to make the file unwriteable.
 
 		/*
-		if (!$ftp['enabled'] && \JPATH::isOwner($languagePath) && !\JPATH::setPermissions($languagePath, '0444'))
+		if (!$ftp['enabled'] && Path::isOwner($languagePath) && !Path::setPermissions($languagePath, '0444'))
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $languagePath));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $languagePath));
 
 			return false;
 		}
 		elseif (!$return)
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $languagePath));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $languagePath));
 
 			return false;
 		}
@@ -581,21 +578,21 @@ class PackageModel extends AdminModel
 		// Delete the older file and redirect
 		if ($path !== $oldpath && file_exists($oldpath))
 		{
-			if (!\JFile::delete($oldpath))
+			if (!File::delete($oldpath))
 			{
-				$app->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
+				$app->enqueueMessage(Text::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
 
 			$task = Factory::getApplication()->input->get('task');
 
 			if ($task == 'save')
 			{
-				$app->redirect(\JRoute::_('index.php?option=com_localise&view=packages', false));
+				$app->redirect(Route::_('index.php?option=com_localise&view=packages', false));
 			}
 			else
 			{
 				// Redirect to the new $id as name has changed
-				$app->redirect(\JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+				$app->redirect(Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
 			}
 		}
 
@@ -619,8 +616,8 @@ class PackageModel extends AdminModel
 		// Prevent generating and downloading Master package
 		if (strpos($data['name'], 'master_') !== false)
 		{
-			$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
-			$app->redirect(\JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
+			$app->redirect(Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
 
 			return false;
 		}
@@ -639,14 +636,14 @@ class PackageModel extends AdminModel
 		$main_package_files = array();
 
 		// Delete old files
-		$delete = \JFolder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
+		$delete = Folder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
 
 		if (!empty($delete))
 		{
-			if (!\JFile::delete($delete))
+			if (!File::delete($delete))
 			{
-				// \JFile::delete throws an error
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
+				// File::delete throws an error
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
 
 				return false;
 			}
@@ -694,7 +691,7 @@ class PackageModel extends AdminModel
 
 			$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml';
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$xmldata = file_get_contents($path);
 
@@ -706,10 +703,10 @@ class PackageModel extends AdminModel
 				}
 			}
 
-			if (!\JFile::exists($path) || empty($xmldata))
+			if (!File::exists($path) || empty($xmldata))
 			{
-				$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_ERROR_NO_XML', \JText::_('JSITE'), $data['language'] . '.xml', 'error'));
-				$app->redirect(\JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+				$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_NO_XML', Text::_('JSITE'), $data['language'] . '.xml', 'error'));
+				$app->redirect(Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
 
 				return false;
 			}
@@ -734,12 +731,12 @@ class PackageModel extends AdminModel
 			// As this is a core package, the main joomla file xx-XX.ini should be in the package
 			$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.ini';
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$file_data = file_get_contents($path);
 			}
 
-			if (\JFile::exists($path) && !empty($file_data))
+			if (File::exists($path) && !empty($file_data))
 			{
 				$site = array_diff($site, array("joomla"));
 				$site_txt .= "\t\t" . '<filename>' . $data['language'] . '.ini</filename>' . "\n";
@@ -747,38 +744,38 @@ class PackageModel extends AdminModel
 			}
 			else
 			{
-				$msg .= \JText::sprintf('COM_LOCALISE_MAINFILE_NOT_TRANSLATED', $data['language'] . '.ini', \JText::_('JSITE'));
+				$msg .= Text::sprintf('COM_LOCALISE_MAINFILE_NOT_TRANSLATED', $data['language'] . '.ini', Text::_('JSITE'));
 			}
 
 			foreach ($site as $translation)
 			{
 				$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini';
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$site_txt .= "\t\t" . '<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$site_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini', 'data' => $file_data);
 				}
 				elseif ($translation != 'joomla')
 				{
-					$msg .= \JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', \JText::_('JSITE'));
+					$msg .= Text::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', Text::_('JSITE'));
 				}
 			}
 
 			$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php';
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$language_data = file_get_contents($path);
 			}
 
 			// Create a basic xx-XX.localise.php if not present in target language
-			elseif (!\JFile::exists($path) || empty($languagedata))
+			elseif (!File::exists($path) || empty($languagedata))
 			{
 				$language_data = file_get_contents(JPATH_ROOT . '/language/' . $reftag . '/' . $reftag . '.localise.php');
 				$language_data = str_replace($reftag, $data['language'], $language_data);
@@ -799,19 +796,19 @@ class PackageModel extends AdminModel
 			$site_txt .= "\t" . '</files>' . "\n";
 
 			// Check if language has a custom calendar. The folder xx-XX should be present in the media folder
-			if (\JFolder::exists(JPATH_ROOT . '/media/' . $data['language']))
+			if (Folder::exists(JPATH_ROOT . '/media/' . $data['language']))
 			{
 				$site_txt .= "\n";
 				$site_txt .= "\t" . '<media destination="' . $data['language'] . '">' . "\n";
 				$site_txt .= "\t\t" . '<filename>index.html</filename>' . "\n";
 				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar-setup.js';
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$site_package_files[] = array('name' => 'js/calendar-setup.js','data' => $file_data);
 					$site_txt .= "\t\t" . '<filename>js/calendar-setup.js</filename>' . "\n";
@@ -819,12 +816,12 @@ class PackageModel extends AdminModel
 
 				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar-setup-uncompressed.js';
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$site_package_files[] = array('name' => 'js/calendar-setup-uncompressed.js','data' => $file_data);
 					$site_txt .= "\t\t" . '<filename>js/calendar-setup-uncompressed</filename>' . "\n";
@@ -832,12 +829,12 @@ class PackageModel extends AdminModel
 
 				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/index.html';
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$site_package_files[] = array('name' => 'js/index.html','data' => $file_data);
 					$site_txt .= "\t\t" . '<filename>js/index.html</filename>' . "\n";
@@ -845,12 +842,12 @@ class PackageModel extends AdminModel
 
 				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar.js';
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$site_package_files[] = array('name' => 'js/calendar.js','data' => $file_data);
 					$site_txt .= "\t\t" . '<filename>js/calendar.js</filename>' . "\n";
@@ -858,12 +855,12 @@ class PackageModel extends AdminModel
 
 				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar-uncompressed.js';
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$site_package_files[] = array('name' => 'js/calendar-uncompressed.js','data' => $file_data);
 					$site_txt .= "\t\t" . '<filename>js/calendar-uncompressed.js</filename>' . "\n";
@@ -887,7 +884,7 @@ class PackageModel extends AdminModel
 
 			if (!$packager = $archive->getAdapter('zip'))
 			{
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
 				return false;
 			}
@@ -895,7 +892,7 @@ class PackageModel extends AdminModel
 			{
 				if (!$packager->create($site_zip_path, $site_package_files))
 				{
-					$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+					$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
 
 					return false;
 				}
@@ -910,15 +907,15 @@ class PackageModel extends AdminModel
 
 			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml';
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$xmldata = file_get_contents($path);
 			}
 
-			if (!\JFile::exists($path) || empty($xmldata))
+			if (!File::exists($path) || empty($xmldata))
 			{
-				$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_ERROR_NO_XML', \JText::_('JADMINISTRATOR'), $data['language'] . '.xml', 'error'));
-				$app->redirect(\JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+				$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_NO_XML', Text::_('JADMINISTRATOR'), $data['language'] . '.xml', 'error'));
+				$app->redirect(Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
 
 				return false;
 			}
@@ -943,12 +940,12 @@ class PackageModel extends AdminModel
 			// As this is a core package, the main joomla file xx-XX.ini should be in the package
 			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.ini';
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$file_data = file_get_contents($path);
 			}
 
-			if (\JFile::exists($path) && !empty($file_data))
+			if (File::exists($path) && !empty($file_data))
 			{
 				$administrator = array_diff($administrator, array("joomla"));
 				$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.ini</filename>' . "\n";
@@ -956,38 +953,38 @@ class PackageModel extends AdminModel
 			}
 			else
 			{
-				$msg .= \JText::sprintf('COM_LOCALISE_MAINFILE_NOT_TRANSLATED', $data['language'] . '.ini', \JText::_('JADMINISTRATOR'));
+				$msg .= Text::sprintf('COM_LOCALISE_MAINFILE_NOT_TRANSLATED', $data['language'] . '.ini', Text::_('JADMINISTRATOR'));
 			}
 
 			foreach ($administrator as $translation)
 			{
 				$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini';
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$admin_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
 				}
 				elseif ($translation != 'joomla')
 				{
-					$msg .= \JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', \JText::_('JADMINISTRATOR'));
+					$msg .= Text::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', Text::_('JADMINISTRATOR'));
 				}
 			}
 
 			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php';
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$language_data = file_get_contents($path);
 			}
 
 			// Create a basic xx-XX.localise.php if not present in target language
-			elseif (!\JFile::exists($path) || empty($languagedata))
+			elseif (!File::exists($path) || empty($languagedata))
 			{
 				$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $reftag . '/' . $reftag . '.localise.php');
 				$language_data = str_replace($reftag, $data['language'], $language_data);
@@ -1000,12 +997,12 @@ class PackageModel extends AdminModel
 			// Add the css file if present
 			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.css';
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$css_data = file_get_contents($path);
 			}
 
-			if (\JFile::exists($path) && !empty($css_data))
+			if (File::exists($path) && !empty($css_data))
 			{
 				$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.css</filename>' . "\n";
 				$admin_package_files[] = array('name' => $data['language'] . '.css','data' => $css_data);
@@ -1014,9 +1011,9 @@ class PackageModel extends AdminModel
 			if ($msg)
 			{
 				$msg .= '<p>...</p>';
-				$msg .= \JText::_('COM_LOCALISE_UNTRANSLATED');
+				$msg .= Text::_('COM_LOCALISE_UNTRANSLATED');
 				$app->enqueueMessage($msg, 'error');
-				$app->redirect(\JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+				$app->redirect(Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
 
 				return false;
 			}
@@ -1039,7 +1036,7 @@ class PackageModel extends AdminModel
 
 			if (!$packager = $archive->getAdapter('zip'))
 			{
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
 				return false;
 			}
@@ -1047,7 +1044,7 @@ class PackageModel extends AdminModel
 			{
 				if (!$packager->create($admin_zip_path, $admin_package_files))
 				{
-					$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+					$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
 
 					return false;
 				}
@@ -1077,7 +1074,7 @@ class PackageModel extends AdminModel
 
 		if (!$packager = $archive->getAdapter('zip'))
 		{
-			$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+			$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
 			return false;
 		}
@@ -1085,7 +1082,7 @@ class PackageModel extends AdminModel
 		{
 			if (!$packager->create($ziproot, $main_package_files))
 			{
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
 
 				return false;
 			}
@@ -1121,7 +1118,7 @@ class PackageModel extends AdminModel
 		jimport('joomla.filesystem.folder');
 
 			$app      = Factory::getApplication();
-			$fileName = \JFile::makeSafe($file['name']);
+			$fileName = File::makeSafe($file['name']);
 
 			try
 			{
@@ -1129,23 +1126,23 @@ class PackageModel extends AdminModel
 			}
 			catch (\Exception $e)
 			{
-				$app->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_PACKAGE_XML'), 'error');
+				$app->enqueueMessage(Text::_('COM_LOCALISE_ERROR_PACKAGE_XML'), 'error');
 
 				return false;
 			}
 
 			/* @TODO: get this in the js confirmation alert in views/packages/tmpl/defaul.php
-			if (file_exists(\JPATH::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $file['name'])))
+			if (file_exists(Path::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $file['name'])))
 			{
-				$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
+				$app->enqueueMessage(Text::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
 
 				return false;
 			}
 			*/
 
-			if (!\JFile::upload($file['tmp_name'], \JPATH::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $fileName)))
+			if (!File::upload($file['tmp_name'], Path::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $fileName)))
 			{
-				$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_FILE_UPLOAD_ERROR', $file['name']), 'error');
+				$app->enqueueMessage(Text::sprintf('COM_LOCALISE_FILE_UPLOAD_ERROR', $file['name']), 'error');
 
 				return false;
 			}
@@ -1187,41 +1184,41 @@ class PackageModel extends AdminModel
 
 		if ($tag == '')
 		{
-			$app->enqueueMessage(\JText::_('COM_LOCALISE_FILE_TAG_ERROR'), 'error');
+			$app->enqueueMessage(Text::_('COM_LOCALISE_FILE_TAG_ERROR'), 'error');
 
 			return false;
 		}
 
-		$fileName = \JFile::makeSafe($file['name']);
-		$ext = \JFile::getExt($fileName);
+		$fileName = File::makeSafe($file['name']);
+		$ext = File::getExt($fileName);
 
 		// Prevent uploading some file types
 		if (!($ext == "ini" || $fileName == $tag . '.css' || $fileName == $tag . '.localise.php'))
 		{
-			$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_FILE_TYPE_ERROR', $fileName), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_FILE_TYPE_ERROR', $fileName), 'error');
 
 			return false;
 		}
 
 		if ($fileName == $tag . '.css' && $location == LOCALISEPATH_SITE)
 		{
-			$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_FILE_CSS_ERROR', $fileName), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_FILE_CSS_ERROR', $fileName), 'error');
 
 			return false;
 		}
 
 		/* @TODO: get this in the js confirmation alert in views/package/tmpl/edit.php
-		 if (file_exists(\JPATH::clean($location . '/language/' . $tag . '/' . $file['name'])))
+		 if (file_exists(Path::clean($location . '/language/' . $tag . '/' . $file['name'])))
 		 {
-		$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
+		$app->enqueueMessage(Text::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
 
 		return false;
 		}
 		*/
 
-		if (!\JFile::upload($file['tmp_name'], \JPATH::clean($location . '/language/' . $tag . '/' . $fileName)))
+		if (!File::upload($file['tmp_name'], Path::clean($location . '/language/' . $tag . '/' . $fileName)))
 		{
-			$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_FILE_UPLOAD_ERROR', $file['name']), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_FILE_UPLOAD_ERROR', $file['name']), 'error');
 
 			return false;
 		}

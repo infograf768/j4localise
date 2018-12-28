@@ -11,18 +11,22 @@ namespace Joomla\Component\Localise\Administrator\Model;
 
 defined('_JEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\Utilities\ArrayHelper;
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
+//jimport('joomla.filesystem.folder');
+//jimport('joomla.filesystem.file');
 
-\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
+//\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
+//\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
 
 
 /**
@@ -94,7 +98,7 @@ class PackagesModel extends ListModel
 		*/
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
-		$search = \JFilterInput::getInstance()->clean($search, 'TRIM');
+		$search = InputFilter::getInstance()->clean($search, 'TRIM');
 		$search = strtolower($search);
 
 		if ($search)
@@ -139,9 +143,9 @@ class PackagesModel extends ListModel
 
 			foreach ($paths as $path)
 			{
-				if (\JFolder::exists($path))
+				if (Folder::exists($path))
 				{
-					$files = \JFolder::files($path, '\.xml$');
+					$files = Folder::files($path, '\.xml$');
 
 					foreach ($files as $file)
 					{
@@ -278,7 +282,7 @@ class PackagesModel extends ListModel
 	public function delete($selected)
 	{
 		// Sanitize the array.
-		$selected = (array) $selected;
+		$selected = ArrayHelper::toInteger((array) $selected);
 
 		// Get a row instance.
 		$table = Table::getInstance('Localise', 'Joomla\\Component\\Localise\\Administrator\\Table\\');
@@ -286,16 +290,16 @@ class PackagesModel extends ListModel
 		foreach ($selected as $packageId)
 		{
 			$path = LocaliseHelper::getFilePath($packageId);
-			$package = \JFile::stripExt(basename($path));
+			$package = File::stripExt(basename($path));
 
-			if (!\JFile::delete($path))
+			if (!File::delete($path))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_REMOVE', $package));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGES_REMOVE', $package));
 
 				return false;
 			}
 
-			if (!$table->delete((int) $packageId))
+			if (!$table->delete($packageId))
 			{
 				$this->setError($table->getError());
 
@@ -318,9 +322,9 @@ class PackagesModel extends ListModel
 		foreach ($selected as $packageId)
 		{
 			$path = LocaliseHelper::getFilePath($packageId);
-			$package = \JFile::stripExt(basename($path));
+			$package = File::stripExt(basename($path));
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				ob_clean();
 				$pack = file_get_contents($path);
@@ -337,7 +341,7 @@ class PackagesModel extends ListModel
 			}
 			else
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_EXPORT', $package));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGES_EXPORT', $package));
 			}
 		}
 	}
@@ -354,26 +358,26 @@ class PackagesModel extends ListModel
 		foreach ($selected as $packageId)
 		{
 			$path = LocaliseHelper::getFilePath($packageId);
-			$package = \JFile::stripExt(basename($path));
+			$package = File::stripExt(basename($path));
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$pack = file_get_contents($path);
 				$newpackage = $package . '_' . Factory::getDate()->format("Y-m-d-H-i-s");
 				$newpath = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$newpackage.xml";
 
-				\JFile::write($newpath, $pack);
+				File::write($newpath, $pack);
 			}
 			else
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_READ', $package));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGES_READ', $package));
 
 				return false;
 			}
 
-			if (!\JFile::exists($newpath))
+			if (!File::exists($newpath))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_CLONE', $package));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGES_CLONE', $package));
 
 				return false;
 			}

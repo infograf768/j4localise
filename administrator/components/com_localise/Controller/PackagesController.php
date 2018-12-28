@@ -13,9 +13,13 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\Component\Localise\Administrator\Model\PackageModel;
 use Joomla\Component\Localise\Administrator\Model\PackagefileModel;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Packages Controller class for the Localise component
@@ -70,7 +74,7 @@ class PackagesController extends AdminController
 	public function delete()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or die(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$user = Factory::getUser();
@@ -101,26 +105,29 @@ class PackagesController extends AdminController
 			{
 				// Prune items that you can't delete.
 				unset($ids[$i]);
-				return Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_PACKAGES_DELETE'), 'notice');
+				return Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_PACKAGES_DELETE'), 'notice');
 			}
 
 			if (!$user->authorise('core.delete', 'com_localise.' . (int) $id))
 			{
 				// Prune items that you can't delete.
 				unset($ids[$i]);
-				return Factory::getApplication()->enqueueMessage(\JText::_('JERROR_CORE_DELETE_NOT_PERMITTED'), 'notice');
+				return Factory::getApplication()->enqueueMessage(Text::_('JERROR_CORE_DELETE_NOT_PERMITTED'), 'notice');
 			}
 		}
 
 		if (empty($ids))
 		{
-			$msg = \JText::_('JERROR_NO_ITEMS_SELECTED');
+			$msg = Text::_('JERROR_NO_ITEMS_SELECTED');
 			$type = 'error';
 		}
 		else
 		{
 			// Get the model.
 			$model = $this->getModel();
+			
+			// Make sure the item ids are integers
+			$ids = ArrayHelper::toInteger($ids);
 
 			// Remove the items.
 			if (!$model->delete($ids))
@@ -130,12 +137,12 @@ class PackagesController extends AdminController
 			}
 			else
 			{
-				$msg = \JText::sprintf('JCONTROLLER_N_ITEMS_DELETED', count($ids));
+				$msg = Text::sprintf('JCONTROLLER_N_ITEMS_DELETED', count($ids));
 				$type = 'message';
 			}
 		}
 
-		$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
+		$this->setRedirect(Route::_('index.php?option=com_localise&view=packages', false), $msg, $type);
 	}
 
 	/**
@@ -146,7 +153,7 @@ class PackagesController extends AdminController
 	public function export()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or die(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$user = Factory::getUser();
@@ -159,13 +166,13 @@ class PackagesController extends AdminController
 			{
 				// Prune items that you can't export.
 				unset($ids[$i]);
-				return Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_EXPORT_NOT_PERMITTED'), 'notice');
+				return Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_EXPORT_NOT_PERMITTED'), 'notice');
 			}
 		}
 
 		if (empty($ids))
 		{
-			$msg = \JText::_('JERROR_NO_ITEMS_SELECTED');
+			$msg = Text::_('JERROR_NO_ITEMS_SELECTED');
 			$type = 'error';
 		}
 		else
@@ -181,7 +188,7 @@ class PackagesController extends AdminController
 			}
 		}
 
-		$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
+		$this->setRedirect(Route::_('index.php?option=com_localise&view=packages', false), $msg, $type);
 	}
 
 	/**
@@ -192,7 +199,7 @@ class PackagesController extends AdminController
 	public function duplicate()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$user = Factory::getUser();
@@ -205,13 +212,13 @@ class PackagesController extends AdminController
 			{
 				// Prune items that you can't clone.
 				unset($ids[$i]);
-				return Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_PACKAGES_CLONE_NOT_PERMITTED'), 'notice');
+				return Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_PACKAGES_CLONE_NOT_PERMITTED'), 'notice');
 			}
 		}
 
 		if (empty($ids))
 		{
-			$msg = \JText::_('JERROR_NO_ITEMS_SELECTED');
+			$msg = Text::_('JERROR_NO_ITEMS_SELECTED');
 			$type = 'error';
 		}
 		else
@@ -227,12 +234,12 @@ class PackagesController extends AdminController
 			}
 			else
 			{
-				$msg = \JText::plural('COM_LOCALISE_N_PACKAGES_DUPLICATED', count($ids));
+				$msg = Text::plural('COM_LOCALISE_N_PACKAGES_DUPLICATED', count($ids));
 				$type = 'message';
 			}
 		}
 
-		$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
+		$this->setRedirect(Route::_('index.php?option=com_localise&view=packages', false), $msg, $type);
 	}
 
 	/**
@@ -245,7 +252,7 @@ class PackagesController extends AdminController
 	public function checkin()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$ids = Factory::getApplication()->input->post->get('cid', array(), 'array');
 
@@ -271,16 +278,16 @@ class PackagesController extends AdminController
 		if ($return === false)
 		{
 			// Checkin failed.
-			$message = \JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError());
-			$this->setRedirect(\JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message, 'error');
+			$message = Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError());
+			$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message, 'error');
 
 			return false;
 		}
 		else
 		{
 			// Checkin succeeded.
-			$message = \JText::plural($this->text_prefix . '_N_ITEMS_CHECKED_IN', count($ids));
-			$this->setRedirect(\JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message);
+			$message = Text::plural($this->text_prefix . '_N_ITEMS_CHECKED_IN', count($ids));
+			$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message);
 
 			return true;
 		}
