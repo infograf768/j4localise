@@ -35,9 +35,9 @@ class HtmlView extends BaseHtmlView
 	protected $form;
 
 	protected $state;
-	
+
 	public $filterForm;
-	
+
 	public $activeFilters;
 
 	/**
@@ -71,7 +71,6 @@ class HtmlView extends BaseHtmlView
 
 		// Set the toolbar
 		$this->addToolbar();
-		$this->sidebar = \JHtmlSidebar::render();
 
 		// Prepare the document
 		$this->prepareDocument();
@@ -101,7 +100,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		$canDo = ContentHelper::getActions('com_localise', 'component');
-		
+
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
@@ -116,7 +115,7 @@ class HtmlView extends BaseHtmlView
 				->buttonClass('btn btn-success');
 
 			$childBar = $dropdown->getChildToolbar();
-		
+
 			$childBar->standardButton('save-new')
 				->text('COM_LOCALISE_NEW_CORE_PACKAGE')
 				->task('package.add');

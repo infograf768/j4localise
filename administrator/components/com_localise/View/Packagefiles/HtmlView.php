@@ -62,7 +62,6 @@ class HtmlView extends BaseHtmlView
 
 		// Set the toolbar
 		$this->addToolbar();
-		$this->sidebar = \JHtmlSidebar::render();
 
 		// Prepare the document
 		$this->prepareDocument();

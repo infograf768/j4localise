@@ -19,18 +19,14 @@ use Joomla\CMS\Access\Access as JAccess;
 use Joomla\CMS\Access\Rules as JAccessRules;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\LanguageHelper;
-
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.stream');
-jimport('joomla.client.helper');
-jimport('joomla.access.rules');
-
-\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-\JLoader::register('Stream', JPATH_LIBRARIES . '/joomla/filesystem/stream.php');
-\JLoader::register('JPath', JPATH_LIBRARIES . '/joomla/filesystem/path.php');
-
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Filesystem\Stream;
+use Joomla\CMS\Object\CMSObject;
 
 /**
  * Translation Model class for the Localise component
@@ -92,11 +88,11 @@ class TranslationModel extends AdminModel
 		{
 			$refpath = LocaliseHelper::findTranslationPath('administrator', $ref, $filename);
 
-			if (!\JFile::exists($path))
+			if (!File::exists($path))
 			{
 				$path2 = LocaliseHelper::getTranslationPath($client == 'administrator' ? 'site' : 'administrator', $tag, $filename, $storage);
 
-				if (\JFile::exists($path2))
+				if (File::exists($path2))
 				{
 					$path = $path2;
 				}
@@ -136,7 +132,7 @@ class TranslationModel extends AdminModel
 		{
 			$path = $this->getState('translation.path');
 
-			if (\JFile::exists($path))
+			if (File::exists($path))
 			{
 				$this->contents = file_get_contents($path);
 			}
@@ -154,7 +150,7 @@ class TranslationModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key (Note unused by the function).
 	 *
-	 * @return  \JObject|null  Object on success, null on failure.
+	 * @return  CMSObject|null  Object on success, null on failure.
 	 */
 	public function getItem($pk = null)
 	{
@@ -182,7 +178,7 @@ class TranslationModel extends AdminModel
 
 			if (!$this->item)
 			{
-				$path = \JFile::exists($this->getState('translation.path'))
+				$path = File::exists($this->getState('translation.path'))
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
@@ -213,7 +209,7 @@ class TranslationModel extends AdminModel
 				$revisedchanges  = $this->getState('translation.revisedchanges');
 				$developdata      = $this->getState('translation.developdata');
 
-				$this->item = new \JObject(
+				$this->item = new CMSObject(
 									array
 										(
 										'reference'           => $this->getState('translation.reference'),
@@ -226,7 +222,7 @@ class TranslationModel extends AdminModel
 										'maincopyright'       => '',
 										'additionalcopyright' => array(),
 										'license'             => '',
-										'exists'              => \JFile::exists($this->getState('translation.path')),
+										'exists'              => File::exists($this->getState('translation.path')),
 										'istranslation'       => $istranslation,
 										'developdata'         => (array) $developdata,
 										'translatedkeys'      => (array) $translatedkeys,
@@ -252,7 +248,7 @@ class TranslationModel extends AdminModel
 										)
 				);
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$devpath    = LocaliseHelper::searchDevpath($gh_client, $refpath);
 					$custompath = LocaliseHelper::searchCustompath($gh_client, $refpath);
@@ -276,7 +272,7 @@ class TranslationModel extends AdminModel
 						$this->item->source = file_get_contents($path);
 					}
 
-					$stream = new \JStream;
+					$stream = new Stream;
 					$stream->open($path);
 					$begin  = $stream->read(4);
 					$bom    = strtolower(bin2hex($begin));
@@ -465,7 +461,7 @@ class TranslationModel extends AdminModel
 
 					if ($tag != $reftag)
 					{
-						if (\JFile::exists($custompath))
+						if (File::exists($custompath))
 						{
 							$this->item->linescustompath = count(file($custompath));
 						}
@@ -497,7 +493,7 @@ class TranslationModel extends AdminModel
 					$develop_file_path   = "$develop_client_path/$ref_file";
 					$new_keys            = array();
 
-					if (\JFile::exists($develop_file_path) && $allow_develop == 1 && $reftag == 'en-GB')
+					if (File::exists($develop_file_path) && $allow_develop == 1 && $reftag == 'en-GB')
 					{
 						$info                  = array();
 						$info['client']        = $gh_client;
@@ -681,7 +677,7 @@ class TranslationModel extends AdminModel
 						$this->item->checked_out = 0;
 					}
 
-					$this->item->editor = \JText::sprintf('COM_LOCALISE_TEXT_TRANSLATION_EDITOR', $user->name, $user->username);
+					$this->item->editor = Text::sprintf('COM_LOCALISE_TEXT_TRANSLATION_EDITOR', $user->name, $user->username);
 				}
 
 				if ($caching)
@@ -692,19 +688,19 @@ class TranslationModel extends AdminModel
 				// Count the number of lines in the ini file to check max_input_vars
 				if ($tag != $reftag)
 				{
-					if (\JFile::exists($path))
+					if (File::exists($path))
 					{
 						$this->item->linespath = count(file($path));
 					}
 
-					if (\JFile::exists($refpath))
+					if (File::exists($refpath))
 					{
 						$this->item->linesrefpath = count(file($refpath));
 					}
 
 					if ($this->getState('translation.layout') != 'raw')
 					{
-						if (isset($develop_file_path) && \JFile::exists($develop_file_path))
+						if (isset($develop_file_path) && File::exists($develop_file_path))
 						{
 							$this->item->linesdevpath = count(file($develop_file_path));
 						}
@@ -712,7 +708,7 @@ class TranslationModel extends AdminModel
 				}
 				else
 				{
-					if (\JFile::exists($path))
+					if (File::exists($path))
 					{
 						$this->item->linespath = count(file($path));
 					}
@@ -808,7 +804,7 @@ class TranslationModel extends AdminModel
 	 * @throws  Exception if there is an error in the form event.
 	 * @return  JForm
 	 */
-	protected function preprocessForm(\JForm $form, $item, $group = 'content')
+	protected function preprocessForm(Form $form, $item, $group = 'content')
 	{
 		// Initialize variables.
 		$filename = $this->getState('translation.filename');
@@ -922,9 +918,9 @@ class TranslationModel extends AdminModel
 			$fieldset->addAttribute('name', 'JDEFAULT');
 			$fieldset->addAttribute('label', 'JDEFAULT');
 
-			if (\JFile::exists($refpath))
+			if (File::exists($refpath))
 			{
-				$stream = new \JStream;
+				$stream = new Stream;
 				$stream->open($refpath);
 				$header     = true;
 				$lineNumber = 0;
@@ -1021,7 +1017,7 @@ class TranslationModel extends AdminModel
 						elseif ($have_develop == '1' && in_array($key, $developdata['extra_keys']['keys']))
 						{
 							$label   = '<span class="new_word"><b>['
-								. \JText::_('COM_LOCALISE_NEW_KEY_IN_DEVELOP')
+								. Text::_('COM_LOCALISE_NEW_KEY_IN_DEVELOP')
 								. ']</b> </span><b>'
 								. $key
 								. '</b><br />'
@@ -1168,8 +1164,8 @@ class TranslationModel extends AdminModel
 		$refpath    = $this->getState('translation.refpath');
 		$devpath    = LocaliseHelper::searchDevpath($client, $refpath);
 		$custompath = LocaliseHelper::searchCustompath($client, $refpath);
-		$exists     = \JFile::exists($path);
-		$refexists  = \JFile::exists($refpath);
+		$exists     = File::exists($path);
+		$refexists  = File::exists($refpath);
 
 		if ($refexists && !empty($devpath))
 		{
@@ -1184,10 +1180,10 @@ class TranslationModel extends AdminModel
 
 				// The saved file is not using the core language folders.
 				$path   = $custompath;
-				$exists = \JFile::exists($path);
+				$exists = File::exists($path);
 
 				$ref_file         = basename($refpath);
-				$custom_file_path = \JFolder::makeSafe("$custompath/$ref_file");
+				$custom_file_path = Folder::makeSafe("$custompath/$ref_file");
 			}
 			elseif ($reftag == 'en-GB' &&  $tag != 'en-GB')
 			{
@@ -1197,13 +1193,13 @@ class TranslationModel extends AdminModel
 		}
 
 		// Set FTP credentials, if given.
-		\JClientHelper::setCredentialsFromRequest('ftp');
-		$ftp = \JClientHelper::getCredentials('ftp');
+		ClientHelper::setCredentialsFromRequest('ftp');
+		$ftp = ClientHelper::getCredentials('ftp');
 
 		// Try to make the file writeable.
-		if ($exists && !$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0644'))
+		if ($exists && !$ftp['enabled'] && Text::isOwner($path) && !Text::setPermissions($path, '0644'))
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_WRITABLE', $path));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_TRANSLATION_WRITABLE', $path));
 
 			return false;
 		}
@@ -1292,7 +1288,7 @@ class TranslationModel extends AdminModel
 			$contents2 .= "; @note        All ini files need to be saved as UTF-8\n\n";
 
 			$contents = array();
-			$stream   = new \JStream;
+			$stream   = new Stream;
 
 			if ($exists)
 			{
@@ -1386,13 +1382,13 @@ class TranslationModel extends AdminModel
 				elseif (preg_split("/\\r\\n|\\r|\\n/", $line))
 				{
 					$application = Factory::getApplication();
-					$application->enqueueMessage(\JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
+					$application->enqueueMessage(Text::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
 				}
 				// Wrong lines
 				else
 				{
 					$application = Factory::getApplication();
-					$application->enqueueMessage(\JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
+					$application->enqueueMessage(Text::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
 				}
 
 				$line = $stream->gets();
@@ -1416,7 +1412,7 @@ class TranslationModel extends AdminModel
 		// Make sure EOL is Unix
 		$contents = str_replace(array("\r\n", "\n", "\r"), "\n", $contents);
 
-		$return = \JFile::write($path, $contents);
+		$return = File::write($path, $contents);
 
 		// Try to make the template file unwriteable.
 
@@ -1426,9 +1422,9 @@ class TranslationModel extends AdminModel
 		// Get the file save permission
 		$fsper = $coparams->get('filesavepermission', '0444');
 
-		if (!$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, $fsper))
+		if (!$ftp['enabled'] && Text::isOwner($path) && !Text::setPermissions($path, $fsper))
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_UNWRITABLE', $path));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_TRANSLATION_UNWRITABLE', $path));
 
 			return false;
 		}
@@ -1436,7 +1432,7 @@ class TranslationModel extends AdminModel
 		{
 			if (!$return)
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_FILESAVE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_TRANSLATION_FILESAVE', $path));
 
 				return false;
 			}
@@ -1450,7 +1446,7 @@ class TranslationModel extends AdminModel
 							. $customisedref;
 
 				Factory::getApplication()->enqueueMessage(
-					\JText::_('COM_LOCALISE_NOTICE_CUSTOM_EN_GB_FILE_SAVED') . $custom_short_path,
+					Text::_('COM_LOCALISE_NOTICE_CUSTOM_EN_GB_FILE_SAVED') . $custom_short_path,
 					'notice');
 			}
 		}
@@ -1522,14 +1518,14 @@ class TranslationModel extends AdminModel
 		{
 			$tag = $this->getState('translation.tag');
 
-			if (\JFolder::exists(JPATH_SITE . "/language/$tag"))
+			if (Folder::exists(JPATH_SITE . "/language/$tag"))
 			{
 				$this->setState('translation.client', 'site');
 				$this->setState('translation.path', JPATH_SITE . "/language/$tag/$tag.lib_joomla.ini");
 				$this->saveFile($data);
 			}
 
-			if (\JFolder::exists(JPATH_ADMINISTRATOR . "/language/$tag"))
+			if (Folder::exists(JPATH_ADMINISTRATOR . "/language/$tag"))
 			{
 				$this->setState('translation.client', 'administrator');
 				$this->setState('translation.path', JPATH_ADMINISTRATOR . "/language/$tag/$tag.lib_joomla.ini");
@@ -1569,11 +1565,11 @@ class TranslationModel extends AdminModel
 
 		if ($this->getState('translation.complete') == 1)
 		{
-			Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_NOTICE_TRANSLATION_COMPLETE'), 'notice');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_NOTICE_TRANSLATION_COMPLETE'), 'notice');
 		}
 		else
 		{
-			Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_NOTICE_TRANSLATION_NOT_COMPLETE'), 'notice');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_NOTICE_TRANSLATION_NOT_COMPLETE'), 'notice');
 		}
 
 		return true;

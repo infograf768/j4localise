@@ -30,9 +30,9 @@ class HtmlView extends BaseHtmlView
 	protected $state;
 
 	protected $form;
-	
+
 	public $filterForm;
-	
+
 	public $activeFilters;
 
 	/**
@@ -53,7 +53,7 @@ class HtmlView extends BaseHtmlView
 		$this->activeFilters = $this->get('ActiveFilters');
 
 		LocaliseHelper::addSubmenu('languages');
-		
+
 		unset($this->activeFilters['client']);
 		unset($this->activeFilters['tag']);
 
@@ -67,7 +67,6 @@ class HtmlView extends BaseHtmlView
 
 		// Set the toolbar
 		$this->addToolbar();
-		$this->sidebar = \JHtmlSidebar::render();
 
 		// Display the view
 		parent::display($tpl);

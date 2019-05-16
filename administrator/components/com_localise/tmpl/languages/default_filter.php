@@ -13,13 +13,8 @@ $params = (isset($this->state->params)) ? $this->state->params : new \JObject;
 
 ?>
 <div class="row">
-<!-- Begin Sidebar using custom submenu layout -->
-<div id="j-sidebar-container" class="col-md-2">
-	<?php echo $this->sidebar; ?>
-</div>
-<!-- End Sidebar -->
 <!-- Begin Content -->
-<div class="col-md-10">
+<div class="col-md-12">
 <div id="j-main-container" class="j-main-container">
 	<div class="js-tools clearfix">
 	<div id="filter-bar hidden-phone" class="btn-toolbar">
@@ -37,6 +32,3 @@ $params = (isset($this->state->params)) ? $this->state->params : new \JObject;
 
 		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 	</div>
-
-
-	

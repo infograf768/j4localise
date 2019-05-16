@@ -56,6 +56,24 @@
 	max-width: 45%;
 	min-width: 45%;
 }
+.btn-micro {
+	padding: 0 !important;
+}
+.iconcore {
+    margin-left: 0.2rem;
+    margin-bottom: 0.2rem;
+    padding: 0.2rem;
+    width: 26px;
+    height: 26px;
+    font-size: 1rem;
+    line-height: 22px;
+    color: #796D67;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    text-align: center;
+    display:inline-block;
+}
+
 .icon-16-global:before,
 .iconlist-16-global:before {
 	content: "";
@@ -68,7 +86,6 @@
 	color: #EF8F00;
 }
 
-
 .icon-16-core:before,
 .iconlist-16-core:before {
 	content: "";
@@ -76,7 +93,7 @@
 }
 
 .icon-16-other:before {
-	content: "";
+	content: "";
 	color: #796D67;
 }
 
@@ -110,8 +127,8 @@
 }
 .icon-16-joomla:before,
 .iconlist-16-joomla:before {
-	content: "";
-	color: #000000;
+	content: "";
+	color: #796D67;
 }
 .icon-16-override:before,
 .iconlist-16-override:before {
@@ -130,12 +147,12 @@
 }
 .icon-16-library:before,
 .iconlist-16-library:before {
-	content: "";
+	content: "";
 	color: #EF8F00;
 }
 .icon-16-file:before,
 .iconlist-16-file:before {
-	content: "";
+	content: "";
 }
 .icon-16-reference:before,
 .iconlist-16-reference:before {
@@ -149,7 +166,7 @@
 }
 .icon-16-administrator:before,
 .iconlist-16-administrator:before {
-	content: "";
+	content: "";
 	color: #2A7BA1;
 }
 .icon-16-installation:before,
@@ -322,4 +339,5 @@ color:#8B0000 !important;
 }
 .accordion .card-header {
 	background-color: #cfe6e9;
+	border: 1px gray !important;
 }
