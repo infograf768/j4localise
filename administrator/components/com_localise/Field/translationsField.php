@@ -11,6 +11,7 @@ namespace Joomla\Component\Localise\Administrator\Field;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Form\Field\GroupedListField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -31,7 +32,7 @@ include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php'
  *
  * @since       1.0
  */
-class TranslationsField extends \JFormFieldGroupedList
+class TranslationsField extends GroupedListField
 {
 	/**
 	 * The field type.

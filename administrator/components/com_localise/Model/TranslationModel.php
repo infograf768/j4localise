@@ -1197,7 +1197,7 @@ class TranslationModel extends AdminModel
 		$ftp = ClientHelper::getCredentials('ftp');
 
 		// Try to make the file writeable.
-		if ($exists && !$ftp['enabled'] && Text::isOwner($path) && !Text::setPermissions($path, '0644'))
+		if ($exists && !$ftp['enabled'] && Path::isOwner($path) && !Path::setPermissions($path, '0644'))
 		{
 			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_TRANSLATION_WRITABLE', $path));
 
@@ -1422,7 +1422,7 @@ class TranslationModel extends AdminModel
 		// Get the file save permission
 		$fsper = $coparams->get('filesavepermission', '0444');
 
-		if (!$ftp['enabled'] && Text::isOwner($path) && !Text::setPermissions($path, $fsper))
+		if (!$ftp['enabled'] && Path::isOwner($path) && !Path::setPermissions($path, $fsper))
 		{
 			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_TRANSLATION_UNWRITABLE', $path));
 

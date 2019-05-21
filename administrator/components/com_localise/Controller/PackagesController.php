@@ -86,7 +86,7 @@ class PackagesController extends AdminController
 			$path    = LocaliseHelper::getFilePath($id);
 			$context = LocaliseHelper::isCorePackage($path) ?
 						'package' : 'packagefile';
-			
+
 			//$model = \JModelLegacy::getInstance($context, 'LocaliseModel', array('ignore_request' => true));
 			if ($context == 'package')
 			{
@@ -96,7 +96,7 @@ class PackagesController extends AdminController
 			{
 				$model = new \Joomla\Component\Localise\Administrator\Model\PackagefileModel(array('ignore_request' => true));
 			}
-			
+
 			$model->getState();
 			$model->setState("$context.id", $id);
 			$item  = $model->getItem();
@@ -118,26 +118,26 @@ class PackagesController extends AdminController
 
 		if (empty($ids))
 		{
-			$msg = Text::_('JERROR_NO_ITEMS_SELECTED');
+			$msg  = Text::_('JERROR_NO_ITEMS_SELECTED');
 			$type = 'error';
 		}
 		else
 		{
 			// Get the model.
 			$model = $this->getModel();
-			
+
 			// Make sure the item ids are integers
 			$ids = ArrayHelper::toInteger($ids);
 
 			// Remove the items.
 			if (!$model->delete($ids))
 			{
-				$msg = implode("<br />", $model->getErrors());
+				$msg  = implode("<br />", $model->getErrors());
 				$type = 'error';
 			}
 			else
 			{
-				$msg = Text::sprintf('JCONTROLLER_N_ITEMS_DELETED', count($ids));
+				$msg  = Text::sprintf('JCONTROLLER_N_ITEMS_DELETED', count($ids));
 				$type = 'message';
 			}
 		}
@@ -157,7 +157,7 @@ class PackagesController extends AdminController
 
 		// Initialise variables.
 		$user = Factory::getUser();
-		$ids = Factory::getApplication()->input->get('cid', array(), 'array');
+		$ids  = Factory::getApplication()->input->get('cid', array(), 'array');
 
 		// Access checks.
 		foreach ($ids as $i => $id)
@@ -172,7 +172,7 @@ class PackagesController extends AdminController
 
 		if (empty($ids))
 		{
-			$msg = Text::_('JERROR_NO_ITEMS_SELECTED');
+			$msg  = Text::_('JERROR_NO_ITEMS_SELECTED');
 			$type = 'error';
 		}
 		else
@@ -183,7 +183,7 @@ class PackagesController extends AdminController
 			// Export the packages.
 			if (!$model->export($ids))
 			{
-				$msg = implode("<br />", $model->getErrors());
+				$msg  = implode("<br />", $model->getErrors());
 				$type = 'error';
 			}
 		}
@@ -203,7 +203,7 @@ class PackagesController extends AdminController
 
 		// Initialise variables.
 		$user = Factory::getUser();
-		$ids = Factory::getApplication()->input->get('cid', array(), 'array');
+		$ids  = Factory::getApplication()->input->get('cid', array(), 'array');
 
 		// Access checks.
 		foreach ($ids as $i => $id)
@@ -218,7 +218,7 @@ class PackagesController extends AdminController
 
 		if (empty($ids))
 		{
-			$msg = Text::_('JERROR_NO_ITEMS_SELECTED');
+			$msg  = Text::_('JERROR_NO_ITEMS_SELECTED');
 			$type = 'error';
 		}
 		else
@@ -229,12 +229,12 @@ class PackagesController extends AdminController
 			// Clone the items.
 			if (!$model->duplicate($ids))
 			{
-				$msg = implode("<br />", $model->getErrors());
+				$msg  = implode("<br />", $model->getErrors());
 				$type = 'error';
 			}
 			else
 			{
-				$msg = Text::plural('COM_LOCALISE_N_PACKAGES_DUPLICATED', count($ids));
+				$msg  = Text::plural('COM_LOCALISE_N_PACKAGES_DUPLICATED', count($ids));
 				$type = 'message';
 			}
 		}
@@ -271,7 +271,7 @@ class PackagesController extends AdminController
 		{
 			$model = new PackagefileModel();
 		}
-			
+
 		$model->getState();
 		$return = $model->checkin($id);
 

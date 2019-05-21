@@ -10,10 +10,9 @@ namespace Joomla\Component\Localise\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\CMS\Router\Route;
 
 /**
  * Controller class for the localise component
@@ -36,9 +35,7 @@ class DisplayController extends BaseController
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		$app = Factory::getApplication('administrator');
-
-		$vName = $this->input->get('view', 'languages');
+		$vName  = $this->input->get('view', 'languages');
 		$layout = $this->input->get('layout', 'default');
 		$id     = $this->input->getInt('id');
 
@@ -53,9 +50,9 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.language', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(\JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=languages', false));
+			$this->setRedirect(Route::_('index.php?option=com_localise&view=languages', false));
 
 			return false;
 		}
@@ -63,9 +60,9 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.translation', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(\JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=translations', false));
+			$this->setRedirect(Route::_('index.php?option=com_localise&view=translations', false));
 
 			return false;
 		}
@@ -73,9 +70,9 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.packagefile', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(\JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=packages', false));
+			$this->setRedirect(Route::_('index.php?option=com_localise&view=packages', false));
 
 			return false;
 		}
@@ -83,9 +80,9 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.package', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(\JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=packages', false));
+			$this->setRedirect(Route::_('index.php?option=com_localise&view=packages', false));
 
 			return false;
 		}

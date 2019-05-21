@@ -10,8 +10,10 @@ namespace Joomla\Component\Localise\Administrator\View\Translation;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -39,14 +41,12 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null)
 	{
-		jimport('joomla.client.helper');
-
 		// Get the data
 		$this->state   = $this->get('State');
 		$this->item    = $this->get('Item');
 		$this->form    = $this->get('Form');
 		$this->formftp = $this->get('FormFtp');
-		$this->ftp     = \JClientHelper::setCredentialsFromRequest('ftp');
+		$this->ftp     = ClientHelper::setCredentialsFromRequest('ftp');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -87,9 +87,9 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolbarHelper::title(
-			\JText::sprintf(
+			Text::sprintf(
 				'COM_LOCALISE_HEADER_MANAGER',
-				\JText::sprintf($this->item->exists ? 'COM_LOCALISE_HEADER_TRANSLATION_EDIT' : 'COM_LOCALISE_HEADER_TRANSLATION_NEW', $filename)
+				Text::sprintf($this->item->exists ? 'COM_LOCALISE_HEADER_TRANSLATION_EDIT' : 'COM_LOCALISE_HEADER_TRANSLATION_NEW', $filename)
 			),
 			'comments-2 langmanager'
 		);

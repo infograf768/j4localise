@@ -10,8 +10,11 @@ namespace Joomla\Component\Localise\Administrator\View\Package;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -39,15 +42,13 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null)
 	{
-		jimport('joomla.client.helper');
-
 		// Get the data
 		$app           = Factory::getApplication();
 		$this->state   = $this->get('State');
 		$this->item    = $this->get('Item');
 		$this->form    = $this->get('Form');
 		$this->formftp = $this->get('FormFtp');
-		$this->ftp     = \JClientHelper::setCredentialsFromRequest('ftp');
+		$this->ftp     = ClientHelper::setCredentialsFromRequest('ftp');
 		$this->file    = $app->input->get('file');
 		$this->fileName = base64_decode($this->file);
 		$this->location	= $app->input->get('location');
@@ -81,15 +82,15 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		$user		= Factory::getUser();
-		$canDo		= \JHelperContent::getActions('com_localise', 'component');
-		$isNew		= empty($this->item->id);
+		$user       = Factory::getUser();
+		$canDo      = ContentHelper::getActions('com_localise', 'component');
+		$isNew      = empty($this->item->id);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
 		ToolbarHelper::title(
-			\JText::sprintf(
+			Text::sprintf(
 				'COM_LOCALISE_HEADER_MANAGER',
-				$isNew ? \JText::_('COM_LOCALISE_HEADER_PACKAGE_NEW') : \JText::_('COM_LOCALISE_HEADER_PACKAGE_EDIT')
+				$isNew ? Text::_('COM_LOCALISE_HEADER_PACKAGE_NEW') : Text::_('COM_LOCALISE_HEADER_PACKAGE_EDIT')
 			),
 			'comments-2 langmanager'
 		);
@@ -123,6 +124,6 @@ class HtmlView extends BaseHtmlView
 	protected function prepareDocument()
 	{
 		$document = Factory::getDocument();
-		$document->setTitle(\JText::sprintf('COM_LOCALISE_TITLE', \JText::_('COM_LOCALISE_TITLE_PACKAGE')));
+		$document->setTitle(Text::sprintf('COM_LOCALISE_TITLE', Text::_('COM_LOCALISE_TITLE_PACKAGE')));
 	}
 }

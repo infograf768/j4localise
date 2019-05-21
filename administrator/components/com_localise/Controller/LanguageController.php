@@ -82,7 +82,7 @@ class LanguageController extends FormController
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
 		// Get the infos
-		$input = Factory::getApplication()->input;
+		$input  = Factory::getApplication()->input;
 		$client = $input->get('client', '');
 
 		if (empty($client))
@@ -109,7 +109,7 @@ class LanguageController extends FormController
 		}
 
 		// Get the append string
-		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
+		$append  = parent::getRedirectToItemAppend($recordId, $urlVar);
 		$append .= '&client=' . $client . '&tag=' . $tag;
 
 		return $append;
@@ -131,12 +131,12 @@ class LanguageController extends FormController
 		// Remove the items.
 		if (!$model->delete())
 		{
-			$msg = implode("<br />", $model->getErrors());
+			$msg  = implode("<br />", $model->getErrors());
 			$type = 'error';
 		}
 		else
 		{
-			$msg = Text::_('COM_LOCALISE_MSG_LANGUAGES_REMOVED');
+			$msg  = Text::_('COM_LOCALISE_MSG_LANGUAGES_REMOVED');
 			$type = 'message';
 		}
 

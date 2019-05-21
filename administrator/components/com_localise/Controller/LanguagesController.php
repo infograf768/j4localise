@@ -12,6 +12,7 @@ namespace Joomla\Component\Localise\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Router\Route;
 
 /**
  * Languages Controller class for the Localise component
@@ -41,7 +42,7 @@ class LanguagesController extends AdminController
 	{
 		$model = $this->getModel('languages');
 		$model->purge();
-		$this->setRedirect(\JRoute::_('index.php?option=com_localise&view=languages', false));
+		$this->setRedirect(Route::_('index.php?option=com_localise&view=languages', false));
 	}
 
 	/**

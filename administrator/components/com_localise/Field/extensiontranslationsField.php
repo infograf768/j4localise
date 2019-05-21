@@ -59,15 +59,15 @@ class ExtensionTranslationsField extends GroupedlistField
 			}
 		}
 
-		$xml = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/core.xml');
-		$coreadminfiles	= (array) $xml->administrator->children();
-		$coresitefiles	= (array) $xml->site->children();
+		$xml            = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/core.xml');
+		$coreadminfiles = (array) $xml->administrator->children();
+		$coresitefiles  = (array) $xml->site->children();
 
-		$coresitefiles	= $coresitefiles['filename'];
-		$coreadminfiles	= $coreadminfiles['filename'];
+		$coresitefiles  = $coresitefiles['filename'];
+		$coreadminfiles = $coreadminfiles['filename'];
 
-		$coreadminfiles	= self::suffix_array_values($coreadminfiles, '.ini');
-		$coresitefiles	= self::suffix_array_values($coresitefiles, '.ini');
+		$coreadminfiles = self::suffix_array_values($coreadminfiles, '.ini');
+		$coresitefiles  = self::suffix_array_values($coresitefiles, '.ini');
 
 		$package = (string) $this->element['package'];
 		$groups  = array('Site' => array(), 'Administrator' => array());
@@ -121,7 +121,7 @@ class ExtensionTranslationsField extends GroupedlistField
 			foreach ($extensions as $extension)
 			{
 				// Take off core extensions containing a language folder
-				if ($extension != 'mod_version' && $extension != 'mod_multilangstatus'
+				if ($extension != 'mod_multilangstatus'
 					&& $extension != 'atum' && $extension != 'cassiopeia' && $extension != 'languagecode')
 				{
 					if (Folder::exists("$path$extension/language"))

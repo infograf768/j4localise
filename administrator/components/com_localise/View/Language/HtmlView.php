@@ -10,8 +10,11 @@ namespace Joomla\Component\Localise\Administrator\View\Language;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -39,14 +42,14 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null)
 	{
-		\JLoader::import('joomla.client.helper');
+		//JLoader::import('joomla.client.helper');
 
 		// Get the data
 		$this->state   = $this->get('State');
 		$this->item    = $this->get('Item');
 		$this->form    = $this->get('Form');
 		$this->formftp = $this->get('FormFtp');
-		$this->ftp     = \JClientHelper::setCredentialsFromRequest('ftp');
+		$this->ftp     = ClientHelper::setCredentialsFromRequest('ftp');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -73,7 +76,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
-		$canDo = \JHelperContent::getActions('com_localise', 'component');
+		$canDo = ContentHelper::getActions('com_localise', 'component');
 
 		$user       = Factory::getUser();
 		$isNew      = empty($this->item->id);
@@ -81,9 +84,9 @@ class HtmlView extends BaseHtmlView
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
 		ToolbarHelper::title(
-			\JText::sprintf(
+			Text::sprintf(
 				'COM_LOCALISE_HEADER_MANAGER',
-				$isNew ? \JText::_('COM_LOCALISE_HEADER_LANGUAGE_NEW') : \JText::_('COM_LOCALISE_HEADER_LANGUAGE_EDIT')
+				$isNew ? Text::_('COM_LOCALISE_HEADER_LANGUAGE_NEW') : Text::_('COM_LOCALISE_HEADER_LANGUAGE_EDIT')
 			),
 			'icon-comments-2 langmanager'
 		);

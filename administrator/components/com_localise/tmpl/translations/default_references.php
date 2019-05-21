@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -52,7 +53,7 @@ $has_installation  = LocaliseHelper::hasInstallation();
 		if (!empty($last_source[$client]) && $installed_version != $last_source[$client] && $allow_develop == 0)
 		{
 			Factory::getApplication()->enqueueMessage(
-				\JText::sprintf('COM_LOCALISE_WARNING_DISABLED_ALLOW_DEVELOP_WITHOUT_LOCAL_SET',
+				Text::sprintf('COM_LOCALISE_WARNING_DISABLED_ALLOW_DEVELOP_WITHOUT_LOCAL_SET',
 					$client,
 					$last_source[$client],
 					$installed_version),
@@ -62,26 +63,26 @@ $has_installation  = LocaliseHelper::hasInstallation();
 
 	if ($allow_develop == 1)
 	{
-		$report .= '<strong>' . \JText::_('COM_LOCALISE_REFERENCES_REPORT_SOURCE') . '</strong><br />';
+		$report .= '<strong>' . Text::_('COM_LOCALISE_REFERENCES_REPORT_SOURCE') . '</strong><br />';
 
 		foreach ($clients as $client)
 		{
 			if ($last_source[$client] == '')
 			{
-				$instance = \JText::_('COM_LOCALISE_LOCAL_INSTALLED_INSTANCE');
-				$report .= \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_CLIENT', strtoupper($client), $instance);
+				$instance = Text::_('COM_LOCALISE_LOCAL_INSTALLED_INSTANCE');
+				$report .= Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_CLIENT', strtoupper($client), $instance);
 				$version[$client] = '0';
 			}
 			else
 			{
 				$instance = $last_source[$client];
-				$report .= \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_CLIENT', strtoupper($client), $instance);
+				$report .= Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_CLIENT', strtoupper($client), $instance);
 				$version[$client] = $last_source[$client];
 			}
 
 			if ($last_source[$client] == '')
 			{
-				$report .= ' ' . \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_INSTALLED', $installed_version);
+				$report .= ' ' . Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_INSTALLED', $installed_version);
 			}
 
 			$report .= '<br />';
@@ -126,15 +127,15 @@ $has_installation  = LocaliseHelper::hasInstallation();
 		// Notes
 		if ($equal_versions == 0)
 		{
-			$report .= '<br />' . \JText::_('COM_LOCALISE_REFERENCES_REPORT_NOT_EQUAL') . '<br /><br />';
+			$report .= '<br />' . Text::_('COM_LOCALISE_REFERENCES_REPORT_NOT_EQUAL') . '<br /><br />';
 		}
 		elseif ($equal_versions == 2)
 		{
-			$report .= '<br />' . \JText::_('COM_LOCALISE_REFERENCES_REPORT_CUSTOM') . '<br /><br />';
+			$report .= '<br />' . Text::_('COM_LOCALISE_REFERENCES_REPORT_CUSTOM') . '<br /><br />';
 		}
 		else
 		{
-			$report .= '<br />' . \JText::_('COM_LOCALISE_REFERENCES_REPORT_EQUAL') . '<br /><br />';
+			$report .= '<br />' . Text::_('COM_LOCALISE_REFERENCES_REPORT_EQUAL') . '<br /><br />';
 
 		}
 
@@ -142,18 +143,18 @@ $has_installation  = LocaliseHelper::hasInstallation();
 		{
 			if (!empty($last_source[$client]))
 			{
-				$report .= \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_CUSTOM_NOTE', strtoupper($client));
+				$report .= Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_CUSTOM_NOTE', strtoupper($client));
 
 				if ($last_source[$client] == $installed_version)
 				{
-					$report .= \JText::_('COM_LOCALISE_REFERENCES_REPORT_MATCH_NOTE');
+					$report .= Text::_('COM_LOCALISE_REFERENCES_REPORT_MATCH_NOTE');
 				}
 
 				$report .= '<br />';
 			}
 			else
 			{
-				$report .= \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_VERSION_NOTE', strtoupper($client), $installed_version);
+				$report .= Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_VERSION_NOTE', strtoupper($client), $installed_version);
 				$report .= '<br />';
 			}
 		}
@@ -161,9 +162,9 @@ $has_installation  = LocaliseHelper::hasInstallation();
 		$report .= '</i>';
 		// End notes
 
-		$report .= '<br /><strong>' . \JText::_('COM_LOCALISE_REFERENCES_REPORT_TARGET') . '</strong><br />';
+		$report .= '<br /><strong>' . Text::_('COM_LOCALISE_REFERENCES_REPORT_TARGET') . '</strong><br />';
 
-		$report .= \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_TARGET_REFERENCE', $gh_branch) . '<br /><br />';
+		$report .= Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_TARGET_REFERENCE', $gh_branch) . '<br /><br />';
 
 		foreach ($clients as $client)
 		{
@@ -172,18 +173,18 @@ $has_installation  = LocaliseHelper::hasInstallation();
 
 			if ($target_updates[$client] == '')
 			{
-				$report .= \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_NEVER_UPDATED', strtoupper($client)) . '<br />';
+				$report .= Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_NEVER_UPDATED', strtoupper($client)) . '<br />';
 			}
 			else
 			{
-				$report .= \JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_UPDATED', strtoupper($client), $target_updates[$client]) . '<br />';
+				$report .= Text::sprintf('COM_LOCALISE_REFERENCES_REPORT_UPDATED', strtoupper($client), $target_updates[$client]) . '<br />';
 			}
 		}
 	}
 	else
 	{
-		$report .= '<br /><strong>' . \JText::_('COM_LOCALISE_REFERENCES_REPORT_TARGET') . '</strong><br />';
-		$report .= \JText::_('COM_LOCALISE_REFERENCES_REPORT_NO_DEVELOP');
+		$report .= '<br /><strong>' . Text::_('COM_LOCALISE_REFERENCES_REPORT_TARGET') . '</strong><br />';
+		$report .= Text::_('COM_LOCALISE_REFERENCES_REPORT_NO_DEVELOP');
 	}
 ?>
 <?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-reference', array('active' => '')); ?>

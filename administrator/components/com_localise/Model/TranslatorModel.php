@@ -11,6 +11,7 @@ namespace Joomla\Component\Localise\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -38,7 +39,7 @@ class TranslatorModel extends BaseDatabaseModel
 
 		if (empty($clientID) || empty($secret))
 		{
-			$this->setError(\JText::_('COM_LOCALISE_MISSING_CLIENTID_SECRET'));
+			$this->setError(Text::_('COM_LOCALISE_MISSING_CLIENTID_SECRET'));
 
 			return '';
 		}
@@ -48,7 +49,7 @@ class TranslatorModel extends BaseDatabaseModel
 
 		if (empty($text))
 		{
-			$this->setError(\JText::_('COM_LOCALISE_MISSING_TEXT'));
+			$this->setError(Text::_('COM_LOCALISE_MISSING_TEXT'));
 
 			return '';
 		}
@@ -57,7 +58,7 @@ class TranslatorModel extends BaseDatabaseModel
 
 		if (empty($to))
 		{
-			$this->setError(\JText::_('COM_LOCALISE_MISSING_TO_LANGUAGECODE'));
+			$this->setError(Text::_('COM_LOCALISE_MISSING_TO_LANGUAGECODE'));
 
 			return '';
 		}

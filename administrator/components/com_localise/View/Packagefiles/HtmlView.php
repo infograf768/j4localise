@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -43,10 +45,10 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 		// Get the data
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
-		$this->form       = $this->get('Form');
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->state         = $this->get('State');
+		$this->form          = $this->get('Form');
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
@@ -62,6 +64,7 @@ class HtmlView extends BaseHtmlView
 
 		// Set the toolbar
 		$this->addToolbar();
+		$this->sidebar = \JHtmlSidebar::render();
 
 		// Prepare the document
 		$this->prepareDocument();
@@ -78,7 +81,7 @@ class HtmlView extends BaseHtmlView
 	protected function prepareDocument()
 	{
 		$document = Factory::getDocument();
-		$document->setTitle(\JText::sprintf('COM_LOCALISE_TITLE', \JText::_('COM_LOCALISE_TITLE_PACKAGES')));
+		$document->setTitle(Text::sprintf('COM_LOCALISE_TITLE', Text::_('COM_LOCALISE_TITLE_PACKAGES')));
 	}
 
 	/**
@@ -90,9 +93,9 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		$canDo = \JHelperContent::getActions('com_localise', 'component');
+		$canDo = ContentHelper::getActions('com_localise', 'component');
 
-		ToolBarHelper::title(\JText::sprintf('COM_LOCALISE_HEADER_MANAGER', \JText::_('COM_LOCALISE_HEADER_PACKAGES')), 'install');
+		ToolBarHelper::title(Text::sprintf('COM_LOCALISE_HEADER_MANAGER', Text::_('COM_LOCALISE_HEADER_PACKAGES')), 'install');
 
 		if ($canDo->get('localise.create'))
 		{
@@ -142,7 +145,7 @@ class HtmlView extends BaseHtmlView
 	protected function getSortFields()
 	{
 		return array(
-			'title' => \JText::_('COM_LOCALISE_HEADING_PACKAGES_TITLE'),
+			'title' => Text::_('COM_LOCALISE_HEADING_PACKAGES_TITLE'),
 		);
 	}
 }

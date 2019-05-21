@@ -11,12 +11,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Access\Exception\Notallowed;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
 // Access check.
 if (!Factory::getUser()->authorise('core.manage', 'com_localise'))
@@ -26,10 +22,8 @@ if (!Factory::getUser()->authorise('core.manage', 'com_localise'))
 
 // Include helper files
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
-require_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/LocaliseHelper.php';
 
 // Load Composer Autoloader
-
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
 
 

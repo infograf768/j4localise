@@ -10,9 +10,8 @@ namespace Joomla\Component\Localise\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Factory;
-use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * Package Controller class for the Localise component
@@ -69,62 +68,11 @@ class PackageFileController extends FormController
 	public function download()
 	{
 		// Initialise variables.
-		$app = Factory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
-		$model   = $this->getModel();
+		$model = $this->getModel();
 
 		$data = $input->get('jform', array(), 'array');
 		$model->download($data);
-
-		// Redirect to the export view
-
-		/*
-		$app  = Factory::getApplication();
-		$name = $app->getUserState('com_localise.package.name');
-		$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
-		$id   = LocaliseHelper::getFileId($path);
-		*/
-
-		// Check if the package exists
-
-		/*
-		if (empty($id))
-		{
-			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&view=packages', false),
-				\JText::sprintf('COM_LOCALISE_ERROR_DOWNLOADPACKAGE_UNEXISTING', $name),
-				'error'
-			);
-		}
-		else
-		{
-			$model   = $this->getModel();
-			$package = $model->getItem();
-
-			if (!$package->standalone)
-			{
-				$msg  = \JText::sprintf('COM_LOCALISE_NOTICE_DOWNLOADPACKAGE_NOTSTANDALONE', $name);
-				$type = 'notice';
-			}
-			else
-			{
-				$msg  = '';
-				$type = 'message';
-			}
-
-			setcookie(JApplicationHelper::getHash($this->context . '.author'), $package->author, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->context . '.copyright'), $package->copyright, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->context . '.email'), $package->email, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->context . '.url'), $package->url, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->context . '.version'), $package->version, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->context . '.license'), $package->license, time() + 60 * 60 * 24 * 30);
-
-			$this->setRedirect(
-				\JRoute::_('index.php?option=com_localise&tmpl=component&view=downloadpackage&name=' . $name . '&standalone=' . $package->standalone, false),
-				$msg,
-				$type
-			);
-		}
-		*/
 	}
 }

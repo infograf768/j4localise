@@ -11,9 +11,10 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-\JHtml::_('behavior.formvalidator');
-\JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
@@ -40,21 +41,21 @@ HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', '
 		<!-- Begin Localise Language -->
 		<div class="span12 form-horizontal">
 			<?php if ($isNew) : ?>
-				<p><em><?php echo \JText::_('COM_LOCALISE_COPY_REF_TO_NEW_LANG_FIRSTSAVE'); ?></em><p>
+				<p><em><?php echo Text::_('COM_LOCALISE_COPY_REF_TO_NEW_LANG_FIRSTSAVE'); ?></em><p>
 			<?php elseif (!$isNew && $client != 'installation') : ?>
-				<p><em> <?php echo \JText::sprintf('COM_LOCALISE_COPY_REF_TO_NEW_LANG_TIP', $ref_tag, $tag); ?></em></p>
+				<p><em> <?php echo Text::sprintf('COM_LOCALISE_COPY_REF_TO_NEW_LANG_TIP', $ref_tag, $tag); ?></em></p>
 			<?php endif; ?>
 			<fieldset>
 				<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
 					<?php if ($this->ftp) : ?>
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'ftp', \JText::_($ftpSets['ftp']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 
 						<?php if (!empty($ftpSets['ftp']->description)):?>
-							<p class="tip"><?php echo \JText::_($ftpSets['ftp']->description); ?></p>
+							<p class="tip"><?php echo Text::_($ftpSets['ftp']->description); ?></p>
 						<?php endif;?>
 
 						<?php if ($this->ftp instanceof Exception): ?>
-							<p class="error"><?php echo \JText::_($this->ftp->message); ?></p>
+							<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 						<?php endif; ?>
 
 						<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
@@ -72,11 +73,11 @@ HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', '
 
 					<?php endif; ?>
 
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'default', \JText::_($fieldSets['default']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
 
 						<div class="span6">
 						<?php if (!empty($fieldSets['default']->description)) : ?>
-							<p class="tip"><?php echo \JText::_($fieldSets['default']->description); ?></p>
+							<p class="tip"><?php echo Text::_($fieldSets['default']->description); ?></p>
 						<?php endif;?>
 							<?php foreach($this->form->getFieldset('default') as $field): ?>
 							<div class="control-group">
@@ -91,7 +92,7 @@ HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', '
 						</div>
 						<div class="span6">
 						<?php if (!empty($fieldSets['meta']->description)) : ?>
-							<p class="tip"><?php echo \JText::_($fieldSets['meta']->description); ?></p>
+							<p class="tip"><?php echo Text::_($fieldSets['meta']->description); ?></p>
 						<?php endif;?>
 							<?php foreach ($this->form->getFieldset('meta') as $field) : ?>
 								<div class="control-group">
@@ -119,10 +120,10 @@ HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', '
 
 					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'author', \JText::_($fieldSets['author']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'author', Text::_($fieldSets['author']->label, true)); ?>
 
 						<?php if (!empty($fieldSets['author']->description)):?>
-							<p class="tip"><?php echo \JText::_($fieldSets['author']->description); ?></p>
+							<p class="tip"><?php echo Text::_($fieldSets['author']->description); ?></p>
 						<?php endif;?>
 
 						<?php foreach($this->form->getFieldset('author') as $field): ?>
@@ -138,10 +139,10 @@ HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', '
 
 					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'permissions', \JText::_($fieldSets['permissions']->label, true)); ?>
+					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
 
 						<?php if (!empty($fieldSets['permissions']->description)):?>
-							<p class="tip"><?php echo \JText::_($fieldSets['permissions']->description); ?></p>
+							<p class="tip"><?php echo Text::_($fieldSets['permissions']->description); ?></p>
 						<?php endif;?>
 
 						<?php foreach($this->form->getFieldset('permissions') as $field): ?>

@@ -22,6 +22,8 @@ use Joomla\Utilities\ArrayHelper;
 
 FormHelper::loadFieldClass('list');
 
+include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
+
 /**
  * Renders a list of all languages
  * Use instead of the joomla library languages element, which only lists languages for one client

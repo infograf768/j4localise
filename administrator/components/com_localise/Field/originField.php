@@ -10,9 +10,10 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
+use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -67,7 +68,7 @@ class OriginField extends FormField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), \JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
 		$packages         = LocaliseHelper::getPackages();
@@ -80,7 +81,7 @@ class OriginField extends FormField
 			$packages_options[] = HTMLHelper::_(
 				'select.option',
 				$package->name,
-				\JText::_($package->title),
+				Text::_($package->title),
 				array(
 					'option.attr' => 'attributes',
 					'attr' => 'class="localise-icon" style="background-image: url(' . JURI::root(true) . $package->icon . ');"'
@@ -95,13 +96,13 @@ class OriginField extends FormField
 		*/
 
 		$packages_options = ArrayHelper::sortObjects($packages_options, 'text');
-		$thirdparty       = HTMLHelper::_('select.option', '_thirdparty', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_THIRDPARTY'),
+		$thirdparty       = HTMLHelper::_('select.option', '_thirdparty', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_THIRDPARTY'),
 							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-thirdparty"')
 							);
-		$override         = HTMLHelper::_('select.option', '_override', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_OVERRIDE'),
+		$override         = HTMLHelper::_('select.option', '_override', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_OVERRIDE'),
 							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-override"')
 							);
-		$core             = HTMLHelper::_('select.option', 'core', \JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_CORE'),
+		$core             = HTMLHelper::_('select.option', 'core', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_CORE'),
 							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-core"')
 							);
 		$return           = HTMLHelper::_('select.genericlist', array_merge($options, $packages_options, array($thirdparty), array($override), array($core)),

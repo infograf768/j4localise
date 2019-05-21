@@ -9,15 +9,16 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Version;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
 
-\JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
-\JHtml::_('behavior.formvalidator');
-\JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.keepalive');
 
 
 $params            = ComponentHelper::getParams('com_localise');
@@ -37,7 +38,7 @@ $installed_version = $installed_version->getShortVersion();
 	if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
 	{
 		Factory::getApplication()->enqueueMessage(
-		\JText::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
+		Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
 		'notice');
 	}
 
@@ -57,12 +58,12 @@ $ftpSets   = $this->formftp->getFieldsets();
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<?php if ($this->ftp) : ?>
 	<fieldset class="panelform">
-		<legend><?php echo \JText::_($ftpSets['ftp']->label); ?></legend>
+		<legend><?php echo Text::_($ftpSets['ftp']->label); ?></legend>
 		<?php if (!empty($ftpSets['ftp']->description)):?>
-		<p class="tip"><?php echo \JText::_($ftpSets['ftp']->description); ?></p>
+		<p class="tip"><?php echo Text::_($ftpSets['ftp']->description); ?></p>
 		<?php endif;?>
 		<?php if ($this->ftp instanceof Exception): ?>
-		<p class="error"><?php echo \JText::_($this->ftp->message); ?></p>
+		<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 		<?php endif; ?>
 		<ul class="adminformlist">
 			<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
@@ -79,9 +80,9 @@ $ftpSets   = $this->formftp->getFieldsets();
 	</fieldset>
 	<?php endif; ?>
 	<fieldset class="panelform">
-		<legend><?php echo \JText::_($fieldSets['source']->label); ?></legend>
+		<legend><?php echo Text::_($fieldSets['source']->label); ?></legend>
 		<?php if (isset($fieldSets['source']->description)):?>
-		<p class="label"><?php echo \JText::_($fieldSets['source']->description); ?></p>
+		<p class="label"><?php echo Text::_($fieldSets['source']->description); ?></p>
 		<?php endif;?>
 		<div class="clr"></div>
 		<div class="editor-border">

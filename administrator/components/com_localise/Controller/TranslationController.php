@@ -11,8 +11,8 @@ namespace Joomla\Component\Localise\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * Translation Controller class for the Localise component
@@ -72,7 +72,7 @@ class TranslationController extends FormController
 		$storage  = $input->get('storage', '');
 
 		// Get the append string
-		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
+		$append  = parent::getRedirectToItemAppend($recordId, $urlVar);
 		$append .= '&client=' . $client . '&tag=' . $tag . '&filename=' . $filename . '&storage=' . $storage;
 
 		return $append;

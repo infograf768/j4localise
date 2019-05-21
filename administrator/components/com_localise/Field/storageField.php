@@ -49,7 +49,7 @@ class StorageField extends ListField
 		}
 
 		$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-' . $this->value . '"';
-		$options = array();
+		$options     = array();
 
 		foreach ($this->element->children() as $option)
 		{

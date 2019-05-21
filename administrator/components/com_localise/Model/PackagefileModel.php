@@ -12,6 +12,7 @@ namespace Joomla\Component\Localise\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Access\Rules as JAccessRules;
@@ -235,7 +236,7 @@ class PackageFileModel extends AdminModel
 					$package->checked_out = 0;
 				}
 
-				$package->editor = \JText::sprintf('COM_LOCALISE_TEXT_PACKAGE_EDITOR', $user->name, $user->username);
+				$package->editor = Text::sprintf('COM_LOCALISE_TEXT_PACKAGE_EDITOR', $user->name, $user->username);
 
 				// Get the translations
 				$package->translations  = array();
@@ -284,7 +285,7 @@ class PackageFileModel extends AdminModel
 			else
 			{
 				$package = null;
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILEEDIT'), $table->path);
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILEEDIT'), $table->path);
 			}
 		}
 
@@ -436,7 +437,7 @@ class PackageFileModel extends AdminModel
 			// Try to make the file writeable.
 			if (\JFile::exists($path) && !$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0644'))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $path));
 
 				return false;
 			}
@@ -450,13 +451,13 @@ class PackageFileModel extends AdminModel
 			// Try to make the file unwriteable.
 			if (!$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0444'))
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $path));
 
 				return false;
 			}
 			elseif (!$return)
 			{
-				$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $path));
+				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $path));
 
 				return false;
 			}
@@ -488,7 +489,7 @@ class PackageFileModel extends AdminModel
 		// Try to make the file writeable.
 		if (!$ftp['enabled'] && \JPATH::isOwner($languagePath) && !\JPATH::setPermissions($languagePath, '0644'))
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $languagePath));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $languagePath));
 
 			return false;
 		}
@@ -498,13 +499,13 @@ class PackageFileModel extends AdminModel
 		// Try to make the file unwriteable.
 		if (!$ftp['enabled'] && \JPATH::isOwner($languagePath) && !\JPATH::setPermissions($languagePath, '0444'))
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $languagePath));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $languagePath));
 
 			return false;
 		}
 		elseif (!$return)
 		{
-			$this->setError(\JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $languagePath));
+			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $languagePath));
 
 			return false;
 		}
@@ -564,7 +565,7 @@ class PackageFileModel extends AdminModel
 		{
 			if (!\JFile::delete($oldpath))
 			{
-				$app->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
+				$app->enqueueMessage(Text::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
 
 			$task = Factory::getApplication()->input->get('task');
@@ -600,7 +601,7 @@ class PackageFileModel extends AdminModel
 		// Prevent generating and downloading Master package
 		if (strpos($data['name'], 'master_') !== false)
 		{
-			$app->enqueueMessage(\JText::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
 			$app->redirect(\JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
 
 			return false;
@@ -618,7 +619,7 @@ class PackageFileModel extends AdminModel
 			if (!\JFile::delete($delete))
 			{
 				// \JFile::delete throws an error
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
 
 				return false;
 			}
@@ -682,7 +683,7 @@ class PackageFileModel extends AdminModel
 				}
 				else
 				{
-					$msg .= \JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', \JText::_('JSITE'));
+					$msg .= Text::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', Text::_('JSITE'));
 				}
 			}
 
@@ -701,7 +702,7 @@ class PackageFileModel extends AdminModel
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 			if (!$packager = Archive::getAdapter('zip'))
 			{
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
 				return false;
 			}
@@ -709,7 +710,7 @@ class PackageFileModel extends AdminModel
 			{
 				if (!$packager->create($site_zip_path, $site_package_files))
 				{
-					$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+					$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
 
 					return false;
 				}
@@ -753,7 +754,7 @@ class PackageFileModel extends AdminModel
 				}
 				else
 				{
-					$msg .= \JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', \JText::_('JADMINISTRATOR'));
+					$msg .= Text::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', Text::_('JADMINISTRATOR'));
 				}
 			}
 
@@ -773,7 +774,7 @@ class PackageFileModel extends AdminModel
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 			if (!$packager = Archive::getAdapter('zip'))
 			{
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
 				return false;
 			}
@@ -781,7 +782,7 @@ class PackageFileModel extends AdminModel
 			{
 				if (!$packager->create($admin_zip_path, $admin_package_files))
 				{
-					$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+					$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
 
 					return false;
 				}
@@ -798,7 +799,7 @@ class PackageFileModel extends AdminModel
 		if ($msg)
 		{
 			$msg .= '<p>...</p>';
-			$msg .= \JText::_('COM_LOCALISE_UNTRANSLATED');
+			$msg .= Text::_('COM_LOCALISE_UNTRANSLATED');
 			$app->enqueueMessage($msg, 'error');
 			$app->redirect(\JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
 
@@ -821,12 +822,12 @@ class PackageFileModel extends AdminModel
 		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_main_') . '.zip';
 
 		// Run the packager
-		
+
 		$archive = new Archive;
 
 		if (!$packager = $archive->getAdapter('zip'))
 		{
-			$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+			$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
 			return false;
 		}
@@ -834,7 +835,7 @@ class PackageFileModel extends AdminModel
 		{
 			if (!$packager->create($ziproot, $main_package_files))
 			{
-				$this->setError(\JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
 
 				return false;
 			}

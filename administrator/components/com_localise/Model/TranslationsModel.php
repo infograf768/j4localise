@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Component\ComponentHelper;
@@ -335,7 +336,7 @@ class TranslationsModel extends ListModel
 									if ($file == "$tag.ini" && preg_match("/$filter_type/", 'joomla'))
 									{
 										// Scan joomla ini file
-										$translation->setProperties(array('type' => 'joomla', 'filename' => 'joomla', 'name' => \JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA')));
+										$translation->setProperties(array('type' => 'joomla', 'filename' => 'joomla', 'name' => Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA')));
 										$this->translations["$client|$tag|joomla"] = $translation;
 									}
 									elseif ($file == "$tag.finder_cli.ini" && preg_match("/$filter_type/", 'file'))
@@ -452,7 +453,7 @@ class TranslationsModel extends ListModel
 										'client' => $client,
 										'storage' => 'global',
 										'filename' => 'joomla',
-										'name' => \JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA'),
+										'name' => Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA'),
 										'refpath' => $reftranslation->path,
 										'path' => $path,
 										'state' => 'unexisting',
@@ -791,7 +792,7 @@ class TranslationsModel extends ListModel
 			// Don't try to find translations if filters not set for client and language.
 			if (empty($filter_client) || empty($filter_tag))
 			{
-				Factory::getApplication()->enqueueMessage(\JText::_('COM_LOCALISE_ERROR_CHOOSE_LANG_CLIENT'), 'notice');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_ERROR_CHOOSE_LANG_CLIENT'), 'notice');
 				$this->translations = array();
 
 				return $this->translations;

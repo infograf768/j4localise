@@ -10,13 +10,13 @@ namespace Joomla\Component\Localise\Administrator\View\Packages;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
-use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
 /**
  * Packages View class for the Localise component
@@ -50,14 +50,14 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 		// Get the data
-		$app				 = Factory::getApplication();
-		$this->items		 = $this->get('Items');
-		$this->pagination	 = $this->get('Pagination');
-		$this->state		 = $this->get('State');
+		$app                 = Factory::getApplication();
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->state         = $this->get('State');
 		$this->form          = $this->get('Form');
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
-		$this->file			 = $app->input->get('file');
+		$this->file          = $app->input->get('file');
 
 		LocaliseHelper::addSubmenu('packages');
 

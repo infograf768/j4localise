@@ -12,6 +12,9 @@ defined('_JEXEC') or die;
 
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * Languages View class for the Localise component
@@ -67,6 +70,7 @@ class HtmlView extends BaseHtmlView
 
 		// Set the toolbar
 		$this->addToolbar();
+		$this->sidebar = \JHtmlSidebar::render();
 
 		// Display the view
 		parent::display($tpl);
@@ -81,24 +85,24 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		$canDo = \JHelperContent::getActions('com_localise', 'component');
+		$canDo = ContentHelper::getActions('com_localise', 'component');
 
-		\JToolbarHelper::title(\JText::sprintf('COM_LOCALISE_HEADER_MANAGER', \JText::_('COM_LOCALISE_HEADER_LANGUAGES')), 'comments-2 langmanager');
+		ToolbarHelper::title(Text::sprintf('COM_LOCALISE_HEADER_MANAGER', Text::_('COM_LOCALISE_HEADER_LANGUAGES')), 'comments-2 langmanager');
 
 		if ($canDo->get('localise.create'))
 		{
-			\JToolbarHelper::addNew('language.add');
-			\JToolbarHelper::custom('languages.purge', 'purge', 'purge', 'COM_LOCALISE_PURGE', false, false);
-			\JToolbarHelper::divider();
+			ToolbarHelper::addNew('language.add');
+			ToolbarHelper::custom('languages.purge', 'purge', 'purge', 'COM_LOCALISE_PURGE', false, false);
+			ToolbarHelper::divider();
 		}
 
 		if ($canDo->get('core.admin'))
 		{
-			\JToolbarHelper::preferences('com_localise');
-			\JToolbarHelper::divider();
+			ToolbarHelper::preferences('com_localise');
+			ToolbarHelper::divider();
 		}
 
-		\JToolBarHelper::help('screen.languages', true);
+		ToolBarHelper::help('screen.languages', true);
 
 		\JHtmlSidebar::setAction('index.php?option=com_localise&view=languages');
 	}
@@ -113,9 +117,9 @@ class HtmlView extends BaseHtmlView
 	protected function getSortFields()
 	{
 		return array(
-			'name'   => \JText::_('COM_LOCALISE_HEADING_LANGUAGES_NAME'),
-			'tag'    => \JText::_('COM_LOCALISE_HEADING_LANGUAGES_TAG'),
-			'client' => \JText::_('COM_LOCALISE_HEADING_LANGUAGES_CLIENT'),
+			'name'   => Text::_('COM_LOCALISE_HEADING_LANGUAGES_NAME'),
+			'tag'    => Text::_('COM_LOCALISE_HEADING_LANGUAGES_TAG'),
+			'client' => Text::_('COM_LOCALISE_HEADING_LANGUAGES_CLIENT'),
 		);
 	}
 }
