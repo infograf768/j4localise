@@ -11,22 +11,19 @@ namespace Joomla\Component\Localise\Administrator\Model;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Access\Rules as JAccessRules;
 use Joomla\Archive\Archive;
+use Joomla\CMS\Access\Rules as JAccessRules;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Table;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
-\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-\JLoader::register('JPath', JPATH_LIBRARIES . '/joomla/filesystem/path.php');
-
-
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-jimport('joomla.client.helper');
 
 /**
  * Package Model class for the Localise component
@@ -431,11 +428,11 @@ class PackageFileModel extends AdminModel
 			$dom->appendChild($packageXml);
 
 			// Set FTP credentials, if given.
-			\JClientHelper::setCredentialsFromRequest('ftp');
-			$ftp = \JClientHelper::getCredentials('ftp');
+			ClientHelper::setCredentialsFromRequest('ftp');
+			$ftp = ClientHelper::getCredentials('ftp');
 
 			// Try to make the file writeable.
-			if (\JFile::exists($path) && !$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0644'))
+			if (File::exists($path) && !$ftp['enabled'] && PATH::isOwner($path) && !\JPATH::setPermissions($path, '0644'))
 			{
 				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $path));
 
@@ -446,10 +443,10 @@ class PackageFileModel extends AdminModel
 			$dom->formatOutput = true;
 			$formattedXML = $dom->saveXML();
 
-			$return = \JFile::write($path, $formattedXML);
+			$return = File::write($path, $formattedXML);
 
 			// Try to make the file unwriteable.
-			if (!$ftp['enabled'] && \JPATH::isOwner($path) && !\JPATH::setPermissions($path, '0444'))
+			if (!$ftp['enabled'] && PATH::isOwner($path) && !PATH::setPermissions($path, '0444'))
 			{
 				$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $path));
 
@@ -487,17 +484,17 @@ class PackageFileModel extends AdminModel
 		//$languagePath = JPATH_SITE . "/language/$tag/$tag.$manifest.ini";
 
 		// Try to make the file writeable.
-		if (!$ftp['enabled'] && \JPATH::isOwner($languagePath) && !\JPATH::setPermissions($languagePath, '0644'))
+		if (!$ftp['enabled'] && PATH::isOwner($languagePath) && !PATH::setPermissions($languagePath, '0644'))
 		{
 			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $languagePath));
 
 			return false;
 		}
 
-		//$return = \JFile::write($languagePath, $text);
+		//$return = File::write($languagePath, $text);
 
 		// Try to make the file unwriteable.
-		if (!$ftp['enabled'] && \JPATH::isOwner($languagePath) && !\JPATH::setPermissions($languagePath, '0444'))
+		if (!$ftp['enabled'] && PATH::isOwner($languagePath) && JPATH::setPermissions($languagePath, '0444'))
 		{
 			$this->setError(Text::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $languagePath));
 
@@ -563,7 +560,7 @@ class PackageFileModel extends AdminModel
 		// Delete the older file and redirect
 		if ($path !== $oldpath && file_exists($oldpath))
 		{
-			if (!\JFile::delete($oldpath))
+			if (!File::delete($oldpath))
 			{
 				$app->enqueueMessage(Text::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
@@ -572,7 +569,7 @@ class PackageFileModel extends AdminModel
 
 			if ($task == 'save')
 			{
-				$app->redirect(\JRoute::_('index.php?option=com_localise&view=packages', false));
+				$app->redirect(Route::_('index.php?option=com_localise&view=packages', false));
 			}
 			else
 			{
@@ -602,7 +599,7 @@ class PackageFileModel extends AdminModel
 		if (strpos($data['name'], 'master_') !== false)
 		{
 			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
-			$app->redirect(\JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
+			$app->redirect(Route::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
 
 			return false;
 		}
@@ -612,13 +609,13 @@ class PackageFileModel extends AdminModel
 		$msg = null;
 
 		// Delete old files
-		$delete = \JFolder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
+		$delete = Folder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
 
 		if (!empty($delete))
 		{
-			if (!\JFile::delete($delete))
+			if (!File::delete($delete))
 			{
-				// \JFile::delete throws an error
+				// File::delete throws an error
 				$this->setError(Text::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
 
 				return false;
@@ -671,12 +668,12 @@ class PackageFileModel extends AdminModel
 			{
 				$path = LocaliseHelper::findTranslationPath($client = 'site', $tag = $data['language'], $filename = $translation);
 
-				if (\JFile::exists($path))
+				if (File::exists($path))
 				{
 					$file_data = file_get_contents($path);
 				}
 
-				if (\JFile::exists($path) && !empty($file_data))
+				if (File::exists($path) && !empty($file_data))
 				{
 					$text .= "\t\t\t" . '<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$site_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
@@ -801,7 +798,7 @@ class PackageFileModel extends AdminModel
 			$msg .= '<p>...</p>';
 			$msg .= Text::_('COM_LOCALISE_UNTRANSLATED');
 			$app->enqueueMessage($msg, 'error');
-			$app->redirect(\JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
+			$app->redirect(Route::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
 
 			return false;
 		}
