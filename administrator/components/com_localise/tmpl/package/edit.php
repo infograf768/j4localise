@@ -15,7 +15,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('behavior.modal');
 HTMLHelper::_('jquery.framework');
 
 

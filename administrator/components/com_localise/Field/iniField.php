@@ -45,7 +45,7 @@ class IniField extends FormField
 	 */
 	protected function getInput()
 	{
-		HTMLHelper::_('behavior.framework');
+		HTMLHelper::_('behavior.core');
 		$basePath = 'media/vendor/codemirror/';
 		// Load Codemirror
 		HTMLHelper::_('script', $basePath . 'lib/codemirror.js', array('version' => 'auto'));
