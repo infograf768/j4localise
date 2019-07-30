@@ -4,9 +4,11 @@
 	<description>com_localise_package_core_desc</description>
 	<manifest client="administrator">com_localise</manifest>
 	<author>Joomla! Project</author>
-	<maincopyright>Copyright (C) 2005 - 2015 Open Source Matters. All rights reserved.</maincopyright>
+	<maincopyright>Copyright (C) 2005 - 2019 Open Source Matters. All rights reserved.</maincopyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<administrator>
+		<filename>com_actionlogs</filename>
+		<filename>com_actionlogs.sys</filename>
 		<filename>com_admin</filename>
 		<filename>com_admin.sys</filename>
 		<filename>com_ajax</filename>
@@ -58,6 +60,8 @@
 		<filename>com_plugins.sys</filename>
 		<filename>com_postinstall</filename>
 		<filename>com_postinstall.sys</filename>
+		<filename>com_privacy</filename>
+		<filename>com_privacy.sys</filename>
 		<filename>com_redirect</filename>
 		<filename>com_redirect.sys</filename>
 		<filename>com_search</filename>
@@ -74,13 +78,14 @@
 		<filename>com_wrapper.sys</filename>
 		<filename></filename>
 		<filename>lib_joomla</filename>
-		<filename>localise.php</filename>
 		<filename>mod_custom</filename>
 		<filename>mod_custom.sys</filename>
 		<filename>mod_feed</filename>
 		<filename>mod_feed.sys</filename>
 		<filename>mod_latest</filename>
 		<filename>mod_latest.sys</filename>
+		<filename>mod_latestactions</filename>
+		<filename>mod_latestactions.sys</filename>
 		<filename>mod_logged</filename>
 		<filename>mod_logged.sys</filename>
 		<filename>mod_login</filename>
@@ -91,6 +96,8 @@
 		<filename>mod_multilangstatus.sys</filename>
 		<filename>mod_popular</filename>
 		<filename>mod_popular.sys</filename>
+		<filename>mod_privacy_dashboard</filename>
+		<filename>mod_privacy_dashboard.sys</filename>
 		<filename>mod_quickicon</filename>
 		<filename>mod_quickicon.sys</filename>
 		<filename>mod_sampledata</filename>
@@ -99,12 +106,16 @@
 		<filename>mod_stats_admin.sys</filename>
 		<filename>mod_status</filename>
 		<filename>mod_status.sys</filename>
+		<filename>mod_submenu</filename>
+		<filename>mod_submenu.sys</filename>
 		<filename>mod_title</filename>
 		<filename>mod_title.sys</filename>
 		<filename>mod_toolbar</filename>
 		<filename>mod_toolbar.sys</filename>
 		<filename>mod_version</filename>
 		<filename>mod_version.sys</filename>
+		<filename>plg_actionlog_joomla</filename>
+		<filename>plg_actionlog_joomla.sys</filename>
 		<filename>plg_authentication_cookie</filename>
 		<filename>plg_authentication_cookie.sys</filename>
 		<filename>plg_authentication_gmail</filename>
@@ -113,12 +124,12 @@
 		<filename>plg_authentication_joomla.sys</filename>
 		<filename>plg_authentication_ldap</filename>
 		<filename>plg_authentication_ldap.sys</filename>
-		<filename>plg_behaviour_taggable</filename>
-		<filename>plg_behaviour_taggable.sys</filename>
-		<filename>plg_behaviour_versionable</filename>
-		<filename>plg_behaviour_versionable.sys</filename>
 		<filename>plg_captcha_recaptcha</filename>
 		<filename>plg_captcha_recaptcha.sys</filename>
+		<filename>plg_captcha_recaptcha_invisible</filename>
+		<filename>plg_captcha_recaptcha_invisible.sys</filename>
+		<filename>plg_content_confirmconsent</filename>
+		<filename>plg_content_confirmconsent.sys</filename>
 		<filename>plg_content_contact</filename>
 		<filename>plg_content_contact.sys</filename>
 		<filename>plg_content_emailcloak</filename>
@@ -137,12 +148,6 @@
 		<filename>plg_content_pagenavigation.sys</filename>
 		<filename>plg_content_vote</filename>
 		<filename>plg_content_vote.sys</filename>
-		<filename>plg_editors_codemirror</filename>
-		<filename>plg_editors_codemirror.sys</filename>
-		<filename>plg_editors_none</filename>
-		<filename>plg_editors_none.sys</filename>
-		<filename>plg_editors_tinymce</filename>
-		<filename>plg_editors_tinymce.sys</filename>
 		<filename>plg_editors-xtd_article</filename>
 		<filename>plg_editors-xtd_article.sys</filename>
 		<filename>plg_editors-xtd_contact</filename>
@@ -159,6 +164,12 @@
 		<filename>plg_editors-xtd_pagebreak.sys</filename>
 		<filename>plg_editors-xtd_readmore</filename>
 		<filename>plg_editors-xtd_readmore.sys</filename>
+		<filename>plg_editors_codemirror</filename>
+		<filename>plg_editors_codemirror.sys</filename>
+		<filename>plg_editors_none</filename>
+		<filename>plg_editors_none.sys</filename>
+		<filename>plg_editors_tinymce</filename>
+		<filename>plg_editors_tinymce.sys</filename>
 		<filename>plg_extension_joomla</filename>
 		<filename>plg_extension_joomla.sys</filename>
 		<filename>plg_fields_calendar</filename>
@@ -181,6 +192,10 @@
 		<filename>plg_fields_media.sys</filename>
 		<filename>plg_fields_radio</filename>
 		<filename>plg_fields_radio.sys</filename>
+		<filename>plg_fields_repeatable</filename>
+		<filename>plg_fields_repeatable</filename>
+		<filename>plg_fields_repeatable.sys</filename>
+		<filename>plg_fields_repeatable.sys</filename>
 		<filename>plg_fields_sql</filename>
 		<filename>plg_fields_sql.sys</filename>
 		<filename>plg_fields_text</filename>
@@ -193,8 +208,6 @@
 		<filename>plg_fields_user.sys</filename>
 		<filename>plg_fields_usergrouplist</filename>
 		<filename>plg_fields_usergrouplist.sys</filename>
-		<filename>plg_filesystem_local</filename>
-		<filename>plg_filesystem_local.sys</filename>
 		<filename>plg_finder_categories</filename>
 		<filename>plg_finder_categories.sys</filename>
 		<filename>plg_finder_contacts</filename>
@@ -215,18 +228,26 @@
 		<filename>plg_installer_urlinstaller.sys</filename>
 		<filename>plg_installer_webinstaller</filename>
 		<filename>plg_installer_webinstaller.sys</filename>
-		<filename>plg_media-action_crop</filename>
-		<filename>plg_media-action_crop.sys</filename>
-		<filename>plg_media-action_resize</filename>
-		<filename>plg_media-action_resize.sys</filename>
-		<filename>plg_media-action_rotate</filename>
-		<filename>plg_media-action_rotate.sys</filename>
+		<filename>plg_privacy_actionlogs</filename>
+		<filename>plg_privacy_actionlogs.sys</filename>
+		<filename>plg_privacy_consents</filename>
+		<filename>plg_privacy_consents.sys</filename>
+		<filename>plg_privacy_contact</filename>
+		<filename>plg_privacy_contact.sys</filename>
+		<filename>plg_privacy_content</filename>
+		<filename>plg_privacy_content.sys</filename>
+		<filename>plg_privacy_message</filename>
+		<filename>plg_privacy_message.sys</filename>
+		<filename>plg_privacy_user</filename>
+		<filename>plg_privacy_user.sys</filename>
 		<filename>plg_quickicon_extensionupdate</filename>
 		<filename>plg_quickicon_extensionupdate.sys</filename>
 		<filename>plg_quickicon_joomlaupdate</filename>
 		<filename>plg_quickicon_joomlaupdate.sys</filename>
 		<filename>plg_quickicon_phpversioncheck</filename>
 		<filename>plg_quickicon_phpversioncheck.sys</filename>
+		<filename>plg_quickicon_privacycheck</filename>
+		<filename>plg_quickicon_privacycheck.sys</filename>
 		<filename>plg_sampledata_blog</filename>
 		<filename>plg_sampledata_blog.sys</filename>
 		<filename>plg_search_categories</filename>
@@ -241,6 +262,8 @@
 		<filename>plg_search_tags.sys</filename>
 		<filename>plg_search_weblinks</filename>
 		<filename>plg_search_weblinks.sys</filename>
+		<filename>plg_system_actionlogs</filename>
+		<filename>plg_system_actionlogs.sys</filename>
 		<filename>plg_system_cache</filename>
 		<filename>plg_system_cache.sys</filename>
 		<filename>plg_system_debug</filename>
@@ -249,8 +272,6 @@
 		<filename>plg_system_fields.sys</filename>
 		<filename>plg_system_highlight</filename>
 		<filename>plg_system_highlight.sys</filename>
-        <filename>plg_system_httpheaders</filename>
-        <filename>plg_system_httpheaders.sys</filename>
 		<filename>plg_system_languagecode</filename>
 		<filename>plg_system_languagecode.sys</filename>
 		<filename>plg_system_languagefilter</filename>
@@ -259,12 +280,20 @@
 		<filename>plg_system_log.sys</filename>
 		<filename>plg_system_logout</filename>
 		<filename>plg_system_logout.sys</filename>
+		<filename>plg_system_logrotation</filename>
+		<filename>plg_system_logrotation.sys</filename>
+		<filename>plg_system_p3p</filename>
+		<filename>plg_system_p3p.sys</filename>
+		<filename>plg_system_privacyconsent</filename>
+		<filename>plg_system_privacyconsent.sys</filename>
 		<filename>plg_system_redirect</filename>
 		<filename>plg_system_redirect.sys</filename>
 		<filename>plg_system_remember</filename>
 		<filename>plg_system_remember.sys</filename>
 		<filename>plg_system_sef</filename>
 		<filename>plg_system_sef.sys</filename>
+		<filename>plg_system_sessiongc</filename>
+		<filename>plg_system_sessiongc.sys</filename>
 		<filename>plg_system_stats</filename>
 		<filename>plg_system_stats.sys</filename>
 		<filename>plg_system_updatenotification</filename>
@@ -279,8 +308,8 @@
 		<filename>plg_user_joomla.sys</filename>
 		<filename>plg_user_profile</filename>
 		<filename>plg_user_profile.sys</filename>
-		<filename>tpl_atum</filename>
-		<filename>tpl_atum.sys</filename>
+		<filename>plg_user_terms</filename>
+		<filename>plg_user_terms.sys</filename>
 		<filename>tpl_hathor</filename>
 		<filename>tpl_hathor.sys</filename>
 		<filename>tpl_isis</filename>
@@ -296,6 +325,7 @@
 		<filename>com_media</filename>
 		<filename>com_messages</filename>
 		<filename>com_newsfeeds</filename>
+		<filename>com_privacy</filename>
 		<filename>com_search</filename>
 		<filename>com_tags</filename>
 		<filename>com_users</filename>
@@ -366,8 +396,6 @@
 		<filename>mod_wrapper</filename>
 		<filename>mod_wrapper.sys</filename>
 		<filename>tpl_beez3</filename>
-		<filename>tpl_cassiopeia</filename>
-		<filename>tpl_cassiopeia.sys</filename>
 		<filename>tpl_beez3.sys</filename>
 		<filename>tpl_protostar</filename>
 		<filename>tpl_protostar.sys</filename>
