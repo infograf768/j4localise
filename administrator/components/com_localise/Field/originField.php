@@ -49,15 +49,15 @@ class OriginField extends FormField
 
 		if ($this->value == '_thirdparty')
 		{
-			$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-thirdparty"';
+			$attributes .= ' class="' . (string) $this->element['class'] . ' fa fa-question"';
 		}
 		elseif ($this->value == '_override')
 		{
-			$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-override"';
+			$attributes .= ' class="' . (string) $this->element['class'] . ' fa fa-plus-square"';
 		}
 		elseif ($this->value == 'core')
 		{
-			$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-core"';
+			$attributes .= ' class="' . (string) $this->element['class'] . ' fab fa-joomla"';
 		}
 		else
 		{
@@ -97,13 +97,13 @@ class OriginField extends FormField
 
 		$packages_options = ArrayHelper::sortObjects($packages_options, 'text');
 		$thirdparty       = HTMLHelper::_('select.option', '_thirdparty', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_THIRDPARTY'),
-							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-thirdparty"')
+							array('option.attr' => 'attributes', 'attr' => 'class="fa fa-question"')
 							);
 		$override         = HTMLHelper::_('select.option', '_override', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_OVERRIDE'),
-							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-override"')
+							array('option.attr' => 'attributes', 'attr' => 'class="fa fa-plus-square"')
 							);
 		$core             = HTMLHelper::_('select.option', 'core', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_CORE'),
-							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-core"')
+							array('option.attr' => 'attributes', 'attr' => 'class="fab fa-joomla"')
 							);
 		$return           = HTMLHelper::_('select.genericlist', array_merge($options, $packages_options, array($thirdparty), array($override), array($core)),
 							$this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes',
