@@ -60,7 +60,7 @@ $user = Factory::getUser();
 			</td>
 			<td>
 				<?php if ($item->core) : ?>
-					<span class="fa fa-joomla"></span>
+					<span class="fab fa-joomla"></span>
 					<?php echo Text::_('COM_LOCALISE_CORE'); ?>
 				<?php else: ?>
 					<span class="fa fa-file-text-o"></span>
