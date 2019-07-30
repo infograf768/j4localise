@@ -49,7 +49,7 @@ class OriginField extends FormField
 
 		if ($this->value == '_thirdparty')
 		{
-			$attributes .= ' class="' . (string) $this->element['class'] . ' fa fa-question"';
+			$attributes .= ' class="' . (string) $this->element['class'] . ' fa fa-question-circle"';
 		}
 		elseif ($this->value == '_override')
 		{
@@ -71,8 +71,8 @@ class OriginField extends FormField
 			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$packages         = LocaliseHelper::getPackages();
-		$packages_options = array();
+		//$packages         = LocaliseHelper::getPackages();
+		//$packages_options = array();
 
 		/** We took off the packages icons (due to bootstrap implementation)
 		 * @Todo: this may need review
@@ -95,9 +95,9 @@ class OriginField extends FormField
 		}
 		*/
 
-		$packages_options = ArrayHelper::sortObjects($packages_options, 'text');
+		//$packages_options = ArrayHelper::sortObjects($packages_options, 'text');
 		$thirdparty       = HTMLHelper::_('select.option', '_thirdparty', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_THIRDPARTY'),
-							array('option.attr' => 'attributes', 'attr' => 'class="fa fa-question"')
+							array('option.attr' => 'attributes', 'attr' => 'class="fa fa-question-circle"')
 							);
 		$override         = HTMLHelper::_('select.option', '_override', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_OVERRIDE'),
 							array('option.attr' => 'attributes', 'attr' => 'class="fa fa-plus-square"')
@@ -105,7 +105,7 @@ class OriginField extends FormField
 		$core             = HTMLHelper::_('select.option', 'core', Text::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_CORE'),
 							array('option.attr' => 'attributes', 'attr' => 'class="fab fa-joomla"')
 							);
-		$return           = HTMLHelper::_('select.genericlist', array_merge($options, $packages_options, array($thirdparty), array($override), array($core)),
+		$return           = HTMLHelper::_('select.genericlist', array_merge($options, array($thirdparty), array($override), array($core)),
 							$this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes',
 							'list.attr' => $attributes, 'group.items' => null)
 							);
