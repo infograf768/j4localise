@@ -48,7 +48,7 @@ class HtmlView extends BaseHtmlView
 		$this->pagination    = $this->get('Pagination');
 		$this->state         = $this->get('State');
 		$this->form          = $this->get('Form');
-		$this->packages      = $this->get('Items', 'Packages');
+		$this->packages      = LocaliseHelper::getPackages();
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
