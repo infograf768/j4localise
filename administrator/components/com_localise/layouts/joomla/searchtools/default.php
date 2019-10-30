@@ -9,16 +9,16 @@
 
 defined('JPATH_BASE') or die;
 
-use Joomla\CMS\Factory;
+
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Layout\LayoutHelper;
 
 /** @var  array  $displayData */
 $data = $displayData;
 
 // Receive overridable options
-$data['options'] = !empty($data['options']) ? $data['options'] : array();
-$showSelector    = false;
+$data['options']   = !empty($data['options']) ? $data['options'] : array();
+$showSelector      = false;
+$showFilterButton  = false;
 
 if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView)
 {
@@ -32,6 +32,7 @@ if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Langu
 // Set some basic options
 $customOptions = array(
 	'filtersHidden'       => $data['options']['filtersHidden'] ?? empty($data['view']->activeFilters),
+	'filterButton'        => isset($data['options']['filterButton']) && $data['options']['filterButton'] ? $data['options']['filterButton'] : $showFilterButton,
 	'defaultLimit'        => $data['options']['defaultLimit'] ?? JFactory::getApplication()->get('list_limit', 20),
 	'searchFieldSelector' => '#filter_search',
 	'orderFieldSelector'  => '#list_fullordering',
@@ -70,13 +71,10 @@ $filtersClass = isset($data['view']->activeFilters) && $data['view']->activeFilt
 	<?php
 		}
 	?>
-	<div class="js-stools-container-bar">
-		<?php echo LayoutHelper::render('joomla.searchtools.default.bar', $data); ?>
-	</div>
-
-	<!-- Filters div -->
-	<div class="js-stools-container-filters clearfix<?php echo $filtersClass; ?>">
-		<?php echo LayoutHelper::render('joomla.searchtools.default.list', $data); ?>
-		<?php echo LayoutHelper::render('joomla.searchtools.default.filters', $data); ?>
+	<div class="js-stools-container-bar ml-auto">
+		<div class="btn-toolbar">
+			<?php echo $this->sublayout('bar', $data); ?>
+			<?php echo $this->sublayout('list', $data); ?>
+		</div>
 	</div>
 </div>

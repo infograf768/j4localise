@@ -30,5 +30,5 @@ $params = (isset($this->state->params)) ? $this->state->params : new \JObject;
 			<?php endforeach; ?>
 		</div>
 
-		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('filterButton' => false))); ?>
 	</div>
