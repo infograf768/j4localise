@@ -682,6 +682,8 @@ class PackageModel extends AdminModel
 		$parts = explode('.', $data['version']);
 		$small_version = implode('.', array($parts[0],$parts[1]));
 
+		$dataBlockUninstall = $data['blockuninstall'] === '1' ? 'true' : 'false';
+
 		// Prepare text to save for the xml package description
 		$text = '';
 		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -699,7 +701,7 @@ class PackageModel extends AdminModel
 		$text .= "\t" . '<packager>' . $data['packager'] . '</packager>' . "\n";
 		$text .= "\t" . '<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
 		$text .= "\t" . '<description><![CDATA[' . $data['description'] . ']]></description>' . "\n";
-		$text .= "\t" . '<blockChildUninstall>' . $data['blockuninstall'] . '</blockChildUninstall>' . "\n";
+		$text .= "\t" . '<blockChildUninstall>' . $dataBlockUninstall . '</blockChildUninstall>' . "\n";
 		$text .= "\t" . '<files>' . "\n";
 
 		if (count($site))
