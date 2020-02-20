@@ -74,7 +74,7 @@
 		<field
 			name="priority"
 			type="radio"
-			class="switcher"		
+			layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_LOCALISE_LABEL_PRIORITY"
 			description="COM_LOCALISE_LABEL_PRIORITY_DESC">
@@ -84,7 +84,7 @@
 		<field
 			name="complete"
 			type="radio"
-			class="switcher"		
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			label="COM_LOCALISE_LABEL_COMPLETE"
 			description="COM_LOCALISE_LABEL_COMPLETE_DESC">
@@ -135,7 +135,7 @@
 		<field
 			name="gh_allow_develop"
 			type="radio"
-			class="switcher"		
+			layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_LOCALISE_LABEL_GITHUB_ALLOW_DEVELOP"
 			description="COM_LOCALISE_LABEL_GITHUB_ALLOW_DEVELOP_DESC">
@@ -157,7 +157,7 @@
 		<field
 			name="pre_stable"
 			type="radio"
-			class="switcher"		
+			layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_LOCALISE_LABEL_GITHUB_PRESTABLE"
 			description="COM_LOCALISE_LABEL_GITHUB_PRESTABLE_DESC">
