@@ -7,7 +7,6 @@
 				name="client"
 				type="client"
 				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-				class="span12 small"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
@@ -17,7 +16,6 @@
 				name="tag"
 				type="language"
 				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-				class="span12 small"
 				client="site"
 				hidden="true"
 				onchange="this.form.submit()">
@@ -28,7 +26,6 @@
 				name="storage"
 				type="storage"
 				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-				class="span12 small"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_SELECT</option>
@@ -38,7 +35,6 @@
 				name="origin"
 				type="origin"
 				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-				class="span12 small"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_SELECT</option>
@@ -48,7 +44,6 @@
 				name="state"
 				type="state"
 				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-				class="span12 small"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STATE_SELECT</option>
@@ -58,7 +53,6 @@
 				name="type"
 				type="type"
 				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-				class="span12 small"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
@@ -68,7 +62,6 @@
 				name="develop"
 				type="develop"
 				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
-				class="span12 small"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_SELECT</option>

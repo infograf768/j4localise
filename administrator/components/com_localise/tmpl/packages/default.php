@@ -15,9 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
-HTMLHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('jquery.framework');
-HTMLHelper::_('bootstrap.tooltip');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));

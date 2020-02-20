@@ -112,7 +112,7 @@ class HtmlView extends BaseHtmlView
 				->text('JTOOLBAR_NEW')
 				->toggleSplit(false)
 				->icon('fa fa-plus')
-				->buttonClass('btn btn-success');
+				->buttonClass('btn btn-action');
 
 			$childBar = $dropdown->getChildToolbar();
 
