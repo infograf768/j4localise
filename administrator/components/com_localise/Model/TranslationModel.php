@@ -488,7 +488,7 @@ class TranslationModel extends AdminModel
 					$develop_client_path = JPATH_ROOT
 								. '/media/com_localise/develop/github/joomla-cms/en-GB/'
 								. $gh_client;
-					$develop_client_path = \JFolder::makeSafe($develop_client_path);
+					$develop_client_path = Folder::makeSafe($develop_client_path);
 					$ref_file            = basename($this->getState('translation.refpath'));
 					$develop_file_path   = "$develop_client_path/$ref_file";
 					$new_keys            = array();
