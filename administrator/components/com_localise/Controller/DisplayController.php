@@ -50,8 +50,7 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.language', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
-			$this->setMessage($this->getError(), 'error');
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setRedirect(Route::_('index.php?option=com_localise&view=languages', false));
 
 			return false;
@@ -60,8 +59,7 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.translation', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
-			$this->setMessage($this->getError(), 'error');
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setRedirect(Route::_('index.php?option=com_localise&view=translations', false));
 
 			return false;
@@ -70,8 +68,7 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.packagefile', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
-			$this->setMessage($this->getError(), 'error');
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setRedirect(Route::_('index.php?option=com_localise&view=packages', false));
 
 			return false;
@@ -80,8 +77,7 @@ class DisplayController extends BaseController
 			&& !$this->checkEditId('com_localise.edit.package', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
-			$this->setMessage($this->getError(), 'error');
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setRedirect(Route::_('index.php?option=com_localise&view=packages', false));
 
 			return false;
