@@ -9,7 +9,7 @@
 
 defined('JPATH_BASE') or die;
 
-
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 /** @var  array  $displayData */
@@ -19,6 +19,7 @@ $data = $displayData;
 $data['options']   = !empty($data['options']) ? $data['options'] : array();
 $showSelector      = false;
 $showFilterButton  = false;
+$selectorFieldName = $data['options']['selectorFieldName'] ?? 'client';
 
 if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView)
 {
@@ -33,8 +34,9 @@ if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Langu
 $customOptions = array(
 	'filtersHidden'       => $data['options']['filtersHidden'] ?? empty($data['view']->activeFilters),
 	'filterButton'        => isset($data['options']['filterButton']) && $data['options']['filterButton'] ? $data['options']['filterButton'] : $showFilterButton,
-	'defaultLimit'        => $data['options']['defaultLimit'] ?? JFactory::getApplication()->get('list_limit', 20),
+	'defaultLimit'        => $data['options']['defaultLimit'] ?? Factory::getApplication()->get('list_limit', 20),
 	'searchFieldSelector' => '#filter_search',
+	'selectorFieldName'   => $selectorFieldName,
 	'orderFieldSelector'  => '#list_fullordering',
 	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
 );
@@ -46,7 +48,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 
 $filtersClass = isset($data['view']->activeFilters) && $data['view']->activeFilters ? ' js-stools-container-filters-visible' : '';
 ?>
-<div class="js-stools" role="search">
+<div class="js-stools d-flex flex-wrap" role="search">
 	<?php
 		if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView)
 	{
@@ -56,6 +58,9 @@ $filtersClass = isset($data['view']->activeFilters) && $data['view']->activeFilt
 	<?php // Add the itemtype and language selectors before the form filters. ?>
 	<?php if ($clientField) : ?>
 		<div class="js-stools-container-selector-first">
+			<div class="sr-only">
+				<?php echo $clientField->label; ?>
+			</div>
 			<div class="js-stools-field-selector js-stools-client">
 				<?php echo $clientField->input; ?>
 			</div>

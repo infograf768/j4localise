@@ -38,9 +38,9 @@
 		<filename>index.html</filename>
 	</media>
 	<administration>
-		<menu img="class:localise">COM_LOCALISE</menu>
+		<menu img="class:comments">COM_LOCALISE</menu>
 		<submenu>
-			<menu link="option=com_localise&amp;view=languages" img="class:languages" view="languages">COM_LOCALISE_LANGUAGES</menu>
+			<menu link="option=com_localise&amp;view=languages" img="class:language" view="languages">COM_LOCALISE_LANGUAGES</menu>
 			<menu link="option=com_localise&amp;view=translations" img="class:translations" view="translations">COM_LOCALISE_TRANSLATIONS</menu>
 			<menu link="option=com_localise&amp;view=packages" img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
 		</submenu>
