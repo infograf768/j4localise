@@ -23,8 +23,6 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
-//\JLoader::import('joomla.access.rules');
-
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
 
 
