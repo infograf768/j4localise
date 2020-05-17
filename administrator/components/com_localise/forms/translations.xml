@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Localise\Administrator\Field">
 	<fields name="select">
 		<fieldset name="select">
 			<field
 				id="client"
 				name="client"
 				type="client"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
@@ -15,7 +14,6 @@
 				id="tag"
 				name="tag"
 				type="language"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				client="site"
 				hidden="true"
 				onchange="this.form.submit()">
@@ -25,7 +23,6 @@
 				id="storage"
 				name="storage"
 				type="storage"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_SELECT</option>
@@ -34,8 +31,8 @@
 				id="origin"
 				name="origin"
 				type="origin"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				hidden="true"
+				class="custom-select"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_SELECT</option>
 			</field>
@@ -43,7 +40,6 @@
 				id="state"
 				name="state"
 				type="state"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STATE_SELECT</option>
@@ -52,7 +48,6 @@
 				id="type"
 				name="type"
 				type="type"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
@@ -61,7 +56,6 @@
 				id="develop"
 				name="develop"
 				type="develop"
-				addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_SELECT</option>
