@@ -30,7 +30,7 @@ jimport("joomla.utilities.date");
 
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
 
-include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
+include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 
 /**
  * Localise Helper class
