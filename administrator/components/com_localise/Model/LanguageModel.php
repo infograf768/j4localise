@@ -23,8 +23,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
-include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
-
+include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 
 /**
  * Language model.
@@ -178,8 +177,12 @@ class LanguageModel extends AdminModel
 		$client = $this->getState('language.client');
 		$tag    = $this->getState('language.tag');
 
-		$language = new \JObject;
+		if (!$id)
+		{
+			$tag = '';
+		}
 
+		$language = new \JObject;
 		$language->id          = $id;
 		$language->client      = $client;
 		$language->tag         = $tag;

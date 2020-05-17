@@ -16,6 +16,7 @@
 			type="text"
 			maxlength="7"
 			size="10"
+			default=""
 			required="true"
 			class="ltr"
 			label="COM_LOCALISE_LABEL_LANGUAGE_TAG"
@@ -55,9 +56,10 @@
 		<field
 			name="rtl"
 			type="radio"
-			class="switcher"		
+			layout="joomla.form.field.radio.switcher"
 			default="0"
 			required="true"
+			filter="integer"
 			label="COM_LOCALISE_LABEL_LANGUAGE_RTL"
 			description="COM_LOCALISE_LABEL_LANGUAGE_RTL_DESC">
 			<option value="0">JNO</option>
@@ -141,9 +143,9 @@
 			description="COM_LOCALISE_LABEL_LANGUAGE_EMAIL_DESC" />
 		<field
 			name="authorUrl"
-			type="text"
+			type="url"
 			validate="url"
-			scheme="http,https"
+			filter="url"
 			class="validate-url ltr"
 			label="COM_LOCALISE_LABEL_LANGUAGE_URL"
 			description="COM_LOCALISE_LABEL_LANGUAGE_URL_DESC" />
