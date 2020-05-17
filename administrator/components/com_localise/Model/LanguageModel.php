@@ -12,6 +12,7 @@ namespace Joomla\Component\Localise\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Access\Rules as JAccessRules;
+use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
@@ -311,8 +312,8 @@ class LanguageModel extends AdminModel
 	 */
 	public function save($data = array())
 	{
-		$id = $this->getState('language.id');
-		$tag    = $data['tag'];
+		$id   = $this->getState('language.id');
+		$tag  = $data['tag'];
 
 		// Trim whitespace in $tag
 		$tag = InputFilter::getInstance()->clean($tag, 'TRIM');
@@ -344,7 +345,7 @@ class LanguageModel extends AdminModel
 		}
 
 		$client = $data['client'];
-		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.xml";
+		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/langmetadata.xml";
 		$exists = File::exists($path);
 		$parts = explode('.', $data['version']);
 		$small_version = implode('.', array($parts[0],$parts[1]));
@@ -414,8 +415,8 @@ class LanguageModel extends AdminModel
 			$text .= '</metafile>' . "\n";
 
 			// Set FTP credentials, if given.
-			\JClientHelper::setCredentialsFromRequest('ftp');
-			$ftp = \JClientHelper::getCredentials('ftp');
+			ClientHelper::setCredentialsFromRequest('ftp');
+			$ftp = ClientHelper::getCredentials('ftp');
 
 			// Try to make the file writeable.
 			if ($exists && !$ftp['enabled'] && Path::isOwner($path) && !Path::setPermissions($path, '0644'))
@@ -639,7 +640,12 @@ class LanguageModel extends AdminModel
 		$refComment     = "* " . $ref_tag . " localise class";
 		$langComment    = "* " . $tag . " localise class";
 
-		$localisephpPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.localise.php";
+		$localisephpPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/localise.php";
+
+		if (!is_file($localisephpPath))
+		{
+			$localisephpPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.localise.php";
+		}
 
 		if (File::exists($localisephpPath))
 		{
