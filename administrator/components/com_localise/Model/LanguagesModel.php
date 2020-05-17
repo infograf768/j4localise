@@ -22,9 +22,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
-include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
-
-
 /**
  * Languages Model class for the Localise component
  *
