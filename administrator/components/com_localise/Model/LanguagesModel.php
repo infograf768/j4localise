@@ -16,11 +16,11 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filter\InputFilter;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+
+include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 
 /**
  * Languages Model class for the Localise component
@@ -73,37 +73,9 @@ class LanguagesModel extends ListModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app  = Factory::getApplication();
-		$data = $app->input->get('filters', array(), 'array');
-
-		if (empty($data))
-		{
-			$data           = array();
-			$data['select'] = $app->getUserState('com_localise.select');
-		}
-		else
-		{
-			$app->setUserState('com_localise.select', $data['select']);
-		}
-
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
-		$search = InputFilter::getInstance()->clean($search, 'TRIM');
-		$search = strtolower($search);
-
-		if ($search)
-		{
-			$app->setUserState('filter.search', strtolower($search));
-		}
-		else
-		{
-			$app->setUserState('filter.search', '');
-		}
-
-		$this->setState('filter.client', isset($data['select']['client']) ? $data['select']['client'] : '');
-
-		$this->setState('filter.tag', isset($data['select']['tag']) ? $data['select']['tag'] : '');
-
-		$this->setState('filter.name', isset($data['select']['name']) ? $data['select']['name'] : '');
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('client', $this->getUserStateFromRequest($this->context . '.client', 'client', '', 'string'));
+		$this->setState('tag', $this->getUserStateFromRequest($this->context . '.tag', 'tag', '', 'string'));
 
 		// Load the parameters.
 		$params = ComponentHelper::getParams('com_localise');
@@ -111,51 +83,6 @@ class LanguagesModel extends ListModel
 
 		// Call auto-populate parent method
 		parent::populateState($ordering, $direction);
-	}
-
-	/**
-	 * Method to get the row form.
-	 *
-	 * @return  mixed  JForm object on success, false on failure.
-	 */
-	public function getForm()
-	{
-		// Initialise variables.
-		$app = Factory::getApplication();
-
-		// Get the form.
-
-		Form::addFormPath(JPATH_COMPONENT . '/forms');
-		Form::addFieldPath(JPATH_COMPONENT . '/field');
-		$form = Form::getInstance('com_localise.languages', 'languages', array('control' => 'filters','event'   => 'onPrepareForm'));
-
-		// Check for an error.
-		if ($form instanceof Exception)
-		{
-			$this->setError($form->getMessage());
-
-			return false;
-		}
-
-		// Check the session for previously entered form data.
-		$data = $app->getUserState('com_localise.select', array());
-
-		// Bind the form data if present.
-		if (!empty($data))
-		{
-			$form->bind(array('select' => $data));
-		}
-
-		// Check the session for previously entered form data.
-		$data = $app->getUserState('com_localise.languages.filter.search', array());
-
-		// Bind the form data if present.
-		if (!empty($data))
-		{
-			$form->bind(array('search' => $data));
-		}
-
-		return $form;
 	}
 
 	/**
@@ -209,8 +136,8 @@ class LanguagesModel extends ListModel
 		if (!isset($this->languages))
 		{
 			$this->languages = array();
-			$client          = $this->getState('filter.client');
-			$tag             = $this->getState('filter.tag');
+			$client          = $this->getState('client');
+			$tag             = $this->getState('tag');
 			$search          = $this->getState('filter.search');
 
 			if (empty($client))
@@ -252,10 +179,16 @@ class LanguagesModel extends ListModel
 
 				foreach ($folders as $folder)
 				{
-					// Move to first
-					$id = LocaliseHelper::getFileId(constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$folder/$folder.xml");
+					$file = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$folder/langmetadata.xml";
 
-					// If it was not found a file.
+					if (!is_file($file))
+					{
+						$file = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$folder/$folder.xml";
+					}
+
+					$id = LocaliseHelper::getFileId($file);
+
+					// If no file is found.
 					if ($id < 1)
 					{
 						continue;

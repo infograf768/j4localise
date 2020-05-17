@@ -116,4 +116,3 @@ Factory::getDocument()->addScriptDeclaration("
 		</td>
 	</tr>
 <?php endforeach; ?>
-

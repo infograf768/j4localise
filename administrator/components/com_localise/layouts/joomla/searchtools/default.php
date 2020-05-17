@@ -30,6 +30,13 @@ if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Langu
 	unset($data['view']->activeFilters['tag']);
 }
 
+	// Checks if the filters button should exist.
+	$filters = $data['view']->filterForm->getGroup('filter');
+	$showFilterButton = isset($filters['filter_search']) && count($filters) === 1 ? false : true;
+
+	// Checks if it should show the be hidden.
+	$hideActiveFilters = empty($data['view']->activeFilters);
+
 // Set some basic options
 $customOptions = array(
 	'filtersHidden'       => $data['options']['filtersHidden'] ?? empty($data['view']->activeFilters),
@@ -43,24 +50,24 @@ $customOptions = array(
 
 $data['options'] = array_merge($customOptions, $data['options']);
 
+// Add class to hide the active filters if needed.
+$filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible';
+
 // Load search tools
 HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
 
 $filtersClass = isset($data['view']->activeFilters) && $data['view']->activeFilters ? ' js-stools-container-filters-visible' : '';
 ?>
-<div class="js-stools d-flex flex-wrap" role="search">
+<div class="js-stools" role="search">
 	<?php
 		if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView)
 	{
 		$clientField = $data['view']->filterForm->getField('client');
 		$tagField    = $data['view']->filterForm->getField('tag'); ?>
 
-	<?php // Add the itemtype and language selectors before the form filters. ?>
+	<?php // Add the client and language selectors before the form filters. ?>
 	<?php if ($clientField) : ?>
-		<div class="js-stools-container-selector-first">
-			<div class="sr-only">
-				<?php echo $clientField->label; ?>
-			</div>
+		<div class="js-stools-container-selector">
 			<div class="js-stools-field-selector js-stools-client">
 				<?php echo $clientField->input; ?>
 			</div>
@@ -81,5 +88,11 @@ $filtersClass = isset($data['view']->activeFilters) && $data['view']->activeFilt
 			<?php echo $this->sublayout('bar', $data); ?>
 			<?php echo $this->sublayout('list', $data); ?>
 		</div>
+	</div>
+		<!-- Filters div -->
+	<div class="js-stools-container-filters clearfix<?php echo $filtersActiveClass; ?>">
+		<?php if ($data['options']['filterButton']) : ?>
+		<?php echo $this->sublayout('filters', $data); ?>
+		<?php endif; ?>
 	</div>
 </div>

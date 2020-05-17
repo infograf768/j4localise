@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Localise\Administrator\Field">
+	<field
+		id="client"
+		name="client"
+		type="client"
+		filtermode="selector"
+		onchange="this.form.submit()">
+		<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
+	</field>
+	<field
+		id="tag"
+		name="tag"
+		type="language"
+		filtermode="selector"
+		onchange="this.form.submit()">
+		<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
+	</field>
+
 	<fields name="filter">
 		<field
 			name="search"
