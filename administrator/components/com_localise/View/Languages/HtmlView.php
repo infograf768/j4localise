@@ -55,8 +55,6 @@ class HtmlView extends BaseHtmlView
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
-		LocaliseHelper::addSubmenu('languages');
-
 		unset($this->activeFilters['client']);
 		unset($this->activeFilters['tag']);
 

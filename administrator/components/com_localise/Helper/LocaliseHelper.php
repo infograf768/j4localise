@@ -58,36 +58,6 @@ abstract class LocaliseHelper
 	protected static $packages = array();
 
 	/**
-	 * Prepares the component submenu
-	 *
-	 * @param   string  $vName  Name of the active view
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0
-	 */
-	public static function addSubmenu($vName)
-	{
-		\JHtmlSidebar::addEntry(
-			Text::_('COM_LOCALISE_SUBMENU_LANGUAGES'),
-			'index.php?option=com_localise&view=languages',
-			$vName == 'languages'
-		);
-
-		\JHtmlSidebar::addEntry(
-			Text::_('COM_LOCALISE_SUBMENU_TRANSLATIONS'),
-			'index.php?option=com_localise&view=translations',
-			$vName == 'translations'
-		);
-
-		\JHtmlSidebar::addEntry(
-			Text::_('COM_LOCALISE_SUBMENU_PACKAGES'),
-			'index.php?option=com_localise&view=packages',
-			$vName == 'packages'
-		);
-	}
-
-	/**
 	 * Determines if a given path is writable in the current environment
 	 *
 	 * @param   string  $path  Path to check
