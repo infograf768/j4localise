@@ -11,7 +11,9 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 $params = ComponentHelper::getParams('com_languages');
 $user   = Factory::getUser();
@@ -54,7 +56,7 @@ Factory::getDocument()->addScriptDeclaration("
 		<td width="20" class="center hidden-phone">
 			<?php if ($item->checked_out) : ?>
 				<?php $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0; ?>
-				<?php echo \JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'languages.', $canCheckin); ?>
+				<?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'languages.', $canCheckin); ?>
 				<input type="checkbox" id="cb<?php echo $i; ?>" class="hidden" name="cid[]" value="<?php echo $item->id; ?>">
 			<?php elseif ($canDelete): ?>
 				<a href="#" data-id="<?php echo $item->id; ?>" data-client="<?php echo $item->client; ?>" data-tag="<?php echo $item->tag; ?>" class="hasTooltip js-list-delete-item" title="<?php echo Text::_('COM_LOCALISE_TOOLTIP_LANGUAGES_DELETE'); ?>">
@@ -65,7 +67,7 @@ Factory::getDocument()->addScriptDeclaration("
 		<td>
 			<?php if ($item->writable && $canEdit): ?>
 				<span title="" class="localise-icon">
-					<a href="<?php echo \JRoute::_('index.php?option=com_localise&task=language.edit&id='.$item->id.'&client='.$item->client.'&tag='.$item->tag); ?>" class="hasTooltip" title="<?php echo Text::_('COM_LOCALISE_TOOLTIP_LANGUAGES_EDIT'); ?>">
+					<a href="<?php echo Route::_('index.php?option=com_localise&task=language.edit&id='.$item->id.'&client='.$item->client.'&tag='.$item->tag); ?>" class="hasTooltip" title="<?php echo Text::_('COM_LOCALISE_TOOLTIP_LANGUAGES_EDIT'); ?>">
 					<?php echo $item->name; ?>
 					</a>
 				</span>
@@ -83,7 +85,7 @@ Factory::getDocument()->addScriptDeclaration("
 			<?php echo Text::_(ucfirst($item->client)); ?>
 		</td>
 		<td class="center">
-			<a href="<?php echo \JRoute::_('index.php?option=com_localise&view=translations&filters[select][client]=' . $item->client . '&filters[select][tag]=' . $item->tag); ?>" class="btn btn-micro hasTooltip">
+			<a href="<?php echo Route::_('index.php?option=com_localise&view=translations&filters[select][client]=' . $item->client . '&filters[select][tag]=' . $item->tag); ?>" class="btn btn-micro hasTooltip">
 				<i class="icon-list"></i>
 			</a>
 		</td>
