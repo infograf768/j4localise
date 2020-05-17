@@ -15,9 +15,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
-//include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
-
-
 /**
  * Form Field Client class
  *

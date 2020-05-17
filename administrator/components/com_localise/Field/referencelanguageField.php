@@ -19,7 +19,7 @@ use Joomla\Utilities\ArrayHelper;
 
 FormHelper::loadFieldClass('list');
 
-include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
+include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 
 /**
  * Renders a list of all possible languages (they must have a site, language and installation part)
