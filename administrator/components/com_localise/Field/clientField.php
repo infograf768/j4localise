@@ -52,7 +52,7 @@ class ClientField extends FormField
 			$attributes .= ' onchange="' . $v . '"';
 		}
 
-		//$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-' . $this->value . '"';
+		$attributes .= ' class="custom-select"';
 
 		$options = array();
 
