@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Component\Localise\Administrator\Model\TranslationModel;
+use Joomla\CMS\Cache\CacheController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -807,7 +808,7 @@ class TranslationsModel extends ListModel
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
 			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
 
-			$cache_controller = \JCacheController::getInstance();
+			$cache_controller = CacheController::getInstance();
 
 			$key = 'translation-'
 				. ($this->getState('filter.client')  ? $this->getState('filter.client') . '-' : '')
