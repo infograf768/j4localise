@@ -152,11 +152,11 @@ Factory::getDocument()->addScriptDeclaration("
 			<div class="modal-body">
 				<div class="col-md-12">
 				<p><?php echo Text::_('COM_LOCALISE_IMPORT_NEW_FILE_DESC'); ?></p>
-					<form method="post" action="<?php echo \JRoute::_('index.php?option=com_localise&task=package.uploadOtherFile&file=' . $this->file); ?>"
+					<form method="post" action="<?php echo Route::_('index.php?option=com_localise&task=package.uploadOtherFile&file=' . $this->file); ?>"
 						class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
 						<fieldset>
 							<label><?php echo Text::_('COM_LOCALISE_TEXT_CLIENT'); ?></label>
-							<select name="location" type="location" required >
+							<select name="location" class="custom-select" type="location" required >
 								<option value="admin"><?php echo Text::_('JADMINISTRATOR'); ?></option>
 								<option value="site"><?php echo Text::_('JSITE'); ?></option>
 							</select>
