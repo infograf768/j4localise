@@ -13,18 +13,10 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Field\GroupedlistField;
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\Utilities\ArrayHelper;
-
-FormHelper::loadFieldClass('groupedlist');
-
-jimport('joomla.html.html');
-
-include_once JPATH_ADMINISTRATOR . '/components/com_localise/helper/defines.php';
-
 
 /**
  * Form Field ExtensionTranslations class.
