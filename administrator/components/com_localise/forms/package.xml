@@ -56,11 +56,11 @@
 			id="blockuninstall"
 			name="blockuninstall"
 			type="radio"
+			layout="joomla.form.field.radio.switcher"
 			label="COM_LOCALISE_LABEL_PACKAGE_BLOCKUNINSTALL"
 			description="COM_LOCALISE_LABEL_PACKAGE_BLOCKUNINSTALL_DESC"
-			class="switcher"
 			default="1"
-			filter="boolean"
+			filter="integer"
 			>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
