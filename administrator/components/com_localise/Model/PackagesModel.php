@@ -11,23 +11,16 @@ namespace Joomla\Component\Localise\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filter\InputFilter;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\Utilities\ArrayHelper;
-
-//jimport('joomla.filesystem.folder');
-//jimport('joomla.filesystem.file');
-
-//\JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-//\JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-
 
 /**
  * Packages Model class for the Localise component
@@ -364,7 +357,7 @@ class PackagesModel extends ListModel
 			{
 				$pack = file_get_contents($path);
 				$newpackage = $package . '_' . Factory::getDate()->format("Y-m-d-H-i-s");
-				$newpath = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$newpackage.xml";
+				$newpath = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $newpackage . '.xml';
 
 				File::write($newpath, $pack);
 			}
