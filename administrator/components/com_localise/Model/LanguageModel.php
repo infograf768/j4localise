@@ -350,7 +350,7 @@ class LanguageModel extends AdminModel
 		$parts = explode('.', $data['version']);
 		$small_version = implode('.', array($parts[0],$parts[1]));
 
-		if ($exists && !empty($id) || !$exists && empty($id))
+		if ($exists && $id > 0 || !$exists && $id === 0)
 		{
 			$text = '';
 			$text .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
@@ -645,6 +645,11 @@ class LanguageModel extends AdminModel
 		if (!is_file($localisephpPath))
 		{
 			$localisephpPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.localise.php";
+
+			if (File::exists($localisephpPath))
+			{
+				rename ($localisephpPath, constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/localise.php");
+			}
 		}
 
 		if (File::exists($localisephpPath))
