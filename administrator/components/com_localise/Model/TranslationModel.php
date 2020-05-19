@@ -1521,14 +1521,14 @@ class TranslationModel extends AdminModel
 			if (Folder::exists(JPATH_SITE . "/language/$tag"))
 			{
 				$this->setState('translation.client', 'site');
-				$this->setState('translation.path', JPATH_SITE . "/language/$tag/$tag.lib_joomla.ini");
+				$this->setState('translation.path', JPATH_SITE . "/language/$tag/lib_joomla.ini");
 				$this->saveFile($data);
 			}
 
 			if (Folder::exists(JPATH_ADMINISTRATOR . "/language/$tag"))
 			{
 				$this->setState('translation.client', 'administrator');
-				$this->setState('translation.path', JPATH_ADMINISTRATOR . "/language/$tag/$tag.lib_joomla.ini");
+				$this->setState('translation.path', JPATH_ADMINISTRATOR . "/language/$tag/lib_joomla.ini");
 				$this->saveFile($data);
 			}
 		}

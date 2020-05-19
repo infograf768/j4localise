@@ -544,11 +544,11 @@ abstract class LocaliseHelper
 		}
 		elseif ($filename == 'joomla')
 		{
-			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
+			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/joomla.ini";
 		}
 		elseif ($storage == 'global')
 		{
-			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
+			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$filename.ini";
 		}
 		else
 		{
@@ -558,12 +558,12 @@ abstract class LocaliseHelper
 			switch (substr($extension, 0, 3))
 			{
 				case 'com':
-					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/components/$extension/language/$tag/$tag.$filename.ini";
+					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/components/$extension/language/$tag/$filename.ini";
 
 					break;
 
 				case 'mod':
-					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/modules/$extension/language/$tag/$tag.$filename.ini";
+					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/modules/$extension/language/$tag/$filename.ini";
 
 					break;
 
@@ -573,22 +573,22 @@ abstract class LocaliseHelper
 					$parts	= explode('.', $filename);
 					$pluginname = $parts[0];
 					$plugin = substr($pluginname, 5 + strlen($group));
-					$path   = JPATH_PLUGINS . "/$group/$plugin/language/$tag/$tag.$filename.ini";
+					$path   = JPATH_PLUGINS . "/$group/$plugin/language/$tag/$filename.ini";
 
 					break;
 
 				case 'tpl':
 					$template = substr($extension, 4);
-					$path     = constant('LOCALISEPATH_' . strtoupper($client)) . "/templates/$template/language/$tag/$tag.$filename.ini";
+					$path     = constant('LOCALISEPATH_' . strtoupper($client)) . "/templates/$template/language/$tag/$filename.ini";
 
 					break;
 
 				case 'lib':
-					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
+					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$filename.ini";
 
 					if (!is_file($path))
 					{
-						$path = $client == 'administrator' ? 'LOCALISEPATH_' . 'SITE' : 'LOCALISEPATH_' . 'ADMINISTRATOR' . "/language/$tag/$tag.$filename.ini";
+						$path = $client == 'administrator' ? 'LOCALISEPATH_' . 'SITE' : 'LOCALISEPATH_' . 'ADMINISTRATOR' . "/language/$tag/$filename.ini";
 					}
 
 					break;
@@ -1483,7 +1483,7 @@ abstract class LocaliseHelper
 						. $gh_data['github_client'];
 
 			$develop_client_path = Folder::makeSafe($develop_client_path);
-			$xml_file            = $develop_client_path . '/en-GB.xml';
+			$xml_file            = $develop_client_path . '/langmetadata.xml';
 
 			if (!File::exists($xml_file))
 			{

@@ -227,7 +227,7 @@ class TranslationsModel extends ListModel
 
 						foreach ($tags as $tag)
 						{
-							$file   = "$path$extension/language/$tag/$tag.$prefix$extension$suffix.ini";
+							$file   = "$path$extension/language/$tag/$prefix$extension$suffix.ini"; // Look only for new format
 							$origin = LocaliseHelper::getOrigin("$prefix$extension$suffix", $client);
 
 							if (File::exists($file) && preg_match("/$filter_origin/", $origin))
@@ -297,29 +297,19 @@ class TranslationsModel extends ListModel
 
 					foreach ($tags as $tag)
 					{
-						if (File::exists($path . '/' . $tag . '/' . $tag . '.xml'))
+						if (File::exists($path . '/' . $tag . '/langmetadata.xml'))
 						{
 							// For all selected tags
 							$files = Folder::files("$path/$tag", "$filter_search.*\.ini$");
 
 							foreach ($files as $file)
 							{
-								$filename = substr($file, 1 + strlen($tag));
-
-								if ($filename == 'ini')
-								{
-									$filename = '';
-								}
-								else
-								{
-									$filename = substr($filename, 0, strlen($filename) - 4);
-								}
-
+								$filename = substr($file, 0, strlen($file) - 4);
 								$origin = LocaliseHelper::getOrigin($filename, $client);
 
 								if (preg_match("/$filter_origin/", $origin))
 								{
-									$prefix = substr($file, 0, 4 + strlen($tag));
+									$prefix = substr($file, 0, 3);
 
 									$translation = new \JObject(
 										array(
@@ -334,53 +324,53 @@ class TranslationsModel extends ListModel
 										)
 									);
 
-									if ($file == "$tag.ini" && preg_match("/$filter_type/", 'joomla'))
+									if ($file == "joomla.ini" && preg_match("/$filter_type/", 'joomla'))
 									{
 										// Scan joomla ini file
 										$translation->setProperties(array('type' => 'joomla', 'filename' => 'joomla', 'name' => Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA')));
 										$this->translations["$client|$tag|joomla"] = $translation;
 									}
-									elseif ($file == "$tag.finder_cli.ini" && preg_match("/$filter_type/", 'file'))
+									elseif ($file == "finder_cli.ini" && preg_match("/$filter_type/", 'file'))
 									{
 										$translation->setProperties(array('type' => 'file', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
-									elseif ($file == "$tag.files_joomla.sys.ini" && preg_match("/$filter_type/", 'file'))
+									elseif ($file == "files_joomla.sys.ini" && preg_match("/$filter_type/", 'file'))
 									{
 										$translation->setProperties(array('type' => 'file', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
-									elseif ($prefix == "$tag.com" && preg_match("/$filter_type/", 'component'))
+									elseif ($prefix == "com" && preg_match("/$filter_type/", 'component'))
 									{
 										// Scan component ini file
 										$translation->setProperties(array('type' => 'component', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
-									elseif ($prefix == "$tag.mod" && preg_match("/$filter_type/", 'module'))
+									elseif ($prefix == "mod" && preg_match("/$filter_type/", 'module'))
 									{
 										// Scan module ini file
 										$translation->setProperties(array('type' => 'module', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
-									elseif ($prefix == "$tag.tpl" && preg_match("/$filter_type/", 'template'))
+									elseif ($prefix == "tpl" && preg_match("/$filter_type/", 'template'))
 									{
 										// Scan template ini file
 										$translation->setProperties(array('type' => 'template', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
-									elseif ($prefix == "$tag.plg" && preg_match("/$filter_type/", 'plugin'))
+									elseif ($prefix == "plg" && preg_match("/$filter_type/", 'plugin'))
 									{
 										// Scan plugin ini file
 										$translation->setProperties(array('type' => 'plugin', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
-									elseif ($prefix == "$tag.pkg" && preg_match("/$filter_type/", 'package'))
+									elseif ($prefix == "pkg" && preg_match("/$filter_type/", 'package'))
 									{
 										// Scan package ini file
 										$translation->setProperties(array('type' => 'package', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
-									elseif ($prefix == "$tag.lib" && preg_match("/$filter_type/", 'library'))
+									elseif ($prefix == "lib" && preg_match("/$filter_type/", 'library'))
 									{
 										// Scan library ini file
 										$translation->setProperties(array('type' => 'library', 'filename' => $filename, 'name' => $filename));
