@@ -327,7 +327,7 @@ class PackageModel extends AdminModel
 
 		// Get the package
 		$package  = $this->getItem();
-		$path     = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
+		$path     = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
 		$manifest = $name;
 
 		// $client   = $package->client ? $package->client : 'site';
