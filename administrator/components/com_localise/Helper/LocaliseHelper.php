@@ -1298,7 +1298,7 @@ abstract class LocaliseHelper
 
 		$files_to_exclude = array();
 
-		if (!File::exists($develop_client_path . '/en-GB.xml'))
+		if (!File::exists($develop_client_path . '/langmetadata.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
 				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
@@ -1306,7 +1306,7 @@ abstract class LocaliseHelper
 
 			return false;
 		}
-		elseif (!File::exists($custom_client_path . '/en-GB.xml'))
+		elseif (!File::exists($custom_client_path . '/langmetadata.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
 				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
@@ -1370,7 +1370,7 @@ abstract class LocaliseHelper
 
 		$files_to_exclude = array();
 
-		if (!File::exists($develop_client_path . '/en-GB.xml'))
+		if (!File::exists($develop_client_path . '/langmetadata.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
 				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
@@ -1378,7 +1378,7 @@ abstract class LocaliseHelper
 
 			return false;
 		}
-		elseif (!File::exists($custom_client_path . '/en-GB.xml'))
+		elseif (!File::exists($custom_client_path . '/langmetadata.xml'))
 		{
 			Factory::getApplication()->enqueueMessage(
 				Text::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
