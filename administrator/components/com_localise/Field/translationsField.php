@@ -10,6 +10,7 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Field\GroupedListField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -72,9 +73,7 @@ class TranslationsField extends GroupedListField
 
 						foreach ($files as $file)
 						{
-							$basename = substr($file, strlen($tag) + 1);
-
-							if ($basename == 'ini')
+							if ($file == 'joomla.ini')
 							{
 								$key      = 'joomla';
 								$value    = Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA');
@@ -83,7 +82,7 @@ class TranslationsField extends GroupedListField
 							}
 							else
 							{
-								$key      = substr($basename, 0, strlen($basename) - 4);
+								$key      = substr($file, 0, strlen($file) - 4);
 								$value    = $key;
 								$origin   = LocaliseHelper::getOrigin($key, strtolower($client));
 								$disabled = $origin != $package && $origin != '_thirdparty';
@@ -117,9 +116,10 @@ class TranslationsField extends GroupedListField
 
 					foreach ($tags as $tag)
 					{
-						$file = "$path$extension$folder/language/$tag/$tag.$prefix$extension$suffix.ini";
+						/* @ Todo: Deal with extensions using old format*/
+						$file = "$path$extension$folder/language/$tag/$prefix$extension$suffix.ini";
 
-						if (\JFile::exists($file))
+						if (File::exists($file))
 						{
 							$origin   = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
 							$disabled = $origin != $package && $origin != '_thirdparty';
