@@ -63,7 +63,7 @@
 			description="COM_LOCALISE_LABEL_INSTALLATION_FOLDER_DESC"
 			hide_default="true"
 			default="installation"
-			exclude="administrator|api|build|components|cache|images|includes|language|libraries|logs|media|modules|node_modules|plugins|templates|test|tmp|bin|cli|layouts" />
+			exclude="administrator|api|build|components|cache|images|includes|language|libraries|logs|media|modules|node_modules|plugins|templates|tests|tmp|bin|cli|layouts" />
 		<field
 			name="suffixes"
 			type="textarea"
