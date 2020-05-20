@@ -421,7 +421,7 @@ class TranslationsModel extends ListModel
 
 				foreach ($tags as $tag)
 				{
-					if (File::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
+					if (File::exists($client_folder . '/' . $tag . '/langmetadata.xml'))
 					{
 						if (array_key_exists("$client|$reftag|joomla", $this->translations))
 						{
@@ -435,7 +435,7 @@ class TranslationsModel extends ListModel
 							{
 								$origin = LocaliseHelper::getOrigin("", $client);
 
-								$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
+								$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language/' . $tag . '/joomla.ini';
 
 								$translation = new \JObject(
 									array(
@@ -473,7 +473,7 @@ class TranslationsModel extends ListModel
 
 						foreach ($tags as $tag)
 						{
-							if (File::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
+							if (File::exists($client_folder . '/' . $tag . '/langmetadata.xml'))
 							{
 								if (array_key_exists("$client|$reftag|$name", $this->translations))
 								{
@@ -485,7 +485,7 @@ class TranslationsModel extends ListModel
 									}
 									else
 									{
-										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
+										$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language/' . $tag . '/' . $name . '.ini';
 										$translation = new \JObject(
 											array(
 												'type' => '',
@@ -514,7 +514,7 @@ class TranslationsModel extends ListModel
 
 							foreach ($tags as $tag)
 							{
-								if (File::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
+								if (File::exists($client_folder . '/' . $tag . '/langmetadata.xml'))
 								{
 									if (array_key_exists("$client|$reftag|$name", $this->translations))
 									{
@@ -526,7 +526,7 @@ class TranslationsModel extends ListModel
 										}
 										else
 										{
-											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
+											$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language/' . $tag . '/' . $name . '.ini';
 											$translation = new \JObject(
 												array(
 													'type' => 'library',
@@ -555,7 +555,7 @@ class TranslationsModel extends ListModel
 
 							foreach ($tags as $tag)
 							{
-								if (File::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
+								if (File::exists($client_folder . '/' . $tag . '/langmetadata.xml'))
 								{
 									if (array_key_exists("$client|$reftag|$name", $this->translations))
 									{
@@ -567,7 +567,7 @@ class TranslationsModel extends ListModel
 										}
 										else
 										{
-											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
+											$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language/' . $tag . '/' . $name . '.ini';
 											$translation = new \JObject(
 												array(
 													'type' => 'package',
@@ -607,7 +607,7 @@ class TranslationsModel extends ListModel
 									}
 									else
 									{
-										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
+										$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language/' . $tag . '/' . $name . '.ini';
 										$translation = new \JObject(
 											array(
 												'type' => 'file',
@@ -674,7 +674,7 @@ class TranslationsModel extends ListModel
 							}
 							elseif ($filter_storage != 'local' && ($filter_origin == '' || $filter_origin == $origin))
 							{
-								$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$prefix$extension$suffix.ini";
+								$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$prefix$extension$suffix.ini"; // force use new format
 								$translation = new \JObject(
 									array(
 										'type' => $type,
