@@ -115,30 +115,6 @@ Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 				e.onclick();
 		});
 	}
-
-	Joomla.submitbutton = function(task)
-	{
-		var complete = <?php echo (int) ComponentHelper::getParams('com_localise')->get('complete', 0); ?>;
-
-		if ((task == 'translation.apply' || task == 'translation.save') && document.formvalidator.isValid(document.getElementById('localise-translation-form')))
-		{
-			if (complete)
-			{
-				if (confirm(Joomla.JText._('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')))
-				{
-					Joomla.submitform(task, document.getElementById('localise-translation-form'));
-				}
-			}
-			else
-			{
-				Joomla.submitform(task, document.getElementById('localise-translation-form'));
-			}
-		}
-		else if (task == 'translation.cancel')
-		{
-			Joomla.submitform(task, document.getElementById('localise-translation-form'));
-		}
-	}
 </script>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<div class="row">
@@ -196,7 +172,6 @@ Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 							</div>
 						<?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
 						<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
-						
 						<div class="key">
 							<div id="translationbar">
 								<?php //if ($istranslation) : ?>

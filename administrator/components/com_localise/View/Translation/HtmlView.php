@@ -12,8 +12,10 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -76,6 +78,9 @@ class HtmlView extends BaseHtmlView
 
 		$user		= Factory::getUser();
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$complete   = (int) ComponentHelper::getParams('com_localise')->get('complete', 0);
+
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		if ($this->state->get('translation.filename') == 'joomla')
 		{
@@ -96,8 +101,23 @@ class HtmlView extends BaseHtmlView
 
 		if (!$checkedOut)
 		{
-			ToolbarHelper::apply('translation.apply');
-			ToolbarHelper::save('translation.save');
+			if ($complete === 1)
+			{
+				$toolbar->confirmButton('apply')
+					->text('JAPPLY')
+					->message('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')
+					->task('translation.apply');
+
+				$toolbar->confirmButton('save')
+					->text('JSAVE')
+					->message('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')
+					->task('translation.save');
+			}
+			else
+			{
+				ToolbarHelper::apply('translation.apply');
+				ToolbarHelper::save('translation.save');
+			}
 		}
 
 		ToolbarHelper::cancel('translation.cancel');

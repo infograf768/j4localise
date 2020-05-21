@@ -44,22 +44,7 @@ Factory::getDocument()->addScriptDeclaration("
 	})(jQuery);
 ");
 ?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if ((task == 'package.apply' || task == 'package.save') && document.formvalidator.isValid(document.getElementById('localise-package-form')))
-		{
-			if (confirm(Joomla.JText._('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')))
-			{
-				Joomla.submitform(task, document.getElementById('localise-package-form'));
-			}
-		}
-		else if (task == 'package.cancel' || task == 'package.download')
-		{
-			Joomla.submitform(task, document.getElementById('localise-package-form'));
-		}
-	}
-</script>
+
 <form action="<?php echo Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-package-form" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Localise Package -->

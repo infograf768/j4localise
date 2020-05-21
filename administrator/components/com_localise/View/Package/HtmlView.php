@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -87,6 +88,8 @@ class HtmlView extends BaseHtmlView
 		$isNew      = empty($this->item->id);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		ToolbarHelper::title(
 			Text::sprintf(
 				'COM_LOCALISE_HEADER_MANAGER',
@@ -98,8 +101,15 @@ class HtmlView extends BaseHtmlView
 		// If not checked out, can save the item.
 		if (!$checkedOut)
 		{
-			ToolbarHelper::apply('package.apply');
-			ToolbarHelper::save('package.save');
+			$toolbar->confirmButton('apply')
+				->text('JAPPLY')
+				->message('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')
+				->task('package.apply');
+
+			$toolbar->confirmButton('save')
+				->text('JSAVE')
+				->message('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')
+				->task('package.save');
 		}
 
 		if (!$isNew && $canDo->get('localise.create'))
