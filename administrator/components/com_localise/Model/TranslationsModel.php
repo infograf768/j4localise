@@ -465,11 +465,8 @@ class TranslationsModel extends ListModel
 					foreach ($files as $file)
 					{
 						$reftaglength = strlen($reftag);
-
-						$name	= substr($file, 0, -4);
-						$name	= substr($name, $reftaglength + 1);
-
-						$origin	= LocaliseHelper::getOrigin($name, $client);
+						$name         = substr($file, 0, -4);
+						$origin       = LocaliseHelper::getOrigin($name, $client);
 
 						foreach ($tags as $tag)
 						{
