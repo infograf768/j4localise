@@ -13,6 +13,9 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 
+
+//jimport('joomla.html.html');
+
 /**
  * Form Field Ini class.
  *
@@ -45,7 +48,9 @@ class IniField extends FormField
 		HTMLHelper::_('behavior.core');
 		$basePath = 'media/vendor/codemirror/';
 		// Load Codemirror
-		HTMLHelper::_('script', $basePath . 'lib/codemirror.js', array('version' => 'auto'));
+		HTMLHelper::_('script', $basePath . 'lib/codemirror.min.js', array('version' => 'auto'));
+		HTMLHelper::_('script', $basePath . 'lib/codemirror-ce.min..js', array('version' => 'auto'));
+		HTMLHelper::_('script', $basePath . 'lib/addons.min.js', array('version' => 'auto'));
 		HTMLHelper::_('stylesheet', $basePath . 'lib/codemirror.css', array('version' => 'auto'));
 		HTMLHelper::_('script', 'media/plg_editors_codemirror/js/joomla-editor-codemirror.min.js', array('version' => 'auto', 'relative' => true));
 
