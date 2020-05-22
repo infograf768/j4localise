@@ -10,7 +10,6 @@ namespace Joomla\Component\Localise\Administrator\View\Languages;
 
 defined('_JEXEC') or die;
 
-use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
@@ -91,6 +90,7 @@ class HtmlView extends BaseHtmlView
 		{
 			ToolbarHelper::addNew('language.add');
 			ToolbarHelper::custom('languages.purge', 'purge', 'purge', 'COM_LOCALISE_PURGE', false, false);
+			ToolbarHelper::custom('languages.reformat', 'refresh', 'reformat', 'COM_LOCALISE_REFORMAT', false, false);
 			ToolbarHelper::divider();
 		}
 

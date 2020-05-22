@@ -46,6 +46,21 @@ class LanguagesController extends AdminController
 	}
 
 	/**
+	 * Method to reformat a J3 pack.
+	 *
+	 * @return  void
+	 *
+	 * @since   5.0
+	 */
+	public function reformat()
+	{
+		$model = $this->getModel('languages');
+		$model->reformat();
+		$this->setRedirect(Route::_('index.php?option=com_localise&view=languages', false));
+	}
+
+
+	/**
 	 * Method to get a model object, loading it if required.
 	 *
 	 * @param   string  $name    The model name. Optional.

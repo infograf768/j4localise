@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -273,5 +274,85 @@ class LanguagesModel extends ListModel
 		Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_PURGE_SUCCESS'));
 
 		return true;
+	}
+
+	/**
+	 * Reformat j3 lang files.
+	 *
+	 * @return  bool True on success
+	 *
+	 * @since   5.0
+	 */
+	public function reformat()
+	{
+		$clients = array('site', 'administrator');
+
+		if (LocaliseHelper::hasInstallation())
+		{
+			$clients[] = 'installation';
+		}
+
+		foreach ($clients as $client)
+		{
+			$folders = Folder::folders(
+				constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+					'.',
+					false,
+					false,
+					array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides', 'en-GB')
+			);
+
+			foreach ($folders as $folder)
+			{
+				$file = constant('LOCALISEPATH_' . strtoupper($client)) . '/language/' . $folder . '/' . $folder . '.xml';
+				$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
+
+				if (File::exists($file))
+				{
+					$files   = Folder::files($path . '/' . $folder);
+					$newPath = $path . '/' . $folder;
+
+					foreach ($files as $file)
+					{
+						if ($file === $folder . '.xml')
+						{
+							rename($newPath . '/' . $file, $newPath . '/langmetadata.xml');
+						}
+
+						if ($file === $folder . '.localise.php')
+						{
+							rename($newPath . '/' . $file, $newPath . '/localise.php');
+						}
+					}
+
+					$inifiles = Folder::files($path . '/' . $folder, '.ini$');
+
+					foreach ($inifiles as $inifile)
+					{
+						if ($inifile === $folder . '.ini')
+						{
+							rename($newPath . '/' . $inifile,  $newPath . '/joomla.ini');
+						}
+						else
+						{
+							$newinifile = str_replace($folder . '.', '', $inifile);
+							rename($newPath . '/' . $inifile,  $newPath . '/' . $newinifile);
+						}
+					}
+
+					Factory::getApplication()->enqueueMessage(Text::sprintf('COM_LOCALISE_REFORMAT_SUCCESS', $folder, $client), 'message');
+
+					$return = true;
+				}
+				else
+				{
+					Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_REFORMAT_NONE'));
+
+					$return = false;
+				}
+			}
+		}
+
+		return $return;
 	}
 }
