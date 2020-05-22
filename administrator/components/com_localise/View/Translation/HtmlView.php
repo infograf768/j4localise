@@ -11,8 +11,8 @@ namespace Joomla\Component\Localise\Administrator\View\Translation;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Client\ClientHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -92,9 +92,8 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolbarHelper::title(
-			Text::sprintf(
-				'COM_LOCALISE_HEADER_MANAGER',
-				Text::sprintf($this->item->exists ? 'COM_LOCALISE_HEADER_TRANSLATION_EDIT' : 'COM_LOCALISE_HEADER_TRANSLATION_NEW', $filename)
+			Text::_(Text::sprintf($this->item->exists ? 'COM_LOCALISE_HEADER_TRANSLATION_EDIT' :
+				'COM_LOCALISE_HEADER_TRANSLATION_NEW', $filename)
 			),
 			'comments-2 langmanager'
 		);
@@ -118,6 +117,7 @@ class HtmlView extends BaseHtmlView
 				ToolbarHelper::apply('translation.apply');
 				ToolbarHelper::save('translation.save');
 			}
+
 		}
 
 		ToolbarHelper::cancel('translation.cancel');
