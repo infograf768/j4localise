@@ -139,9 +139,9 @@ $max_vars = ini_get('max_input_vars');
 				<?php endif; ?>
 			<?php else : ?>
 				<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
-					<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS_WITH_DEVELOP', $item->translated, $item->unchanged, $extras_amount, $text_changes_amount, $item->total, $item->extra); ?>">
+					<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS_WITH_DEVELOP', $item->translated, $item->unchanged, $extras_amount, $text_changes_amount, $item->total, $item->extra); ?>">
 				<?php else : ?>
-					<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>">
+					<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>">
 				<?php endif; ?>
 				<?php $unrevised = $item->total ? intval(100 * $item->unrevised / $item->total) : 0; ?>
 					<?php if ($item->unrevised > 0 && $unrevised == 0) : ?>
