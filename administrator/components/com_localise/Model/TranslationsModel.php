@@ -247,6 +247,7 @@ class TranslationsModel extends ListModel
 										'origin' => $origin
 									)
 								);
+
 								$this->translations["$client|$tag|$prefix$extension$suffix"] = $translation;
 							}
 						}
@@ -661,7 +662,7 @@ class TranslationsModel extends ListModel
 					{
 						$origin = LocaliseHelper::getOrigin("$prefix$extension$suffix", $client);
 
-						if (File::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
+						if (File::exists($client_folder . '/' . $tag . '/langmetadata.xml'))
 						{
 							if (array_key_exists("$client|$tag|$prefix$extension$suffix", $this->translations))
 							{
