@@ -121,15 +121,15 @@ class LocaliseTable extends Table
 
 			if (preg_match('#^/(administrator|plugins)#', $relativePath))
 			{
-				$id = LocaliseHelper::getFileId(JPATH_ROOT . "/administrator/language/$tag/$tag.xml");
+				$id = LocaliseHelper::getFileId(JPATH_ROOT . "/administrator/language/$tag/langmetadata.xml");
 			}
 			elseif (preg_match('#^/' . $installation_folder . '#', $relativePath))
 			{
-				$id = LocaliseHelper::getFileId(LOCALISEPATH_INSTALLATION . "/language/$tag/$tag.xml");
+				$id = LocaliseHelper::getFileId(LOCALISEPATH_INSTALLATION . "/language/$tag/langmetadata.xml");
 			}
 			else
 			{
-				$id = LocaliseHelper::getFileId(JPATH_ROOT . "/language/$tag/$tag.xml");
+				$id = LocaliseHelper::getFileId(JPATH_ROOT . "/language/$tag/langmetadata.xml");
 			}
 
 			$assetName = "com_localise.$id";
