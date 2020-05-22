@@ -186,6 +186,11 @@
 	content: "";
 	color: #EF8F00;
 }
+.icon-16-info:before {
+  font-family: 'Font Awesome 5 Free';
+	content: "\f05a";
+	color: #0D093A;
+}
 .icon-16-default:before {
 	content: "";
 	color: orange;

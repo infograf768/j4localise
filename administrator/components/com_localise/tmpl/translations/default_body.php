@@ -140,9 +140,11 @@ $max_vars = ini_get('max_input_vars');
 				<?php endif; ?>
 			<?php else : ?>
 				<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
-					<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS_WITH_DEVELOP', $item->translated, $item->unchanged, $extras_amount, $text_changes_amount, $item->total, $item->extra); ?>">
+					<?php $tip = $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS_WITH_DEVELOP', $item->translated, $item->unchanged, $item->total, $item->extra); ?>
+					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=> $tip, 'inactive_class' => '16-info', 'enabled' => false, 'translate' => false)); ?>
 				<?php else : ?>
-					<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>">
+					<?php $tip = $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>
+					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=> $tip, 'inactive_class' => '16-info', 'enabled' => false, 'translate' => false)); ?>
 				<?php endif; ?>
 				<?php $unrevised = $item->total ? intval(100 * $item->unrevised / $item->total) : 0; ?>
 					<?php if ($item->unrevised > 0 && $unrevised == 0) : ?>
@@ -161,7 +163,7 @@ $max_vars = ini_get('max_input_vars');
 						<?php $unchanged = number_format(100 * $unchangeds / $item->total, 2); ?>
 					<?php endif; ?>
 					<?php if ($unchangeds) : ?>
-						( <?php echo $translated; ?> % + <?php echo $unchanged; ?> %)
+						<div>(<?php echo $translated; ?> % + <?php echo $unchanged; ?> %)</div>
 					<?php else : ?>
 						<?php echo $translated; ?> %
 					<?php endif; ?>
