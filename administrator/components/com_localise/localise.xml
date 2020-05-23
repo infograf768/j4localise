@@ -5,14 +5,13 @@
 	<author>Christophe Demko</author>
 	<author>Jean-Marie Simonet</author>
 	<author>Ifan Evans</author>
-	<copyright>(C) 2017 Open Source Matters. All rights reserved.</copyright>
+	<copyright>(C) 2017 - 2020 Open Source Matters. All rights reserved.</copyright>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
 	<version>5.0.0-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<namespace>Joomla\Component\Localise</namespace>
-	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
@@ -63,8 +62,6 @@
 			<folder>View</folder>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>dispatcher.php</filename>
-			<filename>install.php</filename>
 			<filename>localise.php</filename>
 		</files>
 	</administration>

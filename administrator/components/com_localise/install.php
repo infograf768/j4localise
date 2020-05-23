@@ -30,12 +30,12 @@ class Com_LocaliseInstallerScript extends JInstallerScript
 	 * @var    string
 	 * @since  4.0.32
 	 */
-	protected $minimumPhp = '7.0.0';
+	protected $minimumPhp = '7.2.5';
 	/**
 	 * Minimum Joomla! version required to install the extension
 	 *
 	 * @var    string
 	 * @since  4.0.32
 	 */
-	protected $minimumJoomla = '4.0';
+	protected $minimumJoomla = '4.0.0';
 }
