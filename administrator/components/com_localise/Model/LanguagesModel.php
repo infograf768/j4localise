@@ -48,6 +48,9 @@ class LanguagesModel extends ListModel
 	 */
 	public function __construct($config = array(), MVCFactoryInterface $factory = null)
 	{
+		// Reformat 3.x language packs to new format
+		$this->reformat();
+
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
