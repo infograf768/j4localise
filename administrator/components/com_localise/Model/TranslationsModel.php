@@ -22,6 +22,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\Component\Localise\Administrator\Model\LanguagesModel;
 use Joomla\CMS\Filter\InputFilter;
 
 
@@ -51,6 +52,10 @@ class TranslationsModel extends ListModel
 	 */
 	public function __construct($config = array(), MVCFactoryInterface $factory = null)
 	{
+		// If not done yet, reformat 3.x language packs to new format
+		$reformat = new LanguagesModel;
+		$reformat->reformat();
+
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
