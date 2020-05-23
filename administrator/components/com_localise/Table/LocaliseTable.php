@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
+use Joomla\Database\DatabaseDriver;
 
 /**
  * Localise Table class for the Localise Component
@@ -64,7 +65,7 @@ class LocaliseTable extends Table
 	 *
 	 * @param   object  &$db  Database connector object
 	 */
-	public function __construct(\JDatabaseDriver $db)
+	public function __construct(DatabaseDriver $db)
 	{
 		parent::__construct('#__localise', 'id', $db);
 	}
