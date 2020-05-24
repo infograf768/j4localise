@@ -3,11 +3,13 @@
  * @package     Com_Localise
  * @subpackage  com_localise.script
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Installer\InstallerScript;
 
 /**
  * Installation class to perform additional changes during install/uninstall/update
@@ -15,7 +17,7 @@ defined('_JEXEC') or die;
  * @package  Localise
  * @since    4.0
  */
-class Com_LocaliseInstallerScript extends JInstallerScript
+class Com_LocaliseInstallerScript extends InstallerScript
 {
 	/**
 	 * The extension name. This should be set in the installer script.
@@ -37,5 +39,5 @@ class Com_LocaliseInstallerScript extends JInstallerScript
 	 * @var    string
 	 * @since  4.0.32
 	 */
-	protected $minimumJoomla = '4.0.0';
+	protected $minimumJoomla = '4.1';
 }
