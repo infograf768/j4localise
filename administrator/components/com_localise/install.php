@@ -39,5 +39,5 @@ class Com_LocaliseInstallerScript extends InstallerScript
 	 * @var    string
 	 * @since  4.0.32
 	 */
-	protected $minimumJoomla = '4.1';
+	protected $minimumJoomla = '4.0';
 }
