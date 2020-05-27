@@ -24,8 +24,8 @@ $tag       = $this->item->tag ;
 $client    = $this->item->client;
 
 HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', 'relative' => true]);
-?>
-<script type="text/javascript">
+
+Factory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
 	{
 		if (task == 'language.cancel' || document.formvalidator.isValid(.getElementById('localise-language-form')))
@@ -33,7 +33,8 @@ HTMLHelper::_('script', 'com_localise/language-form.js', ['version' => 'auto', '
 			Joomla.submitform(task, document.getElementById('localise-language-form'));
 		}
 	}
-</script>
+");
+?>
 
 <form action="<?php echo \JRoute::_('index.php?option=com_localise&view=language&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-language-form" class="form-validate">
 	<div class="row-fluid">

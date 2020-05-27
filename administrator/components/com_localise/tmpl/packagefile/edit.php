@@ -19,8 +19,7 @@ $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
 Text::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
 
-?>
-<script type="text/javascript">
+Factory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
 	{
 		if ((task == 'packagefile.apply' || task == 'packagefile.save') && document.formvalidator.isValid(document.getElementById('localise-package-form')))
@@ -35,7 +34,8 @@ Text::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
 			Joomla.submitform(task, document.getElementById('localise-package-form'));
 		}
 	}
-</script>
+");
+?>
 <form action="<?php echo Route::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-package-form" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Localise Package -->

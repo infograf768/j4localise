@@ -42,9 +42,16 @@ Factory::getDocument()->addScriptDeclaration("
 			});
 		});
 	})(jQuery);
+
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'package.cancel' || task == 'package.download')
+		{
+			Joomla.submitform(task, document.getElementById('localise-package-form'));
+		}
+	}
 ");
 ?>
-
 <form action="<?php echo Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-package-form" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Localise Package -->

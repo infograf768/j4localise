@@ -85,15 +85,6 @@ else
 	$tabchoised		= 'default';
 }
 
-$document = Factory::getDocument();
-$document->addScriptDeclaration("
-	if (typeof(Localise) === 'undefined') {
-		Localise = {};
-	}
-	Localise.language_src = '" . $src . "';
-	Localise.language_dest = '" . $dest . "';
-");
-
 $fieldSets = $this->form->getFieldsets();
 $sections  = $this->form->getFieldsets('strings');
 $ftpSets   = $this->formftp->getFieldsets();
@@ -101,10 +92,14 @@ $ftpSets   = $this->formftp->getFieldsets();
 // Prepare Bing translation
 Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
-?>
-<script type="text/javascript">
-	Localise.language_src = '<?php echo $src; ?>';
-	Localise.language_dest = '<?php echo $dest; ?>';
+
+Factory::getDocument()->addScriptDeclaration("
+	if (typeof(Localise) === 'undefined') {
+		Localise = {};
+	}
+
+	Localise.language_src = '" . $src . "';
+	Localise.language_dest = '" . $dest . "';
 
 	function returnAll()
 	{
@@ -115,7 +110,33 @@ Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 				e.onclick();
 		});
 	}
-</script>
+
+	var has_translatedkeys   = " . $has_translatedkeys . ";
+	var has_untranslatedkeys = " . $has_untranslatedkeys . ";
+	var has_unchangedkeys    = " . $has_unchangedkeys . ";
+	var has_textchangedkeys  = " . $has_textchangedkeys . ";
+
+	if (has_translatedkeys == '0')
+	{
+		var x = document.getElementById('jform_select_keystatus').options[2].disabled = true;
+	}
+
+	if (has_untranslatedkeys == '0')
+	{
+		var x = document.getElementById('jform_select_keystatus').options[3].disabled = true;
+	}
+
+	if (has_unchangedkeys == '0')
+	{
+		var x = document.getElementById('jform_select_keystatus').options[4].disabled = true;
+	}
+
+	if (has_textchangedkeys == '0')
+	{
+		var x = document.getElementById('jform_select_keystatus').options[5].disabled = true;
+	}
+");
+?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<div class="row">
 		<!-- Begin Localise Translation -->
@@ -339,29 +360,3 @@ Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 		<!-- End Localise Translation -->
 	</div>
 </form>
-<script type="text/javascript">
-var has_translatedkeys   = '<?php echo $has_translatedkeys; ?>';
-var has_untranslatedkeys = '<?php echo $has_untranslatedkeys; ?>';
-var has_unchangedkeys    = '<?php echo $has_unchangedkeys; ?>';
-var has_textchangedkeys  = '<?php echo $has_textchangedkeys; ?>';
-
-	if (has_translatedkeys=='0')
-	{
-		var x = document.getElementById("jform_select_keystatus").options[2].disabled = true;
-	}
-
-	if (has_untranslatedkeys=='0')
-	{
-		var x = document.getElementById("jform_select_keystatus").options[3].disabled = true;
-	}
-
-	if (has_unchangedkeys=='0')
-	{
-		var x = document.getElementById("jform_select_keystatus").options[4].disabled = true;
-	}
-
-	if (has_textchangedkeys=='0')
-	{
-		var x = document.getElementById("jform_select_keystatus").options[5].disabled = true;
-	}
-</script>

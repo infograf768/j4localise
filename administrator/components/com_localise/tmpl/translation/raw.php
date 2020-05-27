@@ -44,17 +44,18 @@ $installed_version = $installed_version->getShortVersion();
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
-?>
-<script type="text/javascript">
+
+Factory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
 	{
 		if (task == 'translation.cancel' || document.formvalidator.isValid(document.getElementById('localise-translation-form')))
 		{
-			<?php echo $this->form->getField('source')->save(); ?>
+			" . $this->form->getField('source')->save() . "
 			Joomla.submitform(task, document.getElementById('localise-translation-form'));
 		}
 	}
-</script>
+");
+?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<?php if ($this->ftp) : ?>
 	<fieldset class="panelform">
