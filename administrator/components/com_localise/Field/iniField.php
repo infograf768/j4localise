@@ -10,6 +10,7 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -75,30 +76,29 @@ class IniField extends FormField
 		$html = array();
 		$html[] = '<textarea' . $class . ' name="' . $this->name . '" id="' . $this->id . '" cols="' . $cols . '" rows="' . $rows . '">'
 				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
-		$html[] = '<script type="text/javascript">';
-		$html[] = '(function() {';
-		$html[] = '		var editor = CodeMirror.fromTextArea(document.getElementById("' . $this->id . '"), ' . json_encode($options) . ');';
-		$html[] = '		editor.setOption("extraKeys", {';
-		$html[] = '			"Ctrl-Q": function(cm) {';
-		$html[] = '				cm.setOption("fullScreen", !cm.getOption("fullScreen"));';
-		$html[] = '			},';
-		$html[] = '			"Esc": function(cm) {';
-		$html[] = '				if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);';
-		$html[] = '			}';
-		$html[] = '		});';
-		$html[] = '		editor.on("gutterClick", function(cm, n) {';
-		$html[] = '			var info = cm.lineInfo(n)';
-		$html[] = '			cm.setGutterMarker(n, "breakpoints", info.gutterMarkers ? null : makeMarker())';
-		$html[] = '		})';
-		$html[] = '		function makeMarker() {';
-		$html[] = '			var marker = document.createElement("div")';
-		$html[] = '			marker.style.color = "#822"';
-		$html[] = '			marker.innerHTML = "●"';
-		$html[] = '			return marker';
-		$html[] = '		}';
-		$html[] = '		Joomla.editors.instances[\'' . $this->id . '\'] = editor;';
-		$html[] = '})()';
-		$html[] = '</script>';
+
+		Factory::getDocument()->addScriptDeclaration("
+			var editor = CodeMirror.fromTextArea(document.getElementById('" . $this->id . "'), " . json_encode($options) . ");
+			editor.setOption('extraKeys', {
+				'Ctrl-Q': function(cm) {
+					cm.setOption('fullScreen', !cm.getOption('fullScreen'));
+				},
+				'Esc': function(cm) {
+					if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
+				}
+			});
+			editor.on('gutterClick', function(cm, n) {
+				var info = cm.lineInfo(n)
+				cm.setGutterMarker(n, 'breakpoints', info.gutterMarkers ? null : makeMarker())
+			})
+			function makeMarker() {
+				var marker = document.createElement('div')
+				marker.style.color = '#822';
+				marker.innerHTML = '●'
+				return marker
+			}
+			Joomla.editors.instances['" . $this->id . "'] = editor;
+		");
 
 		return implode("\n", $html);
 	}
