@@ -1396,11 +1396,11 @@ class TranslationModel extends AdminModel
 
 			if (!empty($strings))
 			{
-				$contents[] = "\n[New Strings]\n\n";
+				$contents[] = "\n[" . Text::_('COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE') . "]\n\n";
 
 				foreach ($strings as $key => $string)
 				{
-					$contents[] = $key . '="' . str_replace('"', '/"', $string) . "\"\n";
+					$contents[] = $key . '="' . str_replace('"', '\"', $string) . "\"\n";
 				}
 			}
 
