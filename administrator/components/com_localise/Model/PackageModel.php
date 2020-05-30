@@ -653,6 +653,7 @@ class PackageModel extends AdminModel
 		$folders = array(
 			'/tmp/language',
 			'/tmp/administrator/language',
+			'/tmp/api/language',
 		);
 
 		foreach ($folders as $folder)
@@ -1035,6 +1036,71 @@ class PackageModel extends AdminModel
 			}
 		}
 
+		// Start new API install
+		$text .= "\t\t" . '<folder type="language" client="api" id="' . $data['language'] . '">api/language/' . $data['language'] . '</folder>' . "\n";
+
+		$path = JPATH_ROOT . '/api/language/' . $data['language'] . '/langmetadata.xml';
+
+		if (File::exists($path))
+		{
+			$xmldata = file_get_contents($path);
+		}
+
+		if (!File::exists($path) || empty($xmldata))
+		{
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_NO_XML', 'api', 'langmetadata.xml', 'error'));
+			$app->redirect(Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+
+			return false;
+		}
+
+		// Generate api package
+		$api_package_files = array();
+
+		$api_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		$api_txt .= '<extension version="' . $small_version . '" client="api" type="language" method="upgrade">' . "\n";
+		$api_txt .= "\t" . '<name>' . $installName . '</name>' . "\n";
+		$api_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
+		$api_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
+		$api_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+		$api_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
+		$api_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+		$api_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+		$api_txt .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+		$api_txt .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
+		$api_txt .= "\t" . '<description><![CDATA[' . $data['language'] . ' - api language]]</description>' . "\n";
+		$api_txt .= "\t" . '<files>' . "\n";
+		$api_txt .= "\t\t" . '<folder>/</folder>' . "\n";
+
+		// As this is a core package, the main joomla file xx-XX.ini is a copy of the administrator joomla file
+		$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/joomla.ini';
+
+		if (File::exists($path))
+		{
+			$language_data = file_get_contents($path);
+		}
+
+		$api_package_files[] = array('name' => 'joomla.ini','data' => $language_data);
+
+		$api_txt .= "\t\t" . '<filename file="meta">install.xml</filename>' . "\n";
+		$api_txt .= "\t" . '</files>' . "\n";
+		$api_txt .= "\t" . '<params />' . "\n";
+		$api_txt .= '</extension>' . "\n";
+		$api_package_files[] = array('name' => 'install.xml','data' => $api_txt);
+		$language_data = file_get_contents(JPATH_ROOT . '/api/language/' . $data['language'] . '/langmetadata.xml');
+		$api_package_files[] = array('name' => 'langmetadata.xml','data' => $language_data);
+
+		Folder::create(JPATH_ROOT . '/tmp/api/language/' . $data['language']);
+
+		foreach ($api_package_files as $apiFile)
+		{
+			file_put_contents(JPATH_ROOT . '/tmp/api/language/' . $data['language'] . '/' . $apiFile['name'], $apiFile['data']);
+
+			$language_data        = file_get_contents(JPATH_ROOT . '/tmp/api/language/' . $data['language'] . '/' . $apiFile['name']);
+			$main_package_files[] = array ('name' => 'api/language/' . $data['language'] . '/' . $apiFile['name'], 'data' => $language_data);
+		}
+
+		// End api
 		$text .= "\t" . '</files>' . "\n";
 
 		if (!empty($data['serverurl']))
