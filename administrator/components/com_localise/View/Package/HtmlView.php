@@ -101,15 +101,8 @@ class HtmlView extends BaseHtmlView
 		// If not checked out, can save the item.
 		if (!$checkedOut)
 		{
-			$toolbar->confirmButton('apply')
-				->text('JAPPLY')
-				->message('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')
-				->task('package.apply');
-
-			$toolbar->confirmButton('save')
-				->text('JSAVE')
-				->message('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')
-				->task('package.save');
+			ToolbarHelper::apply('package.apply');
+			ToolbarHelper::save('package.save');
 		}
 
 		if (!$isNew && $canDo->get('localise.create'))

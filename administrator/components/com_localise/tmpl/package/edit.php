@@ -45,7 +45,14 @@ Factory::getDocument()->addScriptDeclaration("
 
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'package.cancel' || task == 'package.download')
+		if ((task == 'package.apply' || task == 'package.save') && document.formvalidator.isValid(document.getElementById('localise-package-form')))
+		{
+			if (confirm(Joomla.JText._('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')))
+			{
+				Joomla.submitform(task, document.getElementById('localise-package-form'));
+			}
+		}
+		else if (task == 'package.cancel' || task == 'package.download')
 		{
 			Joomla.submitform(task, document.getElementById('localise-package-form'));
 		}
