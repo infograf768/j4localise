@@ -986,7 +986,7 @@ class PackageModel extends AdminModel
 			// Create a basic xx-XX.localise.php if not present in target language
 			elseif (!File::exists($path) || empty($languagedata))
 			{
-				$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $reftag . '/.localise.php');
+				$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $reftag . '/localise.php');
 				$language_data = str_replace($reftag, $data['language'], $language_data);
 				$language_data = str_replace($refclassname, $langclassname, $language_data);
 			}
