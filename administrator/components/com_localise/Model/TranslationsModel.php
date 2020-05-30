@@ -669,7 +669,8 @@ class TranslationsModel extends ListModel
 
 						if (File::exists($client_folder . '/' . $tag . '/langmetadata.xml'))
 						{
-							if (array_key_exists("$client|$tag|$prefix$extension$suffix", $this->translations))
+							if (array_key_exists("$client|$tag|$prefix$extension$suffix", $this->translations)
+								&& $this->translations["$client|$tag|$prefix$extension$suffix"]->state != 'unexisting')
 							{
 								$this
 									->translations["$client|$tag|$prefix$extension$suffix"]

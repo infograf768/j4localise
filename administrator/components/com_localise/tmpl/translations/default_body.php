@@ -108,7 +108,8 @@ $max_vars = ini_get('max_input_vars');
 				<?php echo $item->name; ?>.ini
 			<?php endif; ?>
 			<?php if ($item->writable && $canEdit) : ?>
-				(<a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_localise&task=translation.edit&client=' . $item->client . '&tag=' . $item->tag . '&filename=' . $item->filename . '&storage=' . $item->storage . '&id=' . LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)) . '&layout=raw'); ?>" title="<?php echo Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEWRAW' : 'EDITRAW')); ?>"><?php echo Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_SOURCE'); ?></a>)
+				<?php $tooltip = Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEWRAW' : 'EDITRAW')); ?>
+				(<a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_localise&task=translation.edit&client=' . $item->client . '&tag=' . $item->tag . '&filename=' . $item->filename . '&storage=' . $item->storage . '&id=' . LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)) . '&layout=raw'); ?>"><?php echo Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_SOURCE'); ?></a><div role="tooltip"><?php echo $tooltip;?></div>)
 			<?php else : ?>
 				<?php echo substr($item->path,strlen(JPATH_ROOT)); ?>
 			<?php endif; ?>
