@@ -5,7 +5,7 @@
 			<field
 				id="client"
 				name="client"
-				type="client"
+				type="translationsclient"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>

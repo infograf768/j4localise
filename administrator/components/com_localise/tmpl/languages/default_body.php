@@ -65,7 +65,7 @@ Factory::getDocument()->addScriptDeclaration("
 			<?php endif; ?>
 		</td>
 		<td>
-			<?php if ($item->writable && $canEdit): ?>
+			<?php if ($item->writable && $canEdit) : ?>
 				<span title="" class="localise-icon">
 					<a href="<?php echo Route::_('index.php?option=com_localise&task=language.edit&id='.$item->id.'&client='.$item->client.'&tag='.$item->tag); ?>" class="hasTooltip" title="<?php echo Text::_('COM_LOCALISE_TOOLTIP_LANGUAGES_EDIT'); ?>">
 					<?php echo $item->name; ?>
@@ -85,9 +85,11 @@ Factory::getDocument()->addScriptDeclaration("
 			<?php echo Text::_(ucfirst($item->client)); ?>
 		</td>
 		<td class="center">
-			<a href="<?php echo Route::_('index.php?option=com_localise&view=translations&filters[select][client]=' . $item->client . '&filters[select][tag]=' . $item->tag); ?>" class="btn btn-micro hasTooltip">
-				<i class="icon-list"></i>
-			</a>
+			<?php if ($item->client != 'api') : ?>
+				<a href="<?php echo Route::_('index.php?option=com_localise&view=translations&filters[select][client]=' . $item->client . '&filters[select][tag]=' . $item->tag); ?>" class="btn btn-micro hasTooltip">
+					<span class="icon-list"></span>
+				</a>
+			<?php endif; ?>
 		</td>
 		<td class="center tbody-icon">
 			<?php if ($item->tag == $params->get($item->client, 'en-GB') && $item->client != 'installation'): ?>
@@ -116,3 +118,4 @@ Factory::getDocument()->addScriptDeclaration("
 		</td>
 	</tr>
 <?php endforeach; ?>
+
