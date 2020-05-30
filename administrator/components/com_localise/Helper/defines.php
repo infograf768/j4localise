@@ -18,3 +18,4 @@ $params = ComponentHelper::getParams('com_localise');
 define('LOCALISEPATH_SITE', JPATH_SITE);
 define('LOCALISEPATH_ADMINISTRATOR', JPATH_ADMINISTRATOR);
 define('LOCALISEPATH_INSTALLATION', JPATH_ROOT . '/' . $params->get('installation', 'installation'));
+define('LOCALISEPATH_API', JPATH_ROOT . '/api');
