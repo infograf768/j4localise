@@ -146,7 +146,7 @@ class LanguagesModel extends ListModel
 
 			if (empty($client))
 			{
-				$clients = array('site', 'administrator');
+				$clients = array('site', 'administrator', 'api');
 
 				if (LocaliseHelper::hasInstallation())
 				{
