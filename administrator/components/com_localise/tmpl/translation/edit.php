@@ -142,9 +142,9 @@ Factory::getDocument()->addScriptDeclaration("
 		<!-- Begin Localise Translation -->
 		<div class="col-md-12 form-horizontal">
 			<fieldset>
-				<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
+				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
 					<?php if ($this->ftp) : ?>
-						<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
+						<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 							<?php if (!empty($ftpSets['ftp']->description)):?>
 								<p class="tip"><?php echo Text::_($ftpSets['ftp']->description); ?></p>
 							<?php endif;?>
@@ -161,9 +161,9 @@ Factory::getDocument()->addScriptDeclaration("
 									</div>
 								</div>
 							<?php endforeach; ?>
-						<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+						<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php endif; ?>
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
 						<?php if (!empty($fieldSets['default']->description)) : ?>
 							<p class="alert alert-info"><?php echo Text::_($fieldSets['default']->description); ?></p>
 						<?php endif;?>
@@ -177,8 +177,8 @@ Factory::getDocument()->addScriptDeclaration("
 								</div>
 							</div>
 						<?php endforeach; ?>
-					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
 						<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-legend', array('active' => '')); ?>
 						<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-legend', Text::_($fieldSets['legend']->label), 'legend'); ?>
 							<div>
@@ -337,8 +337,8 @@ Factory::getDocument()->addScriptDeclaration("
 								</ul>
 							<?php endif;?>
 						</div>
-					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
 						<?php if (!empty($fieldSets['permissions']->description)):?>
 							<p class="tip"><?php echo Text::_($fieldSets['permissions']->description); ?></p>
 						<?php endif;?>
@@ -349,12 +349,12 @@ Factory::getDocument()->addScriptDeclaration("
 								</div>
 							</div>
 						<?php endforeach; ?>
-					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 					<input type="hidden" name="task" value="" />
 					<?php echo HTMLHelper::_('form.token'); ?>
 
-				<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
+				<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 			</fieldset>
 		</div>
 		<!-- End Localise Translation -->
