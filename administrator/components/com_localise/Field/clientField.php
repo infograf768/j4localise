@@ -69,6 +69,10 @@ class ClientField extends FormField
 					array('option.attr' => 'attributes', 'attr' => '')
 					);
 
+		$options[] = HTMLHelper::_('select.option', 'api', 'Api',
+			array('option.attr' => 'attributes', 'attr' => '')
+			);
+
 		if (LocaliseHelper::hasInstallation())
 		{
 			$options[] = HTMLHelper::_('select.option', 'installation', Text::_('COM_LOCALISE_OPTION_CLIENT_INSTALLATION'),

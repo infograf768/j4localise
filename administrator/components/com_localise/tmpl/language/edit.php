@@ -13,6 +13,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
 
@@ -37,7 +38,7 @@ Factory::getDocument()->addScriptDeclaration("
 ");
 ?>
 
-<form action="<?php echo \JRoute::_('index.php?option=com_localise&view=language&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-language-form" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_localise&view=language&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-language-form" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Localise Language -->
 		<div class="span12 form-horizontal">
@@ -47,9 +48,9 @@ Factory::getDocument()->addScriptDeclaration("
 				<p><em> <?php echo Text::sprintf('COM_LOCALISE_COPY_REF_TO_NEW_LANG_TIP', $ref_tag, $tag); ?></em></p>
 			<?php endif; ?>
 			<fieldset>
-				<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
+				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
 					<?php if ($this->ftp) : ?>
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 
 						<?php if (!empty($ftpSets['ftp']->description)):?>
 							<p class="tip"><?php echo Text::_($ftpSets['ftp']->description); ?></p>
@@ -59,28 +60,7 @@ Factory::getDocument()->addScriptDeclaration("
 							<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 						<?php endif; ?>
 
-						<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $field->label; ?>
-							</div>
-							<div class="controls">
-								<?php echo $field->input; ?>
-							</div>
-						</div>
-						<?php endforeach; ?>
-
-					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
-
-					<?php endif; ?>
-
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
-
-						<div class="span6">
-						<?php if (!empty($fieldSets['default']->description)) : ?>
-							<p class="tip"><?php echo Text::_($fieldSets['default']->description); ?></p>
-						<?php endif;?>
-							<?php foreach($this->form->getFieldset('default') as $field): ?>
+						<?php foreach($this->formftp->getFieldset('ftp',false) as $field) : ?>
 							<div class="control-group">
 								<div class="control-label">
 									<?php echo $field->label; ?>
@@ -89,6 +69,27 @@ Factory::getDocument()->addScriptDeclaration("
 									<?php echo $field->input; ?>
 								</div>
 							</div>
+						<?php endforeach; ?>
+
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+					<?php endif; ?>
+
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
+
+						<div class="span6">
+						<?php if (!empty($fieldSets['default']->description)) : ?>
+							<p class="tip"><?php echo Text::_($fieldSets['default']->description); ?></p>
+						<?php endif;?>
+							<?php foreach($this->form->getFieldset('default') as $field) : ?>
+								<div class="control-group">
+									<div class="control-label">
+										<?php echo $field->label; ?>
+									</div>
+									<div class="controls">
+										<?php echo $field->input; ?>
+									</div>
+								</div>
 							<?php endforeach; ?>
 						</div>
 						<div class="span6">
@@ -119,47 +120,47 @@ Factory::getDocument()->addScriptDeclaration("
 							<?php endif;?>
 						</div>
 
-					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'author', Text::_($fieldSets['author']->label, true)); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'author', Text::_($fieldSets['author']->label, true)); ?>
 
 						<?php if (!empty($fieldSets['author']->description)):?>
 							<p class="tip"><?php echo Text::_($fieldSets['author']->description); ?></p>
 						<?php endif;?>
 
-						<?php foreach($this->form->getFieldset('author') as $field): ?>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $field->label; ?>
+						<?php foreach($this->form->getFieldset('author') as $field) : ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $field->label; ?>
+								</div>
+								<div class="controls">
+									<?php echo $field->input; ?>
+								</div>
 							</div>
-							<div class="controls">
-								<?php echo $field->input; ?>
-							</div>
-						</div>
 						<?php endforeach; ?>
 
-					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-					<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
 
 						<?php if (!empty($fieldSets['permissions']->description)):?>
 							<p class="tip"><?php echo Text::_($fieldSets['permissions']->description); ?></p>
 						<?php endif;?>
 
-						<?php foreach($this->form->getFieldset('permissions') as $field): ?>
-						<div class="control-group form-vertical">
-							<div class="controls">
-								<?php echo $field->input; ?>
+						<?php foreach($this->form->getFieldset('permissions') as $field) : ?>
+							<div class="control-group form-vertical">
+								<div class="controls">
+									<?php echo $field->input; ?>
+								</div>
 							</div>
-						</div>
 						<?php endforeach; ?>
 
-					<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 					<input type="hidden" name="task" value="" />
 					<?php echo HTMLHelper::_('form.token'); ?>
 
-				<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
+				<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 			</fieldset>
 		</div>
 		<!-- End Localise Language -->
