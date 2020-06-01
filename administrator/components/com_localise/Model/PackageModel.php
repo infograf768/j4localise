@@ -1068,7 +1068,7 @@ class PackageModel extends AdminModel
 		$api_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
 		$api_txt .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
 		$api_txt .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
-		$api_txt .= "\t" . '<description><![CDATA[' . $data['language'] . ' - api language]]</description>' . "\n";
+		$api_txt .= "\t" . '<description>' . $data['language'] . ' - api language</description>' . "\n";
 		$api_txt .= "\t" . '<files>' . "\n";
 		$api_txt .= "\t\t" . '<folder>/</folder>' . "\n";
 
