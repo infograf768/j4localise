@@ -139,7 +139,7 @@ class TranslationsField extends GroupedListField
 
 		foreach ($groups as $client => $extensions)
 		{
-			ArrayHelper::sortObjects($groups[$client], 'text');
+			ksort($groups[$client]);
 		}
 
 		// Merge any additional options in the XML definition.
