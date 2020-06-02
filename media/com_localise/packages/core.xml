@@ -155,6 +155,7 @@
 		<filename>plg_content_fields.sys</filename>
 		<filename>plg_content_finder</filename>
 		<filename>plg_content_finder.sys</filename>
+		<filename>plg_content_imagelazyload.sys</filename>
 		<filename>plg_content_joomla</filename>
 		<filename>plg_content_joomla.sys</filename>
 		<filename>plg_content_loadmodule</filename>
@@ -369,6 +370,12 @@
 		<filename>plg_webservices_templates.sys</filename>
 		<filename>plg_webservices_users</filename>
 		<filename>plg_webservices_users.sys</filename>
+		<filename>plg_workflow_featuring</filename>
+		<filename>plg_workflow_featuring.sys</filename>
+		<filename>plg_workflow_notification</filename>
+		<filename>plg_workflow_notification.sys</filename>
+		<filename>plg_workflow_publishing</filename>
+		<filename>plg_workflow_publishing.sys</filename>
 		<filename>tpl_atum</filename>
 		<filename>tpl_atum.sys</filename>
 	</administrator>

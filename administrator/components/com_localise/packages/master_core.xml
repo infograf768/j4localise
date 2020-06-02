@@ -15,7 +15,7 @@
   <packager></packager>
   <packagerurl></packagerurl>
   <servername>Accredited Joomla! Translations</servername>
-  <serverurl>http://update.joomla.org/language/translationlist_3.xml</serverurl>
+  <serverurl>http://update.joomla.org/language/translationlist_4.xml</serverurl>
   <site>
     <filename>com_ajax.ini</filename>
     <filename>com_config.ini</filename>
@@ -236,6 +236,7 @@
     <filename>plg_content_fields.sys.ini</filename>
     <filename>plg_content_finder.ini</filename>
     <filename>plg_content_finder.sys.ini</filename>
+    <filename>plg_content_imagelazyload.sys.ini</filename>
     <filename>plg_content_joomla.ini</filename>
     <filename>plg_content_joomla.sys.ini</filename>
     <filename>plg_content_loadmodule.ini</filename>
@@ -450,6 +451,12 @@
     <filename>plg_webservices_templates.sys.ini</filename>
     <filename>plg_webservices_users.ini</filename>
     <filename>plg_webservices_users.sys.ini</filename>
+    <filename>plg_workflow_featuring.ini</filename>
+    <filename>plg_workflow_featuring.sys.ini</filename>
+    <filename>plg_workflow_notification.ini</filename>
+    <filename>plg_workflow_notification.sys.ini</filename>
+    <filename>plg_workflow_publishing.ini</filename>
+    <filename>plg_workflow_publishing.sys.ini</filename>
     <filename>tpl_atum.ini</filename>
     <filename>tpl_atum.sys.ini</filename>
   </administrator>
