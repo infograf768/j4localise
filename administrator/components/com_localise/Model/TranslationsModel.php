@@ -10,20 +10,19 @@ namespace Joomla\Component\Localise\Administrator\Model;
 
 defined('_JEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
-use Joomla\Component\Localise\Administrator\Model\TranslationModel;
 use Joomla\CMS\Cache\CacheController;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
-use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\Component\Localise\Administrator\Model\LanguagesModel;
-use Joomla\CMS\Filter\InputFilter;
+use Joomla\Component\Localise\Administrator\Model\TranslationModel;
+use Joomla\Utilities\ArrayHelper;
 
 
 /**
@@ -62,6 +61,13 @@ class TranslationsModel extends ListModel
 				'filename',
 				'completed',
 				'translated',
+				'client',
+				'tag',
+				'storage',
+				'origin',
+				'state',
+				'type',
+				'develop',
 			);
 		}
 
@@ -83,59 +89,15 @@ class TranslationsModel extends ListModel
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app  = Factory::getApplication();
-		$data = $app->input->get('filters', array(), 'array');
 
-		if (empty($data))
-		{
-			$data = array();
-			$data['select'] = $app->getUserState('com_localise.select');
-		}
-		else
-		{
-			$app->setUserState('com_localise.select', $data['select']);
-		}
-
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
-		$search = InputFilter::getInstance()->clean($search, 'TRIM');
-		$search = strtolower($search);
-
-		if ($search)
-		{
-			$app->setUserState('filter.search', strtolower($search));
-		}
-		else
-		{
-			$app->setUserState('filter.search', '');
-		}
-
-		$this->setState(
-			'filter.storage',
-			isset($data['select']['storage']) ? $data['select']['storage'] : ''
-		);
-		$this->setState(
-			'filter.origin',
-			isset($data['select']['origin'])  ? $data['select']['origin'] : ''
-		);
-		$this->setState(
-			'filter.state',
-			isset($data['select']['state'])   ? $data['select']['state'] : ''
-		);
-		$this->setState(
-			'filter.type',
-			isset($data['select']['type'])    ? $data['select']['type'] : ''
-		);
-		$this->setState(
-			'filter.client',
-			isset($data['select']['client'])  ? $data['select']['client'] : ''
-		);
-		$this->setState(
-			'filter.tag',
-			isset($data['select']['tag'])     ? $data['select']['tag'] :''
-		);
-		$this->setState(
-			'filter.develop',
-			isset($data['select']['develop']) ? $data['select']['develop'] :''
-		);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.client', $this->getUserStateFromRequest($this->context . '.client', 'client', '', 'string'));
+		$this->setState('filter.tag', $this->getUserStateFromRequest($this->context . '.tag', 'tag', '', 'string'));
+		$this->setState('filter.storage', $this->getUserStateFromRequest($this->context . '.storage', 'storage', '', 'string'));
+		$this->setState('filter.origin', $this->getUserStateFromRequest($this->context . '.origin', 'origin', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.state', 'state', '', 'string'));
+		$this->setState('filter.type', $this->getUserStateFromRequest($this->context . '.type', 'type', '', 'string'));
+		$this->setState('filter.develop', $this->getUserStateFromRequest($this->context . '.develop', 'develop', '', 'string'));
 
 		$params    = ComponentHelper::getParams('com_localise');
 
@@ -780,8 +742,8 @@ class TranslationsModel extends ListModel
 
 		if (!isset($this->translations))
 		{
-			$filter_client = $this->getState('filter.client');
-			$filter_tag   = $this->getState('filter.tag');
+			$filter_client  = $this->getState('filter.client');
+			$filter_tag     = $this->getState('filter.tag');
 			$filter_develop = $this->getState('filter.develop');
 
 			// Don't try to find translations if filters not set for client and language.
@@ -800,7 +762,7 @@ class TranslationsModel extends ListModel
 			$get_customised_ref = LocaliseHelper::getSourceGithubfiles($gh_data);
 
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
-			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
+			$filter_tag   = $filter_tag ? ("^" . $filter_tag . "$") : '.';
 
 			$cache_controller = CacheController::getInstance();
 
@@ -829,7 +791,6 @@ class TranslationsModel extends ListModel
 
 			foreach ($this->translations as $key => $translation)
 			{
-				//$model = \JModelLegacy::getInstance('Translation', 'LocaliseModel', array('ignore_request' => true));
 				$model = new TranslationModel();
 				$model->getState();
 				$model->setState('translation.id', LocaliseHelper::getFileId($translation->path));

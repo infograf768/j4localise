@@ -21,13 +21,18 @@ $showSelector      = false;
 $showFilterButton  = false;
 $selectorFieldName = $data['options']['selectorFieldName'] ?? 'client';
 
-if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView)
+if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView
+	|| $data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Translations\HtmlView)
 {
 	// Client selector doesn't have to activate the filter bar.
 	unset($data['view']->activeFilters['client']);
 
 	// Menutype filter doesn't have to activate the filter bar
 	unset($data['view']->activeFilters['tag']);
+
+	// Develop filter doesn't have to activate the filter bar
+	unset($data['view']->activeFilters['develop']);
+
 }
 
 	// Checks if the filters button should exist.
@@ -60,12 +65,14 @@ $filtersClass = isset($data['view']->activeFilters) && $data['view']->activeFilt
 ?>
 <div class="js-stools" role="search">
 	<?php
-		if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView)
-	{
-		$clientField = $data['view']->filterForm->getField('client');
-		$tagField    = $data['view']->filterForm->getField('tag'); ?>
+		if ($data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Languages\HtmlView
+			|| $data['view'] instanceof \Joomla\Component\Localise\Administrator\View\Translations\HtmlView)
+		{
+			$clientField  = $data['view']->filterForm->getField('client');
+			$tagField     = $data['view']->filterForm->getField('tag');
+			$developField = $data['view']->filterForm->getField('develop'); ?>
 
-	<?php // Add the client and language selectors before the form filters. ?>
+	<?php // Add the client,language and develop selectors before the form filters. ?>
 	<?php if ($clientField) : ?>
 		<div class="js-stools-container-selector">
 			<div class="js-stools-field-selector js-stools-client">
@@ -80,9 +87,17 @@ $filtersClass = isset($data['view']->activeFilters) && $data['view']->activeFilt
 			</div>
 		</div>
 	<?php endif; ?>
+	<?php if ($developField) : ?>
+		<div class="js-stools-container-selector">
+			<div class="js-stools-field-selector js-stools-develop">
+				<?php echo $developField->input; ?>
+			</div>
+		</div>
+	<?php endif; ?>
 	<?php
 		}
 	?>
+
 	<div class="js-stools-container-bar ml-auto">
 		<div class="btn-toolbar">
 			<?php echo $this->sublayout('bar', $data); ?>

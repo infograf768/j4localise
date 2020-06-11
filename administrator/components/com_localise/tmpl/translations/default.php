@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
 
@@ -22,31 +24,37 @@ $params     = ComponentHelper::getParams('com_localise');
 $ref_tag    = $params->get('reference', 'en-GB');
 ?>
 
-<form action="<?php echo \JRoute::_('index.php?option=com_localise&view=translations');?>" method="post" name="adminForm" id="adminForm">
-	<?php echo $this->loadTemplate('filter'); ?>
-	<div class="col-md-12">
-		<?php echo $this->loadTemplate('legend'); ?>
-	</div>
-	<div class="col-md-12">
-		<?php if ($ref_tag == 'en-GB') : ?>
-			<?php echo $this->loadTemplate('references'); ?>
-		<?php endif; ?>
-	</div>
-	<table class="table table-striped" id="localiseList">
-		<thead>
-			<?php echo $this->loadTemplate('head'); ?>
-		</thead>
-		<tfoot>
-			<?php echo $this->loadTemplate('foot'); ?>
-		</tfoot>
-		<tbody>
-			<?php echo $this->loadTemplate('body'); ?>
-		</tbody>
-	</table>
-	<div>
+<form action="<?php echo Route::_('index.php?option=com_localise&view=translations');?>" method="post" name="adminForm" id="adminForm">
+	<div class="row">
+		<!-- Begin Content -->
+		<div class="col-md-12">
+			<div id="j-main-container" class="j-main-container">
+				<?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('selectorFieldName' => 'develop'))); ?>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<?php echo $this->loadTemplate('legend'); ?>
+		</div>
+		<div class="col-md-12">
+			<?php if ($ref_tag == 'en-GB') : ?>
+				<?php echo $this->loadTemplate('references'); ?>
+			<?php endif; ?>
+		</div>
+		<table class="table table-striped" id="localiseList">
+			<thead>
+				<?php echo $this->loadTemplate('head'); ?>
+			</thead>
+			<tfoot>
+				<?php echo $this->loadTemplate('foot'); ?>
+			</tfoot>
+			<tbody>
+				<?php echo $this->loadTemplate('body'); ?>
+			</tbody>
+		</table>
+
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="task" value="" />
-		<?php echo \JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 	<!-- End Content -->
 </form>

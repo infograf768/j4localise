@@ -52,6 +52,10 @@ class HtmlView extends BaseHtmlView
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
+		unset($this->activeFilters['client']);
+		unset($this->activeFilters['tag']);
+		unset($this->activeFilters['develop']);
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -62,7 +66,6 @@ class HtmlView extends BaseHtmlView
 
 		// Set the toolbar
 		$this->addToolbar();
-		$this->sidebar = \JHtmlSidebar::render();
 
 		// Display the view
 		parent::display($tpl);

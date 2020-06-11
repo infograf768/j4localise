@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Localise\Administrator\Field">
+	<field
+		id="client"
+		name="client"
+		type="translationsclient"
+		hidden="true"
+		onchange="this.form.submit()">
+		<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
+	</field>
+	<field
+		id="tag"
+		name="tag"
+		type="language"
+		client="site"
+		hidden="true"
+		onchange="this.form.submit()">
+		<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
+	</field>
+	<field
+		id="develop"
+		name="develop"
+		type="develop"
+		hidden="true"
+		onchange="this.form.submit()">
+		<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_SELECT</option>
+	</field>
+
 	<fields name="filter">
 		<field
 			name="search"
@@ -8,7 +34,41 @@
 			description="JSEARCH_FILTER"
 			hint="JSEARCH_FILTER"
 		/>
+		<field
+			id="storage"
+			name="storage"
+			type="storage"
+			hidden="true"
+			onchange="this.form.submit()">
+			<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_SELECT</option>
+		</field>
+		<field
+			id="origin"
+			name="origin"
+			type="origin"
+			hidden="true"
+			class="custom-select"
+			onchange="this.form.submit()">
+			<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_SELECT</option>
+		</field>
+		<field
+			id="state"
+			name="state"
+			type="state"
+			hidden="true"
+			onchange="this.form.submit()">
+			<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STATE_SELECT</option>
+		</field>
+		<field
+			id="type"
+			name="type"
+			type="type"
+			hidden="true"
+			onchange="this.form.submit()">
+			<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
+		</field>
 	</fields>
+
 	<fields name="list">
 		<field
 			name="fullordering"
