@@ -32,7 +32,7 @@ $ref_tag    = $params->get('reference', 'en-GB');
 				<?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('selectorFieldName' => 'develop'))); ?>
 			</div>
 		</div>
-		<div class="col-md-12">
+		<div class="col-md-12 mb-2">
 			<?php echo $this->loadTemplate('legend'); ?>
 		</div>
 		<div class="col-md-12">
