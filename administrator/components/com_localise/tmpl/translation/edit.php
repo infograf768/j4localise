@@ -234,7 +234,7 @@ Factory::getDocument()->addScriptDeclaration("
 											foreach ($ids as $keytofilter)
 											{
 												$showkey = 0;
-												$pregkey = preg_quote('<b>'. $keytofilter .'</b>', '/<>');
+												$pregkey = preg_quote('<strong>'. $keytofilter .'</strong>', '/<>');
 
 												if (preg_match("/$pregkey/", $field->label))
 												{
@@ -294,7 +294,7 @@ Factory::getDocument()->addScriptDeclaration("
 												foreach ($ids as $keytofilter)
 												{
 													$showkey = 0;
-													$pregkey = preg_quote('<b>'.$keytofilter.'</b>', '/<>');
+													$pregkey = preg_quote('<strong>'.$keytofilter.'</strong>', '/<>');
 
 													if (preg_match("/$pregkey/", $field->label))
 													{

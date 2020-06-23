@@ -109,7 +109,7 @@ Factory::getDocument()->addScriptDeclaration("
 			?>
 		</td>
 		<td class="hidden-phone">
-			<span class="hasTooltip" title="<b><?php echo Text::_('COM_LOCALISE_TOOLTIP_LANGUAGES_AUTHOR_INFORMATION') . '</b><br />' . (isset($item->authorEmail) ? ($item->authorEmail . '<br />') :'') . (isset($item->authorUrl)?$item->authorUrl:''); ?>">
+			<span class="hasTooltip" title="<strong><?php echo Text::_('COM_LOCALISE_TOOLTIP_LANGUAGES_AUTHOR_INFORMATION') . '</strong><br />' . (isset($item->authorEmail) ? ($item->authorEmail . '<br />') :'') . (isset($item->authorUrl)?$item->authorUrl:''); ?>">
 				<?php if (isset($item->author)) :
 						echo $item->author;
 					endif;

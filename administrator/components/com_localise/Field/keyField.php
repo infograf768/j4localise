@@ -88,7 +88,7 @@ class KeyField extends FormField
 			}
 
 			$textchanges_checkbox = '';
-			$textchanges_checkbox .= '<div><b>' . $title . '</b><input style="max-width:5%; min-width:5%;" id="';
+			$textchanges_checkbox .= '<div><strong>' . $title . '</strong><input style="max-width:5%; min-width:5%;" id="';
 			$textchanges_checkbox .= $textchange_visible_id;
 			$textchanges_checkbox .= '" type="checkbox" ';
 			$textchanges_checkbox .= ' name="jform[vtext_changes][]" value="';

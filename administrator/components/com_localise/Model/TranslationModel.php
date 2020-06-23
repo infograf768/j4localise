@@ -1003,9 +1003,9 @@ class TranslationModel extends AdminModel
 							$sourcetext = $developdata['text_changes']['ref'][$key];
 							$targettext = $developdata['text_changes']['ref_in_dev'][$key];
 
-							$label   = '<b>'
+							$label   = '<strong>'
 								. $key
-								. '</b><br /><p class="text_changes">'
+								. '</strong><br /><p class="text_changes">'
 								. $change
 								. '</p>';
 
@@ -1016,9 +1016,9 @@ class TranslationModel extends AdminModel
 						}
 						elseif ($have_develop == '1' && in_array($key, $developdata['extra_keys']['keys']))
 						{
-							$label   = '<span class="new_word"><b>['
+							$label   = '<span class="new_word"><strong>['
 								. Text::_('COM_LOCALISE_NEW_KEY_IN_DEVELOP')
-								. ']</b> </span><b>'
+								. ']</strong> </span><strong>'
 								. $key
 								. '</b><br />'
 								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
@@ -1027,9 +1027,9 @@ class TranslationModel extends AdminModel
 						}
 						else
 						{
-							$label   = '<b>'
+							$label   = '<strong>'
 								. $key
-								. '</b><br />'
+								. '</strong><br />'
 								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 						}
 
@@ -1082,7 +1082,7 @@ class TranslationModel extends AdminModel
 							$field   = $fieldset->addChild('field');
 							$status  = 'extra';
 							$default = $string;
-							$label   = '<b>' . $key . '</b>';
+							$label   = '<strong>' . $key . '</strong>';
 							$field->addAttribute('status', $status);
 							$field->addAttribute('description', $string);
 
