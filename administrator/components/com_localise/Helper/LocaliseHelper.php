@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Stream;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Version;
@@ -908,7 +909,7 @@ abstract class LocaliseHelper
 
 			if (!empty($gh_token))
 			{
-				$options->set('gh.token', $gh_token);
+				$options->set('headers', ['Authorization' => 'token ' . $gh_token]);
 				$github = new Github($options);
 			}
 			else
@@ -919,7 +920,7 @@ abstract class LocaliseHelper
 				// Trying with a 'read only' public repositories token
 				// But base 64 encoded to avoid Github alarms sharing it.
 				$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
-				$options->set('gh.token', $gh_token);
+				$options->set('headers', ['Authorization' => 'token ' . $gh_token]);
 				$github = new Github($options);
 			}
 
@@ -1071,7 +1072,7 @@ abstract class LocaliseHelper
 
 		if (!empty($gh_token))
 		{
-			$options->set('gh.token', $gh_token);
+			$options->set('headers', ['Authorization' => 'token ' . $gh_token]);
 			$github = new Github($options);
 		}
 		else
@@ -1082,7 +1083,7 @@ abstract class LocaliseHelper
 			// Trying with a 'read only' public repositories token
 			// But base 64 encoded to avoid Github alarms sharing it.
 			$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
-			$options->set('gh.token', $gh_token);
+			$options->set('headers', ['Authorization' => 'token ' . $gh_token]);
 			$github = new Github($options);
 		}
 
@@ -1534,7 +1535,7 @@ abstract class LocaliseHelper
 
 			if (!empty($gh_token))
 			{
-				$options->set('gh.token', $gh_token);
+				$options->set('headers', ['Authorization' => 'token ' . $gh_token]);
 				$github = new Github($options);
 			}
 			else
@@ -1545,7 +1546,7 @@ abstract class LocaliseHelper
 				// Trying with a 'read only' public repositories token
 				// But base 64 encoded to avoid Github alarms sharing it.
 				$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
-				$options->set('gh.token', $gh_token);
+				$options->set('headers', ['Authorization' => 'token ' . $gh_token]);
 				$github = new Github($options);
 			}
 
@@ -1890,7 +1891,7 @@ abstract class LocaliseHelper
 			$ref_sections      = self::parseSections($refpath);
 			$keys_in_reference = array_keys($ref_sections['keys']);
 
-			$stream = new \JStream;
+			$stream = new Stream;
 			$stream->open($devpath);
 			$stream->seek(0);
 
