@@ -179,7 +179,7 @@
 			label="COM_LOCALISE_TARGET_SPACER_LABEL" />
 		<field
 			name="gh_branch"
-			type="text"
+			type="branches"
 			class="ltr"
 			default="staging"
 			label="COM_LOCALISE_LABEL_GITHUB_BRANCH"
