@@ -154,7 +154,6 @@ class KeyField extends FormField
 		$istextchange  = (int) $this->element['istextchange'];
 		$isextraindev  = (int) $this->element['isextraindev'];
 		$status        = (string) $this->element['status'];
-
 		$label_id      = $this->id . '-lbl';
 		$label_for     = $this->id;
 		$textarea_name = $this->name;
@@ -320,8 +319,9 @@ class KeyField extends FormField
 
 			// No sense translate the reference keys by the same language.
 			$onclick2 = '';
-			$button2  = '<span style="width:5%;">'
-						. HTMLHelper::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
+			$button2 = '';
+			/*$button2  = '<span style="width:5%;">'
+						. HTMLHelper::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';*/
 
 			if ($istextchange == 1 || $isextraindev == 1)
 			{
@@ -343,6 +343,11 @@ class KeyField extends FormField
 			$input .= $status;
 			$input .= '" onkeyup="' . $onkeyup . '">' . $textvalue;
 			$input .= '</textarea>';
+
+			if ($status= 'extra')
+			{
+				$button = '';
+			}
 		}
 
 		return $button . $button2 . $input;

@@ -179,6 +179,10 @@ Factory::getDocument()->addScriptDeclaration("
 						<?php endforeach; ?>
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
+						<div class="alert alert-info">
+							<span class="fas fa-info-circle info-line" aria-hidden="true"</span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+							<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE'); ?>
+						</div>
 						<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-legend', array('active' => '')); ?>
 						<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-legend', Text::_($fieldSets['legend']->label), 'legend'); ?>
 							<div>

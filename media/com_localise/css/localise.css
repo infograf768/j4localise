@@ -346,3 +346,7 @@ color:#8B0000 !important;
 	background-color: #cfe6e9;
 	border: 1px gray !important;
 }
+/* Translation info */
+.info-line {
+  line-height: 1.2rem;
+}
