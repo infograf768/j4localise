@@ -72,7 +72,6 @@ Factory::getDocument()->addScriptDeclaration("
 						<?php endforeach; ?>
 
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
-
 					<?php endif; ?>
 
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
@@ -82,14 +81,7 @@ Factory::getDocument()->addScriptDeclaration("
 							<p class="tip"><?php echo Text::_($fieldSets['default']->description); ?></p>
 						<?php endif;?>
 							<?php foreach($this->form->getFieldset('default') as $field) : ?>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $field->label; ?>
-									</div>
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								</div>
+								<?php echo $field->renderField(); ?>
 							<?php endforeach; ?>
 						</div>
 						<div class="span6">
@@ -97,27 +89,11 @@ Factory::getDocument()->addScriptDeclaration("
 							<p class="tip"><?php echo Text::_($fieldSets['meta']->description); ?></p>
 						<?php endif;?>
 							<?php foreach ($this->form->getFieldset('meta') as $field) : ?>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $field->label; ?>
-									</div>
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								</div>
+								<?php echo $field->renderField(); ?>
 							<?php endforeach; ?>
-							<?php if (version_compare(\JVERSION, '3.7', 'ge')) : ?>
-								<?php foreach ($this->form->getFieldset('metanew') as $field) : ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $field->label; ?>
-										</div>
-										<div class="controls">
-											<?php echo $field->input; ?>
-										</div>
-									</div>
-								<?php endforeach; ?>
-							<?php endif;?>
+							<?php foreach ($this->form->getFieldset('metanew') as $field) : ?>
+								<?php echo $field->renderField(); ?>
+							<?php endforeach; ?>
 						</div>
 
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
@@ -129,14 +105,7 @@ Factory::getDocument()->addScriptDeclaration("
 						<?php endif;?>
 
 						<?php foreach($this->form->getFieldset('author') as $field) : ?>
-							<div class="control-group">
-								<div class="control-label">
-									<?php echo $field->label; ?>
-								</div>
-								<div class="controls">
-									<?php echo $field->input; ?>
-								</div>
-							</div>
+							<?php echo $field->renderField(); ?>
 						<?php endforeach; ?>
 
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>

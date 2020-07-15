@@ -354,11 +354,11 @@ class LanguageModel extends AdminModel
 		{
 			$text = '';
 			$text .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-			$text .= '<metafile version="' . $small_version . '" client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
+			$text .= '<metafile client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
 			$text .= "\t" . '<tag>' . htmlspecialchars($tag, ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
 			$text .= "\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
 			$text .= "\t" . '<version>' . htmlspecialchars($data['version'], ENT_COMPAT, 'UTF-8') . '</version>' . "\n";
-			$text .= "\t" . '<creationDate>' . htmlspecialchars($data['creationDate'], ENT_COMPAT, 'UTF-8') . '</creationDate>' . "\n";
+			$text .= "\t" . '<creationDate>' . date('Y-m-d') . '</creationDate>' . "\n";
 			$text .= "\t" . '<author>' . htmlspecialchars($data['author'], ENT_COMPAT, 'UTF-8') . '</author>' . "\n";
 
 			// AuthorEmail, authorURL are not used in the installation
@@ -403,11 +403,7 @@ class LanguageModel extends AdminModel
 				$text .= "\t\t" . '<locale>' . htmlspecialchars($data['locale'], ENT_COMPAT, 'UTF-8') . '</locale>' . "\n";
 				$text .= "\t\t" . '<firstDay>' . htmlspecialchars($data['firstDay'], ENT_COMPAT, 'UTF-8') . '</firstDay>' . "\n";
 				$text .= "\t\t" . '<weekEnd>' . htmlspecialchars($data['weekEnd'], ENT_COMPAT, 'UTF-8') . '</weekEnd>' . "\n";
-
-				if (version_compare(\JVERSION, '3.7', 'ge'))
-				{
-					$text .= "\t\t" . '<calendar>' . htmlspecialchars($data['calendar'], ENT_COMPAT, 'UTF-8') . '</calendar>' . "\n";
-				}
+				$text .= "\t\t" . '<calendar>' . htmlspecialchars($data['calendar'], ENT_COMPAT, 'UTF-8') . '</calendar>' . "\n";
 			}
 
 			$text .= "\t" . '</metadata>' . "\n";

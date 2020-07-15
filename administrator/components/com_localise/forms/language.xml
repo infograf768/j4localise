@@ -150,12 +150,6 @@
 			label="COM_LOCALISE_LABEL_LANGUAGE_URL"
 			description="COM_LOCALISE_LABEL_LANGUAGE_URL_DESC" />
 		<field
-			name="creationDate"
-			type="text"
-			required="true"
-			label="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE"
-			description="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE_DESC" />
-		<field
 			name="joomlacopyright"
 			readonly="true"
 			type="text"
