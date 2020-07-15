@@ -688,11 +688,11 @@ class PackageModel extends AdminModel
 		// Prepare text to save for the xml package description
 		$text = '';
 		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		$text .= '<extension type="package" version="' . $small_version . '" method="upgrade">' . "\n";
+		$text .= '<extension type="package" method="upgrade">' . "\n";
 		$text .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
 		$text .= "\t" . '<packagename>' . $data['language'] . '</packagename>' . "\n";
 		$text .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
-		$text .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+		$text .= "\t" . '<creationDate>' . date('Y-m-d') . '</creationDate>' . "\n";
 		$text .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 		$text .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
 		$text .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
@@ -735,11 +735,11 @@ class PackageModel extends AdminModel
 			$site_package_files = array();
 
 			$site_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$site_txt .= '<extension version="' . $small_version . '" client="site" type="language" method="upgrade">' . "\n";
+			$site_txt .= '<extension client="site" type="language" method="upgrade">' . "\n";
 			$site_txt .= "\t" . '<name>' . $installName . '</name>' . "\n";
 			$site_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
 			$site_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
-			$site_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+			$site_txt .= "\t" . '<creationDate>' . date('Y-m-d') . '</creationDate>' . "\n";
 			$site_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 			$site_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
 			$site_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
@@ -926,11 +926,11 @@ class PackageModel extends AdminModel
 			$admin_package_files = array();
 
 			$admin_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$admin_txt .= '<extension version="' . $small_version . '" client="administrator" type="language" method="upgrade">' . "\n";
+			$admin_txt .= '<extension client="administrator" type="language" method="upgrade">' . "\n";
 			$admin_txt .= "\t" . '<name>' . $installName . '</name>' . "\n";
 			$admin_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
 			$admin_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
-			$admin_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+			$admin_txt .= "\t" . '<creationDate>' . date('Y-m-d') . '</creationDate>' . "\n";
 			$admin_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 			$admin_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
 			$admin_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
@@ -1058,11 +1058,11 @@ class PackageModel extends AdminModel
 		$api_package_files = array();
 
 		$api_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		$api_txt .= '<extension version="' . $small_version . '" client="api" type="language" method="upgrade">' . "\n";
+		$api_txt .= '<extension client="api" type="language" method="upgrade">' . "\n";
 		$api_txt .= "\t" . '<name>' . $installName . '</name>' . "\n";
 		$api_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
 		$api_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
-		$api_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+		$api_txt .= "\t" . '<creationDate>' . date('Y-m-d') . '</creationDate>' . "\n";
 		$api_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 		$api_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
 		$api_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";

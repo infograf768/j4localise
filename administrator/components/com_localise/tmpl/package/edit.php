@@ -73,14 +73,7 @@ Factory::getDocument()->addScriptDeclaration("
 								<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 						<?php endif; ?>
 						<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $field->label; ?>
-									</div>
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								</div>
+							<?php echo $field->renderField(); ?>
 						<?php endforeach; ?>
 					<?php echo HTMLHelper::_('uitab.endTab');; ?>
 					<?php endif; ?>
@@ -91,14 +84,7 @@ Factory::getDocument()->addScriptDeclaration("
 									<legend><?php echo Text::_($fieldSets['default']->description); ?></legend>
 							<?php endif;?>
 							<?php foreach($this->form->getFieldset('default') as $field): ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $field->label; ?>
-										</div>
-										<div class="controls">
-											<?php echo $field->input; ?>
-										</div>
-									</div>
+								<?php echo $field->renderField(); ?>
 							<?php endforeach; ?>
 						</div>
 						<div class="col-lg-12 col-xl-6">
@@ -107,14 +93,7 @@ Factory::getDocument()->addScriptDeclaration("
 									<legend><?php echo Text::_($fieldSets['translations']->description); ?></legend>
 							<?php endif;?>
 							<?php foreach($this->form->getFieldset('translations') as $field): ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $field->label; ?>
-										</div>
-										<div class="controls">
-											<?php echo $field->input; ?>
-										</div>
-									</div>
+								<?php echo $field->renderField(); ?>
 							<?php endforeach; ?>
 						</div>
 						</div>
