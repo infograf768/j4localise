@@ -141,7 +141,7 @@ $max_vars = ini_get('max_input_vars');
 				<?php endif; ?>
 			<?php else : ?>
 				<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
-					<?php $tip = $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS_WITH_DEVELOP', $item->translated, $item->unchanged, $item->total, $item->extra); ?>
+					<?php $tip = $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS_WITH_DEVELOP', $item->translated, $item->unchanged, $extras_amount, $text_changes_amount, $item->total, $item->extra); ?>
 					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=> $tip, 'inactive_class' => '16-info', 'enabled' => false, 'translate' => false)); ?>
 				<?php else : ?>
 					<?php $tip = $item->translated + $item->unchanged == 0 ? Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>
