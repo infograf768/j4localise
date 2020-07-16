@@ -867,7 +867,7 @@ abstract class LocaliseHelper
 				return true;
 			}
 
-			$xml_file = $custom_client_path . '/en-GB.xml';
+			$xml_file = $custom_client_path . '/langmetadata.xml';
 
 			// Unrequired move or update files again
 			if ($saved_ref != '0' && $installed_version == $last_source && File::exists($xml_file))
