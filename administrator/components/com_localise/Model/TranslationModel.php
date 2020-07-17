@@ -1020,7 +1020,7 @@ class TranslationModel extends AdminModel
 								. Text::_('COM_LOCALISE_NEW_KEY_IN_DEVELOP')
 								. ']</strong> </span><strong>'
 								. $key
-								. '</b><br />'
+								. '</strong><br />'
 								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 
 							$field->attributes()->isextraindev = 1;
