@@ -72,7 +72,7 @@ Factory::getDocument()->addScriptDeclaration("
 						<?php if ($this->ftp instanceof Exception): ?>
 								<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 						<?php endif; ?>
-						<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
+						<?php foreach($this->formftp->getFieldset('ftp',false) as $field) : ?>
 							<?php echo $field->renderField(); ?>
 						<?php endforeach; ?>
 					<?php echo HTMLHelper::_('uitab.endTab');; ?>
@@ -80,41 +80,33 @@ Factory::getDocument()->addScriptDeclaration("
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
 						<div class="row">
 						<div class="col-lg-12 col-xl-6">
-							<?php if (!empty($fieldSets['default']->description)):?>
-									<legend><?php echo Text::_($fieldSets['default']->description); ?></legend>
-							<?php endif;?>
-							<?php foreach($this->form->getFieldset('default') as $field): ?>
-								<?php echo $field->renderField(); ?>
-							<?php endforeach; ?>
+							<fieldset id="fieldset-default" class="options-form">
+								<legend><?php echo Text::_('COM_LOCALISE_FIELDSET_PACKAGE_DETAIL'); ?></legend>
+								<?php foreach($this->form->getFieldset('default') as $field) : ?>
+									<?php echo $field->renderField(); ?>
+								<?php endforeach; ?>
+							</fieldset>
 						</div>
 						<div class="col-lg-12 col-xl-6">
-							<legend><?php echo Text::_($fieldSets['translations']->label); ?></legend>
-							<?php if (!empty($fieldSets['translations']->description)):?>
-									<legend><?php echo Text::_($fieldSets['translations']->description); ?></legend>
-							<?php endif;?>
-							<?php foreach($this->form->getFieldset('translations') as $field): ?>
-								<?php echo $field->renderField(); ?>
-							<?php endforeach; ?>
+							<fieldset id="fieldset-translations" class="options-form">
+								<legend><?php echo Text::_($fieldSets['translations']->label); ?></legend>
+								<?php foreach($this->form->getFieldset('translations') as $field) : ?>
+									<?php echo $field->renderField(); ?>
+								<?php endforeach; ?>
+							</fieldset>
 						</div>
 						</div>
-					<?php echo HTMLHelper::_('uitab.endTab');; ?>
-					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
-						<?php if (!empty($fieldSets['permissions']->description)):?>
-								<p class="tip"><?php echo Text::_($fieldSets['permissions']->description); ?></p>
-						<?php endif;?>
-						<?php foreach($this->form->getFieldset('permissions') as $field): ?>
-								<div class="control-group form-vertical">
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								</div>
-						<?php endforeach; ?>
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
-
+					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
+						<fieldset id="fieldset-rules" class="options-form">
+							<legend><?php echo Text::_($fieldSets['permissions']->label, true); ?></legend>
+							<div>
+								<?php echo $this->form->getInput('rules'); ?>
+							</div>
+						</fieldset>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<input type="hidden" name="task" value="" />
-
 					<?php echo HTMLHelper::_('form.token'); ?>
-
 				<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 		</div>
 		<!-- End Localise Package -->

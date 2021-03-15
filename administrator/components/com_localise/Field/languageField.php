@@ -47,8 +47,6 @@ class LanguageField extends ListField
 	 */
 	protected function getOptions()
 	{
-		$app   = Factory::getApplication();
-		$state = $app->getUserState('com_localise.select');
 		$attributes = '';
 
 		if ($v = (string) $this->element['onchange'])
@@ -70,23 +68,7 @@ class LanguageField extends ListField
 			$install = array();
 		}
 
-		// Listing languages in the language filter depending on the client filter
-		if ($state['client'] == 'installation')
-		{
-			$languages = $install;
-		}
-		elseif ($state['client'] == 'administrator')
-		{
-			$languages = $admin;
-		}
-		elseif ($state['client'] == 'site')
-		{
-			$languages = $site;
-		}
-		else
-		{
-			$languages  = array_merge($admin, $site, $install);
-		}
+		$languages  = array_merge($admin, $site, $install);
 
 		$attributes .= ' class="' . (string) $this->element['class'] . ($this->value == $reference ? ' iconlist-16-reference"' : '"');
 

@@ -24,7 +24,6 @@ use Joomla\Component\Localise\Administrator\Model\LanguagesModel;
 use Joomla\Component\Localise\Administrator\Model\TranslationModel;
 use Joomla\Utilities\ArrayHelper;
 
-
 /**
  * Translations Model class for the Localise component
  *

@@ -18,6 +18,8 @@ use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
+include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
+
 FormHelper::loadFieldClass('list');
 
 /**

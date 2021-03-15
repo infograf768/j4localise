@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package core="true">
   <title>Master core pack - 4.0.0</title>
-  <description>description</description>
+  <description>Master core 4.0.0</description>
   <manifest>master core</manifest>
   <version></version>
   <packversion></packversion>
@@ -9,7 +9,7 @@
   <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
   <authoremail></authoremail>
   <authorurl></authorurl>
-  <language></language>
+  <language>en-GB</language>
   <copyright>Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.</copyright>
   <url></url>
   <packager></packager>

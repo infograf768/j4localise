@@ -55,8 +55,8 @@ $installed_version = $installed_version->getShortVersion();
 		'notice');
 	}
 
-$input	= Factory::getApplication()->input;
-$posted	= $input->post->get('jform', array(), 'array');
+$input  = Factory::getApplication()->input;
+$posted = $input->post->get('jform', array(), 'array');
 
 $has_translatedkeys   = !empty($this->item->translatedkeys) ? 1 : 0;
 $has_untranslatedkeys = !empty($this->item->untranslatedkeys) ? 1 : 0;
@@ -141,7 +141,6 @@ Factory::getDocument()->addScriptDeclaration("
 	<div class="row">
 		<!-- Begin Localise Translation -->
 		<div class="col-md-12 form-horizontal">
-			<fieldset>
 				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
 					<?php if ($this->ftp) : ?>
 						<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
@@ -152,14 +151,7 @@ Factory::getDocument()->addScriptDeclaration("
 								<p class="error"><?php echo Text::_($this->ftp->message); ?></p>
 							<?php endif; ?>
 							<?php foreach($this->formftp->getFieldset('ftp',false) as $field) : ?>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $field->label; ?>
-									</div>
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								</div>
+								<?php echo $field->renderField(); ?>
 							<?php endforeach; ?>
 						<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php endif; ?>
@@ -168,14 +160,7 @@ Factory::getDocument()->addScriptDeclaration("
 							<p class="alert alert-info"><?php echo Text::_($fieldSets['default']->description); ?></p>
 						<?php endif;?>
 						<?php foreach($this->form->getFieldset('default') as $field) : ?>
-							<div class="control-group">
-								<div class="control-label">
-									<?php echo $field->label; ?>
-								</div>
-								<div class="controls">
-									<?php echo $field->input; ?>
-								</div>
-							</div>
+							<?php echo $field->renderField(); ?>
 						<?php endforeach; ?>
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
@@ -199,7 +184,7 @@ Factory::getDocument()->addScriptDeclaration("
 						<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
 						<div class="key">
 							<div id="translationbar">
-								<?php //if ($istranslation) : ?>
+								<?php if ($istranslation) : ?>
 									<div class="pull-left">
 										<?php foreach($this->form->getFieldset('select') as $field): ?>
 											<?php if ($field->type != "Spacer") : ?>
@@ -213,102 +198,121 @@ Factory::getDocument()->addScriptDeclaration("
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</div>
-								<?php //endif; ?>
+								<?php endif; ?>
 								<a href="javascript:void(0);" class="btn btn-small" onclick="returnAll();">
 									<i class="icon-reset"></i> <?php echo Text::_('COM_LOCALISE_BUTTON_RESET_ALL');?>
 								</a>
 							</div>
 							<?php
-								if (count($sections) > 1) :
+							if (count($sections) > 1) :
 									echo '<div class="clearfix"></div>';
 									echo HTMLHelper::_('bootstrap.startAccordion', 'localise-translation-sliders');
 									$i = 0;
 									foreach ($sections as $name => $fieldSet) :
 										echo HTMLHelper::_('bootstrap.addSlide', 'localise-translation-sliders', Text::_($fieldSet->label), 'collapse' . $i++);
-							?>
-							<ul class="adminformlist">
-								<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-								<?php
-									$showkey = 0;
-
-									if ($filter != 'allkeys' && !empty($keystofilter))
-									{
-										foreach ($keystofilter as $data => $ids)
-										{
-											foreach ($ids as $keytofilter)
-											{
-												$showkey = 0;
-												$pregkey = preg_quote('<strong>'. $keytofilter .'</strong>', '/<>');
-
-												if (preg_match("/$pregkey/", $field->label))
-												{
-													$showkey = 1;
-													break;
-												}
-											}
-										}
-
-										if ($showkey == '1')
-										{
-										?>
-											<li>
-												<?php echo $field->label; ?>
-												<?php echo $field->input; ?>
-											</li>
-										<?php
-										}
-										else
-										{
-										?>
-											<div style="display:none;">
-												<?php echo $field->label; ?>
-												<?php echo $field->input; ?>
-											</div>
-										<?php
-										}
-									}
-									elseif ($filter == 'allkeys')
-									{
 									?>
-										<li>
-											<?php echo $field->label; ?>
-											<?php echo $field->input; ?>
-										</li>
-									<?php
-									}
-									?>
-								<?php endforeach; ?>
-							</ul>
-							<?php
-								echo HTMLHelper::_('bootstrap.endSlide');
-								endforeach;
-								echo HTMLHelper::_('bootstrap.endAccordion');
-							?>
-							<?php else : ?>
-								<ul class="adminformlist">
-								<?php $sections = array_keys($sections);?>
-								<?php foreach ($this->form->getFieldset($sections[0]) as $field) :?>
-									<?php
-										$showkey = 0;
-
-										if ($filter != 'allkeys' && !empty($keystofilter))
-										{
-											foreach ($keystofilter as $data  => $ids)
-											{
-												foreach ($ids as $keytofilter)
-												{
+										<ul class="adminformlist">
+											<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+												<?php
 													$showkey = 0;
-													$pregkey = preg_quote('<strong>'.$keytofilter.'</strong>', '/<>');
 
-													if (preg_match("/$pregkey/", $field->label))
+													if ($filter != 'allkeys' && !empty($keystofilter))
 													{
-														$showkey = 1;
-														break;
+														foreach ($keystofilter as $data => $ids)
+														{
+															foreach ($ids as $keytofilter)
+															{
+																$showkey = 0;
+																$pregkey = preg_quote('<strong>'. $keytofilter .'</strong>', '/<>');
+
+																if (preg_match("/$pregkey/", $field->label))
+																{
+																	$showkey = 1;
+																		break;
+																}
+															}
+														}
+
+														if ($showkey == '1')
+														{
+												?>
+															<li>
+																<?php echo $field->label; ?>
+																<?php echo $field->input; ?>
+															</li>
+														<?php
+														}
+														else
+														{
+														?>
+															<div style="display:none;">
+																<?php echo $field->label; ?>
+																<?php echo $field->input; ?>
+															</div>
+														<?php
+														}
+													}
+													elseif ($filter == 'allkeys')
+													{
+													?>
+														<li>
+															<?php echo $field->label; ?>
+															<?php echo $field->input; ?>
+														</li>
+													<?php
+													}
+													?>
+											<?php endforeach; ?>
+										</ul>
+									<?php
+									echo HTMLHelper::_('bootstrap.endSlide');
+									endforeach;
+									echo HTMLHelper::_('bootstrap.endAccordion');
+									?>
+								<?php else : ?>
+									<ul class="adminformlist">
+										<?php $sections = array_keys($sections); ?>
+										<?php foreach ($this->form->getFieldset($sections[0]) as $field) : ?>
+										<?php
+											$showkey = 0;
+
+											if ($filter != 'allkeys' && !empty($keystofilter))
+											{
+												foreach ($keystofilter as $data  => $ids)
+												{
+													foreach ($ids as $keytofilter)
+													{
+														$showkey = 0;
+														$pregkey = preg_quote('<strong>'.$keytofilter.'</strong>', '/<>');
+
+														if (preg_match("/$pregkey/", $field->label))
+														{
+															$showkey = 1;
+															break;
+														}
 													}
 												}
-											}
 
-											if ($showkey == '1')
+												if ($showkey == '1')
+												{
+												?>
+													<li>
+														<?php echo $field->label; ?>
+														<?php echo $field->input; ?>
+													</li>
+												<?php
+												}
+												else
+												{
+												?>
+													<div style="display:none;">
+														<?php echo $field->label; ?>
+														<?php echo $field->input; ?>
+													</div>
+												<?php
+												}
+											}
+											elseif ($filter == 'allkeys')
 											{
 											?>
 												<li>
@@ -317,30 +321,12 @@ Factory::getDocument()->addScriptDeclaration("
 												</li>
 											<?php
 											}
-											else
-											{
 											?>
-												<div style="display:none;">
-													<?php echo $field->label; ?>
-													<?php echo $field->input; ?>
-												</div>
-											<?php
-											}
-										}
-										elseif ($filter == 'allkeys')
-										{
-										?>
-											<li>
-												<?php echo $field->label; ?>
-												<?php echo $field->input; ?>
-											</li>
-										<?php
-										}
-									?>
-								<?php endforeach; ?>
-								</ul>
-							<?php endif;?>
+										<?php endforeach; ?>
+									</ul>
+								<?php endif;?>
 						</div>
+
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_($fieldSets['permissions']->label, true)); ?>
 						<?php if (!empty($fieldSets['permissions']->description)):?>
@@ -354,13 +340,12 @@ Factory::getDocument()->addScriptDeclaration("
 							</div>
 						<?php endforeach; ?>
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
-
-					<input type="hidden" name="task" value="" />
-					<?php echo HTMLHelper::_('form.token'); ?>
-
 				<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
-			</fieldset>
+
 		</div>
 		<!-- End Localise Translation -->
+		<input type="hidden" name="task" value="" />
+		<?php echo HTMLHelper::_('form.token'); ?>
+
 	</div>
 </form>

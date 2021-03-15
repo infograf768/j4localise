@@ -70,8 +70,8 @@ class ClientField extends FormField
 					);
 
 		$options[] = HTMLHelper::_('select.option', 'api', 'Api',
-			array('option.attr' => 'attributes', 'attr' => '')
-			);
+					array('option.attr' => 'attributes', 'attr' => '')
+					);
 
 		if (LocaliseHelper::hasInstallation())
 		{
