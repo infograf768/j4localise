@@ -87,7 +87,7 @@ Factory::getDocument()->addScriptDeclaration("
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a role="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true"><?php echo Text::_('COM_LOCALISE_MODAL_CLOSE'); ?></a>
+			<a role="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-hidden="true"><?php echo Text::_('COM_LOCALISE_MODAL_CLOSE'); ?></a>
 		</div>
 	</div>
   </div>
