@@ -188,7 +188,7 @@ $has_installation  = LocaliseHelper::hasInstallation();
 	}
 ?>
 <?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-reference', array('active' => '')); ?>
-<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-reference', JText::_('COM_LOCALISE_SLIDER_TRANSLATIONS_REFERENCES'), 'references'); ?>
+<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-reference', Text::_('COM_LOCALISE_SLIDER_TRANSLATIONS_REFERENCES'), 'references'); ?>
 <?php echo $report; ?>
 <?php echo HTMLHelper::_('bootstrap.endSlide'); ?>
 <?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>

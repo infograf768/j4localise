@@ -83,9 +83,9 @@ class HtmlView extends BaseHtmlView
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		ToolbarHelper::title(
-			\JText::sprintf(
+			Text::sprintf(
 				'COM_LOCALISE_HEADER_MANAGER',
-				$isNew ? \JText::_('COM_LOCALISE_HEADER_FILEPACKAGE_NEW') : \JText::_('COM_LOCALISE_HEADER_FILEPACKAGE_EDIT')
+				$isNew ? Text::_('COM_LOCALISE_HEADER_FILEPACKAGE_NEW') : Text::_('COM_LOCALISE_HEADER_FILEPACKAGE_EDIT')
 			),
 			'icon-comments-2 langmanager'
 		);
