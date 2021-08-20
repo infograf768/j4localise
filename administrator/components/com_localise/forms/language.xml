@@ -6,10 +6,11 @@
 		description="COM_LOCALISE_FIELDSET_LANGUAGE_LANGUAGE_DESC">
 		<field
 			name="client"
-			type="client"
+			type="Client"
 			default="site"
 			label="COM_LOCALISE_LABEL_LANGUAGE_CLIENT"
 			description="COM_LOCALISE_LABEL_LANGUAGE_CLIENT_DESC"
+			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			required="true" />
 		<field
 			name="tag"

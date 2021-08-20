@@ -7,7 +7,7 @@
 		<field
 			name="legend"
 			id="legend"
-			type="legend"
+			type="Legend"
 			label="COM_LOCALISE_LABEL_TRANSLATION_KEY"
 			description="COM_LOCALISE_LABEL_TRANSLATION_KEY_DESC"
 			addfieldprefix="Joomla\Component\Localise\Administrator\Field" />

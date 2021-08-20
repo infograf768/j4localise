@@ -31,7 +31,7 @@ FormHelper::loadFieldClass('list');
  *
  * @since       1.0
  */
-class CoreLanguageField extends ListField
+class CorelanguageField extends ListField
 {
 	/**
 	 * The field type.

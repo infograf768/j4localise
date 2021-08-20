@@ -23,14 +23,14 @@ use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
  *
  * @since       1.0
  */
-class TranslationsClientField extends FormField
+class TranslationsclientField extends FormField
 {
 	/**
 	 * The form field type.
 	 *
 	 * @var		string
 	 */
-	protected $type = 'Client';
+	protected $type = 'Translationsclient';
 
 	/**
 	 * Method to get the field input markup.

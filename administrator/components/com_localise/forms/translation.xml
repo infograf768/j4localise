@@ -93,7 +93,7 @@
 			<field
 				id="keystatus"
 				name="keystatus"
-				type="keystatus"
+				type="Keystatus"
 				default=""
 				class="filter-select"
 				hidden="true"
@@ -110,7 +110,7 @@
 		<field
 			name="legend"
 			id="legend"
-			type="legend"
+			type="Legend"
 			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			label="COM_LOCALISE_LABEL_TRANSLATION_KEY"
 			description="COM_LOCALISE_LABEL_TRANSLATION_KEY_DESC" />
@@ -136,7 +136,7 @@
 		description="COM_LOCALISE_LABEL_TRANSLATION_SOURCE_DESC">
 		<field
 			name="source"
-			type="ini"
+			type="Ini"
 			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			class="col-md-10"
 			rows="20"

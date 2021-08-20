@@ -26,14 +26,14 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since       1.0
  */
-class ExtensionTranslationsField extends GroupedlistField
+class ExtensiontranslationsField extends GroupedlistField
 {
 	/**
 	 * The field type.
 	 *
 	 * @var    string
 	 */
-	protected $type = 'ExtensionTranslations';
+	protected $type = 'Extensiontranslations';
 
 	/**
 	 * Method to get a list of options for a list input.

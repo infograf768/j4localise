@@ -5,7 +5,7 @@
 			<field
 				id="client"
 				name="client"
-				type="translationsclient"
+				type="Translationsclient"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
@@ -13,7 +13,7 @@
 			<field
 				id="tag"
 				name="tag"
-				type="language"
+				type="Language"
 				client="site"
 				hidden="true"
 				onchange="this.form.submit()">
@@ -22,7 +22,7 @@
 			<field
 				id="storage"
 				name="storage"
-				type="storage"
+				type="Storage"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_SELECT</option>
@@ -30,7 +30,7 @@
 			<field
 				id="origin"
 				name="origin"
-				type="origin"
+				type="Origin"
 				hidden="true"
 				class="custom-select"
 				onchange="this.form.submit()">
@@ -39,7 +39,7 @@
 			<field
 				id="state"
 				name="state"
-				type="state"
+				type="State"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STATE_SELECT</option>
@@ -47,7 +47,7 @@
 			<field
 				id="type"
 				name="type"
-				type="type"
+				type="Type"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
@@ -55,7 +55,7 @@
 			<field
 				id="develop"
 				name="develop"
-				type="develop"
+				type="Develop"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_SELECT</option>

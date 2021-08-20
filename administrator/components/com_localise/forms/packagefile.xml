@@ -26,9 +26,10 @@
 		<field
 			id="language"
 			name="language"
-			type="corelanguage"
+			type="Corelanguage"
 			label="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE"
 			description="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE_DESC"
+			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			required="true" />
 		<field
 			id="version"
@@ -117,14 +118,14 @@
 		<field
 			id="translations"
 			name="translations"
-			type="extensiontranslations"
+			type="Extensiontranslations"
 			label="COM_LOCALISE_LABEL_PACKAGE_TRANSLATIONS"
 			description="COM_LOCALISE_LABEL_PACKAGE_TRANSLATIONS_DESC"
-			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			multiple="true"
 			size="20"
 			hidden="true"
 			class="span12"
+			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			required="true" />
 	</fieldset>
 	<fieldset

@@ -39,7 +39,7 @@
 			description="COM_LOCALISE_AUTOCORRECT_DESC" />-->
 		<field
 			name="reference"
-			type="referencelanguage"
+			type="Referencelanguage"
 			required="true"
 			label="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE"
 			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC"
@@ -166,10 +166,11 @@
 		</field>
 		<field
 			name="customisedref"
-			type="releases"
+			type="Releases"
 			default="0"
 			label="COM_LOCALISE_LABEL_CUSTOMIZED_REF"
-			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC">
+			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC"
+			addfieldprefix="Joomla\Component\Localise\Administrator\Field">
 			<option	value="0">COM_LOCALISE_LOCAL_INSTALLED_INSTANCE</option>
 		</field>
 		<field
@@ -179,7 +180,7 @@
 			label="COM_LOCALISE_TARGET_SPACER_LABEL" />
 		<field
 			name="gh_branch"
-			type="branches"
+			type="Branches"
 			class="ltr"
 			default="staging"
 			label="COM_LOCALISE_LABEL_GITHUB_BRANCH"
