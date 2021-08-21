@@ -52,6 +52,7 @@
 			type="Origin"
 			hidden="true"
 			class="custom-select"
+			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			onchange="this.form.submit()">
 			<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_SELECT</option>
 		</field>
