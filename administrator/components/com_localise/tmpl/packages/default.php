@@ -15,6 +15,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
+\Joomla\CMS\HTML\HTMLHelper::_('bootstrap.modal', '.modal', []);
+JHtml::_('jquery.framework');
 //HTMLHelper::_('formbehavior.chosen', 'select');
 //HTMLHelper::_('jquery.framework');
 //HTMLHelper::_('bootstrap.tooltip');

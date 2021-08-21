@@ -15,7 +15,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('jquery.framework');
+\Joomla\CMS\HTML\HTMLHelper::_('bootstrap.modal', '.modal', []);
+JHtml::_('jquery.framework');
 
 
 $fieldSets = $this->form->getFieldsets();
