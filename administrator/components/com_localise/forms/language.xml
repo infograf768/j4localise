@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Localise\Administrator\Field">
 	<fieldset
 		name="default"
 		label="COM_LOCALISE_FIELDSET_LANGUAGE_LANGUAGE"
 		description="COM_LOCALISE_FIELDSET_LANGUAGE_LANGUAGE_DESC">
 		<field
 			name="client"
-			type="Client"
+			type="client"
 			default="site"
 			label="COM_LOCALISE_LABEL_LANGUAGE_CLIENT"
 			description="COM_LOCALISE_LABEL_LANGUAGE_CLIENT_DESC"
-			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			required="true" />
 		<field
 			name="tag"
