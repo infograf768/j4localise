@@ -16,8 +16,9 @@ use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
 //HTMLHelper::_('formbehavior.chosen', 'select');
-//HTMLHelper::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 //HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.modal', '.modal', []);
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
@@ -73,18 +74,16 @@ Factory::getDocument()->addScriptDeclaration("
 		<div class="modal-header">
 			<h3 class="modal-title"><?php echo Text::_('COM_LOCALISE_IMPORT_NEW_PACKAGE_HEADER'); ?></h3>
 		</div>
-		<div class="modal-body">
-			<div class="col-md-12">
-				<form method="post" action="<?php echo Route::_('index.php?option=com_localise&task=package.uploadFile&file=' . $this->file); ?>"
-					class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
-					<fieldset>
-						<input type="file" name="files" required />
-						<a href="#" class="hasTooltip btn btn-primary fileupload">
-							<?php echo Text::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
-						</a>
-					</fieldset>
-				</form>
-			</div>
+		<div class="contentpane component">
+			<form method="post" action="<?php echo Route::_('index.php?option=com_localise&task=package.uploadFile&file=' . $this->file); ?>"
+				class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
+				<fieldset>
+					<input type="file" name="files" required />
+					<a href="#" class="hasTooltip btn btn-primary fileupload">
+						<?php echo Text::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
+					</a>
+				</fieldset>
+			</form>
 		</div>
 		<div class="modal-footer">
 			<a role="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-hidden="true"><?php echo Text::_('COM_LOCALISE_MODAL_CLOSE'); ?></a>
