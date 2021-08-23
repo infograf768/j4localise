@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Localise\Administrator\Field">
 	<fieldset
 		name="default"
 		label="COM_LOCALISE_FIELDSET_PACKAGE_DETAIL"
@@ -36,7 +36,6 @@
 			type="corelanguage"
 			label="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE"
 			description="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE_DESC"
-			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			required="true" />
 		<field
 			id="version"
@@ -153,7 +152,6 @@
 			type="translations"
 			label="COM_LOCALISE_LABEL_PACKAGE_TRANSLATIONS"
 			description="COM_LOCALISE_LABEL_PACKAGE_TRANSLATIONS_DESC"
-			addfieldprefix="Joomla\Component\Localise\Administrator\Field"
 			multiple="true"
 			size="20"
 			hidden="true"

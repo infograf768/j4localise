@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Localise\Administrator\Field">
 	<fieldset
 		label="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND"
 		description="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND_DESC"
@@ -9,7 +9,6 @@
 			id="legend"
 			type="legend"
 			label="COM_LOCALISE_LABEL_TRANSLATION_KEY"
-			description="COM_LOCALISE_LABEL_TRANSLATION_KEY_DESC"
-			addfieldprefix="Joomla\Component\Localise\Administrator\Field" />
+			description="COM_LOCALISE_LABEL_TRANSLATION_KEY_DESC" />
 	</fieldset>
 </form>

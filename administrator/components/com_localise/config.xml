@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config>
+<config addfieldprefix="Joomla\Component\Localise\Administrator\Field" >
 	<fieldset
 		name="global"
 		label="COM_LOCALISE_CONFIG_GLOBAL_LABEL"
@@ -42,8 +42,7 @@
 			type="referencelanguage"
 			required="true"
 			label="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE"
-			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC"
-			addfieldprefix="Joomla\Component\Localise\Administrator\Field" />
+			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC" />
 		<field
 			name="filesavepermission"
 			type="text"

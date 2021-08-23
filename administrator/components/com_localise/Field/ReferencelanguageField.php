@@ -30,14 +30,14 @@ include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php'
  *
  * @since       1.0
  */
-class ReferenceLanguageField extends ListField
+class ReferencelanguageField extends ListField
 {
 	/**
 	 * The field type.
 	 *
 	 * @var    string
 	 */
-	protected $type = 'ReferenceLanguage';
+	protected $type = 'Referencelanguage';
 
 	/**
 	 * Method to get the field input.

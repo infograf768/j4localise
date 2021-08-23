@@ -30,7 +30,7 @@ class TranslationsClientField extends FormField
 	 *
 	 * @var		string
 	 */
-	protected $type = 'Client';
+	protected $type = 'TranslationsClient';
 
 	/**
 	 * Method to get the field input markup.

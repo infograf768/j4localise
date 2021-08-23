@@ -16,7 +16,6 @@ use Joomla\CMS\Form\Field\GroupedListField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
-use Joomla\Utilities\ArrayHelper;
 
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 

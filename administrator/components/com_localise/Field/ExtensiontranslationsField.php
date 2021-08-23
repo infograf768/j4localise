@@ -26,7 +26,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since       1.0
  */
-class ExtensionTranslationsField extends GroupedlistField
+class ExtensiontranslationsField extends GroupedlistField
 {
 	/**
 	 * The field type.

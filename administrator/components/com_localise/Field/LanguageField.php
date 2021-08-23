@@ -11,7 +11,6 @@ namespace Joomla\Component\Localise\Administrator\Field;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\FormHelper;
