@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Form\Field\GroupedListField;
+use Joomla\CMS\Form\Field\GroupedlistField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
@@ -28,7 +28,7 @@ include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php'
  *
  * @since       1.0
  */
-class TranslationsField extends GroupedListField
+class TranslationsField extends GroupedlistField
 {
 	/**
 	 * The field type.
