@@ -154,11 +154,17 @@ class KeyField extends FormField
 		$istextchange  = (int) $this->element['istextchange'];
 		$isextraindev  = (int) $this->element['isextraindev'];
 		$status        = (string) $this->element['status'];
+		$commented     = (string) $this->element['commented'];
 		$label_id      = $this->id . '-lbl';
 		$label_for     = $this->id;
 		$textarea_name = $this->name;
 		$textarea_id   = $this->id;
 		$id            = $this->id;
+
+		if (!empty($commented))
+		{
+			$commented = '<div class="d-flex justify-content-between bg-light"><div></div><div>' . $commented . '</div></div>';
+		}
 
 		if ($istranslation == '1')
 		{
@@ -350,6 +356,6 @@ class KeyField extends FormField
 			}
 		}
 
-		return $button . $button2 . $input;
+		return  $button . $button2 . $commented . $input;
 	}
 }

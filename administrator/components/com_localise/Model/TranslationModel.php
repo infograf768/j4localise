@@ -928,6 +928,7 @@ class TranslationModel extends AdminModel
 				while (!$stream->eof())
 				{
 					$line = $stream->gets();
+					$commented = '';
 					$lineNumber++;
 
 					// Blank lines
@@ -970,6 +971,15 @@ class TranslationModel extends AdminModel
 						$header     = false;
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
+
+						preg_match('/(\s;\s.*)$/', $line, $contextcomment);
+
+						if (!empty($contextcomment[1]))
+						{
+							$commented = $contextcomment[1];
+						}
+
+						$field->addAttribute('commented', $commented);
 
 						if ($have_develop == '1' && $istranslation == '0' && array_key_exists($key, $oldref['keys']))
 						{
@@ -1371,10 +1381,18 @@ class TranslationModel extends AdminModel
 				elseif (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
 				{
 					$key = $matches[1];
+					$commented = '';
+
+					preg_match('/(\s;\s.*)$/', $line, $contextcomment);
+
+					if (!empty($contextcomment[1]))
+					{
+						$commented = $contextcomment[1];
+					}
 
 					if (isset($strings[$key]))
 					{
-						$contents[] = $key . '="' . str_replace('"', '\"', $strings[$key]) . "\"\n";
+						$contents[] = $key . '="' . str_replace('"', '\"', $strings[$key]) . "\"" . $commented . "\n";
 						unset($strings[$key]);
 					}
 				}
