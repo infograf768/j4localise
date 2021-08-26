@@ -163,7 +163,11 @@ class KeyField extends FormField
 
 		if (!empty($commented))
 		{
-			$commented = '<div class="d-flex justify-content-between bg-light"><div></div><div>' . $commented . '</div></div>';
+			$commented = '<div> <span class="badge bg-info">' . $commented . '</span></div>';
+		}
+		else
+		{
+			$commented = '<div> <span class="badge"> </span></div>';
 		}
 
 		if ($istranslation == '1')
@@ -356,6 +360,6 @@ class KeyField extends FormField
 			}
 		}
 
-		return  $button . $button2 . $commented . $input;
+		return $button . $button2 . $commented . $input;
 	}
 }
