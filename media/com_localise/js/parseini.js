@@ -28,6 +28,12 @@ CodeMirror.defineMode("parseini", function() {
 				stream.skipToEnd();
 				return "comment";
 			}
+			else if (!sol  && state.position === 'context_comment')
+			{
+				state.position = "comment";
+				stream.skipToEnd();
+				return "comment";
+			}
 			else if (sol && ch === "[")
 			{
 				state.afterSection = true;
@@ -58,6 +64,14 @@ CodeMirror.defineMode("parseini", function() {
 				{
 					if (stream.eol())
 					{
+						return 'string';
+					}
+					else if (stream.string.charAt(stream.pos+1) === ' '
+							&& stream.string.charAt(stream.pos+2) === ';'
+							&& stream.string.charAt(stream.pos+3) === ' ')
+					{
+						stream.pos++;
+						state.position = "context_comment";
 						return 'string';
 					}
 
