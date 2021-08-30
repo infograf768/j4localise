@@ -93,7 +93,10 @@ class TranslationsField extends GroupedlistField
 								$disabled = $origin != $package && $origin != '_thirdparty';
 							}
 
-							$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
+							if (!array_key_exists($key, $groups[$client]))
+							{
+								$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
+							}
 						}
 					}
 				}
@@ -133,9 +136,12 @@ class TranslationsField extends GroupedlistField
 							 $groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
 							'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
 							*/
-							$groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
-									'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
-							);
+							if (!array_key_exists("$prefix$extension$suffix", $groups[$client]))
+							{
+								$groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
+										'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
+								);
+							}
 						}
 					}
 				}
