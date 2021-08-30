@@ -45,11 +45,17 @@ class TranslationsField extends GroupedlistField
 	protected function getGroups()
 	{
 		// Remove '.ini' from values
+		// After "Field 'path' doesn't have a default value message",  doing this one we can not lost last 4 filename chars as before
 		if (is_array($this->value))
 		{
 			foreach ($this->value as $key => $val)
 			{
-				$this->value[$key] = substr($val, 0, -4);
+				$ext = File::getExt($val);
+
+				if ($ext == "ini")
+				{
+					$this->value[$key] = substr($val, 0, -4);
+				}
 			}
 		}
 
