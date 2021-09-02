@@ -4,16 +4,15 @@
 		id="client"
 		name="client"
 		type="translationsclient"
-		hidden="true"
+		filtermode="selector"
 		onchange="this.form.submit()">
 		<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
 	</field>
 	<field
 		id="tag"
 		name="tag"
-		type="language"
-		client="site"
-		hidden="true"
+		type="translationslanguage"
+		filtermode="selector"
 		onchange="this.form.submit()">
 		<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
 	</field>

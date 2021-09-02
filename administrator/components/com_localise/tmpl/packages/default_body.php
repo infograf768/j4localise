@@ -63,7 +63,7 @@ $user = Factory::getUser();
 					<span class="fab fa-joomla"></span>
 					<?php echo Text::_('COM_LOCALISE_CORE'); ?>
 				<?php else: ?>
-					<span class="fa fa-file-text-o"></span>
+					<span class="fa fa-file"></span>
 					<?php echo Text::_('COM_LOCALISE_FILE'); ?>
 				<?php endif; ?>
 			</td>
