@@ -164,6 +164,11 @@ class PackageFileModel extends AdminModel
 	 */
 	public function getItem($pk = null)
 	{
+		// Initialise variables.
+		$app        = Factory::getApplication();
+		$input      = $app->input;
+		$jformdata = $input->get('jform', array(), 'array');
+
 		$id = $this->getState('packagefile.id');
 		$id = is_array($id) ? (count($id) > 0 ? $id[0] : 0) : $id;
 		$package = new \JObject;
@@ -239,44 +244,95 @@ class PackageFileModel extends AdminModel
 				$package->translations  = array();
 				$package->administrator = array();
 
-				if ($xml->administrator)
+				if ($xml->administrator && empty($jformdata['translations']))
 				{
 					foreach ($xml->administrator->children() as $file)
 					{
 						$data = (string) $file;
+						$key  = substr($file, 0, strlen($file) - 4);
 
 						if ($data)
 						{
-							$package->translations[] = "administrator_$data";
+							if (!in_array("administrator_$key", $package->translations))
+							{
+								$package->translations[] = "administrator_$key";
+							}
 						}
 						else
 						{
-							$package->translations[] = "administrator_joomla";
+							if (!in_array("administrator_joomla", $package->translations))
+							{
+								$package->translations[] = "administrator_joomla";
+							}
 						}
 
-						$package->administrator[] = $data;
+						if (!in_array($data, $package->administrator))
+						{
+							$package->administrator[] = $data;
+						}
+					}
+				}
+				elseif (!empty($jformdata['translations']))
+				{
+					foreach ($jformdata['translations'] as $file)
+					{
+						if (preg_match('/^administrator_(.*)$/', $file, $matches))
+						{
+							if (!in_array($matches[1], $package->administrator))
+							{
+								$package->administrator[] = $matches[1] . '.ini';
+							}
+						}
 					}
 				}
 
 				$package->site = array();
 
-				if ($xml->site)
+				if ($xml->site && empty($jformdata['translations']))
 				{
 					foreach ($xml->site->children() as $file)
 					{
 						$data = (string) $file;
+						$key  = substr($file, 0, strlen($file) - 4);
 
 						if ($data)
 						{
-							$package->translations[] = "site_$data";
+							if (!in_array("site_$key", $package->translations))
+							{
+								$package->translations[] = "site_$key";
+							}
 						}
 						else
 						{
-							$package->translations[] = "site_joomla";
+							if (!in_array("site_joomla", $package->translations))
+							{
+								$package->translations[] = "site_joomla";
+							}
 						}
 
-						$package->site[] = $data;
+						if (!in_array($data, $package->site))
+						{
+							$package->site[] = $data;
+						}
 					}
+				}
+				elseif (!empty($jformdata['translations']))
+				{
+					foreach ($jformdata['translations'] as $file)
+					{
+						if (preg_match('/^site_(.*)$/', $file, $matches))
+						{
+							if (!in_array($matches[1], $package->site))
+							{
+								$package->administrator[] = $matches[1] . '.ini';
+							}
+						}
+					}
+				}
+
+				if (!empty($jformdata['translations']))
+				{
+					$package->translations = $jformdata['translations'];
 				}
 			}
 			else
@@ -388,12 +444,18 @@ class PackageFileModel extends AdminModel
 			{
 				if (preg_match('/^site_(.*)$/', $translation, $matches))
 				{
-					$site[] = $matches[1];
+					if (!in_array($matches[1], $site))
+					{
+						$site[] = $matches[1];
+					}
 				}
 
 				if (preg_match('/^administrator_(.*)$/', $translation, $matches))
 				{
-					$administrator[] = $matches[1];
+					if (!in_array($matches[1], $administrator))
+					{
+						$administrator[] = $matches[1];
+					}
 				}
 			}
 

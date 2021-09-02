@@ -23,7 +23,6 @@
     <filename>com_content.ini</filename>
     <filename>com_finder.ini</filename>
     <filename>com_media.ini</filename>
-    <filename>com_messages.ini</filename>
     <filename>com_newsfeeds.ini</filename>
     <filename>com_privacy.ini</filename>
     <filename>com_tags.ini</filename>
@@ -295,8 +294,8 @@
     <filename>plg_fields_radio.sys.ini</filename>
     <filename>plg_fields_sql.ini</filename>
     <filename>plg_fields_sql.sys.ini</filename>
-    <filename>plg_fields_subfields.ini</filename>
-    <filename>plg_fields_subfields.sys.ini</filename>
+    <filename>plg_fields_subform.ini</filename>
+    <filename>plg_fields_subform.sys.ini</filename>
     <filename>plg_fields_text.ini</filename>
     <filename>plg_fields_text.sys.ini</filename>
     <filename>plg_fields_textarea.ini</filename>
@@ -427,6 +426,8 @@
     <filename>plg_webservices_contact.sys.ini</filename>
     <filename>plg_webservices_content.ini</filename>
     <filename>plg_webservices_content.sys.ini</filename>
+    <filename>plg_webservices_installer.ini</filename>
+    <filename>plg_webservices_installer.sys.ini</filename>
     <filename>plg_webservices_languages.ini</filename>
     <filename>plg_webservices_languages.sys.ini</filename>
     <filename>plg_webservices_menus.ini</filename>
