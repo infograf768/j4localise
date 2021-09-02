@@ -31,14 +31,14 @@ FormHelper::loadFieldClass('list');
  *
  * @since       1.0
  */
-class LanguageField extends ListField
+class TranslationsLanguageField extends ListField
 {
 	/**
 	 * The field type.
 	 *
 	 * @var    string
 	 */
-	protected $type = 'Language';
+	protected $type = 'TranslationsLanguage';
 
 	/**
 	 * Method to get the field input.
@@ -49,7 +49,7 @@ class LanguageField extends ListField
 	{
 		// Initialise variables.
 		$app    = Factory::getApplication();
-		$client = $app->getUserState('com_localise.languages.client');
+		$client = $app->getUserState('com_localise.translations.client');
 
 		$attributes = '';
 
