@@ -33,7 +33,7 @@ class ExtensiontranslationsField extends GroupedlistField
 	 *
 	 * @var    string
 	 */
-	protected $type = 'ExtensionTranslations';
+	protected $type = 'Extensiontranslations';
 
 	/**
 	 * Method to get a list of options for a list input.
