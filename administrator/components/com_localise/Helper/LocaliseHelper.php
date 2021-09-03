@@ -1212,11 +1212,12 @@ abstract class LocaliseHelper
 	public static function getLastsourcereference()
 	{
 		$last_source_reference = array();
+		$last_source_reference['api'] = '';
 		$last_source_reference['administrator'] = '';
 		$last_source_reference['site'] = '';
 		$last_source_reference['installation'] = '';
 
-		$clients = array('administrator', 'site', 'installation');
+		$clients = array('api', 'administrator', 'site', 'installation');
 
 		foreach ($clients as $client)
 		{
