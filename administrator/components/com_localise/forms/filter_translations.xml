@@ -3,7 +3,7 @@
 	<field
 		id="client"
 		name="client"
-		type="translationsclient"
+		type="client"
 		filtermode="selector"
 		onchange="this.form.submit()">
 		<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
