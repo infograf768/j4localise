@@ -47,7 +47,12 @@ class ExtensiontranslationsField extends GroupedlistField
 		{
 			foreach ($this->value as $key => $val)
 			{
-				$this->value[$key] = substr($val, 0, -4);
+				$ext = File::getExt($val);
+
+				if ($ext == "ini")
+				{
+					$this->value[$key] = substr($val, 0, -4);
+				}
 			}
 		}
 
@@ -58,8 +63,8 @@ class ExtensiontranslationsField extends GroupedlistField
 		$coresitefiles  = $coresitefiles['filename'];
 		$coreadminfiles = $coreadminfiles['filename'];
 
-		$coreadminfiles = self::suffix_array_values($coreadminfiles, '.ini');
-		$coresitefiles  = self::suffix_array_values($coresitefiles, '.ini');
+		//$coreadminfiles = self::suffix_array_values($coreadminfiles, '.ini');
+		//$coresitefiles  = self::suffix_array_values($coresitefiles, '.ini');
 
 		$package = (string) $this->element['package'];
 		$groups  = array('Site' => array(), 'Administrator' => array());
