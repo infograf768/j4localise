@@ -94,25 +94,13 @@ Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 
 Factory::getDocument()->addScriptDeclaration("
+	function returnAll()
+	{
+		$('.return-all').trigger('click'); // All with that class will be the clicked 
+	}
+
 	(function($){
 		$(document).ready(function () {
-			if (typeof(Localise) === 'undefined') {
-				Localise = {};
-			}
-
-			Localise.language_src = '" . $src . "';
-			Localise.language_dest = '" . $dest . "';
-
-			function returnAll()
-			{
-				$$('i.return').each(function(e){
-					if(e.click)
-						e.click();
-					else
-						e.onclick();
-				});
-			}
-
 			var has_translatedkeys   = " . $has_translatedkeys . ";
 			var has_untranslatedkeys = " . $has_untranslatedkeys . ";
 			var has_unchangedkeys    = " . $has_unchangedkeys . ";
