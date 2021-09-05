@@ -94,29 +94,6 @@ Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 
 Factory::getDocument()->addScriptDeclaration("
-<<<<<<< HEAD
-	if (typeof(Localise) === 'undefined') {
-		Localise = {};
-	}
-
-	Localise.language_src = '" . $src . "';
-	Localise.language_dest = '" . $dest . "';
-
-	function returnAll()
-	{
-		$$('i.return').each(function(e){
-			if(e.click)
-				e.click();
-			else
-				e.onclick();
-		});
-	}
-
-	var has_translatedkeys   = " . $has_translatedkeys . ";
-	var has_untranslatedkeys = " . $has_untranslatedkeys . ";
-	var has_unchangedkeys    = " . $has_unchangedkeys . ";
-	var has_textchangedkeys  = " . $has_textchangedkeys . ";
-=======
 	function returnAll()
 	{
 		$('.return').trigger('click');
@@ -128,27 +105,28 @@ Factory::getDocument()->addScriptDeclaration("
 			var has_untranslatedkeys = " . $has_untranslatedkeys . ";
 			var has_unchangedkeys    = " . $has_unchangedkeys . ";
 			var has_textchangedkeys  = " . $has_textchangedkeys . ";
->>>>>>> bf1963c7d92236a74036e13f8c5465cfc3c1c325
 
-	if (has_translatedkeys == '0')
-	{
-		var x = document.getElementById('jform_select_keystatus').options[2].disabled = true;
-	}
+			if (has_translatedkeys == '0')
+			{
+				var x = document.getElementById('jform_select_keystatus').options[2].disabled = true;
+			}
 
-	if (has_untranslatedkeys == '0')
-	{
-		var x = document.getElementById('jform_select_keystatus').options[3].disabled = true;
-	}
+			if (has_untranslatedkeys == '0')
+			{
+				var x = document.getElementById('jform_select_keystatus').options[3].disabled = true;
+			}
 
-	if (has_unchangedkeys == '0')
-	{
-		var x = document.getElementById('jform_select_keystatus').options[4].disabled = true;
-	}
+			if (has_unchangedkeys == '0')
+			{
+				var x = document.getElementById('jform_select_keystatus').options[4].disabled = true;
+			}
 
-	if (has_textchangedkeys == '0')
-	{
-		var x = document.getElementById('jform_select_keystatus').options[5].disabled = true;
-	}
+			if (has_textchangedkeys == '0')
+			{
+				var x = document.getElementById('jform_select_keystatus').options[5].disabled = true;
+			}
+		});
+	})(jQuery);
 ");
 ?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
