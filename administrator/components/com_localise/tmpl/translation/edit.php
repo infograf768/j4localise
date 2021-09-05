@@ -96,7 +96,7 @@ Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 Factory::getDocument()->addScriptDeclaration("
 	function returnAll()
 	{
-		$('.return-all').trigger('click'); // All with that class will be the clicked 
+		$('.return').trigger('click'); // All with that class will be the clicked 
 	}
 
 	(function($){

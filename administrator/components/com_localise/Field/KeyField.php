@@ -221,7 +221,7 @@ class KeyField extends FormField
 					$onclick2 = "javascript:AzureTranslator(this, [], 0, '$token');";
 
 				$button   = '';
-				$button  .= '<i class="icon-reset hasTooltip return pointer return-all" title="';
+				$button  .= '<i class="icon-reset hasTooltip return pointer" title="';
 				$button  .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT');
 				$button  .= '" onclick="' . $onclick . '"></i>';
 
