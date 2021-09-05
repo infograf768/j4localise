@@ -94,6 +94,7 @@ Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 
 Factory::getDocument()->addScriptDeclaration("
+<<<<<<< HEAD
 	if (typeof(Localise) === 'undefined') {
 		Localise = {};
 	}
@@ -115,6 +116,19 @@ Factory::getDocument()->addScriptDeclaration("
 	var has_untranslatedkeys = " . $has_untranslatedkeys . ";
 	var has_unchangedkeys    = " . $has_unchangedkeys . ";
 	var has_textchangedkeys  = " . $has_textchangedkeys . ";
+=======
+	function returnAll()
+	{
+		$('.return').trigger('click');
+	}
+
+	(function($){
+		$(document).ready(function () {
+			var has_translatedkeys   = " . $has_translatedkeys . ";
+			var has_untranslatedkeys = " . $has_untranslatedkeys . ";
+			var has_unchangedkeys    = " . $has_unchangedkeys . ";
+			var has_textchangedkeys  = " . $has_textchangedkeys . ";
+>>>>>>> bf1963c7d92236a74036e13f8c5465cfc3c1c325
 
 	if (has_translatedkeys == '0')
 	{
