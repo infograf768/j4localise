@@ -46,7 +46,7 @@ class TranslationsField extends GroupedlistField
 	protected function getGroups()
 	{
 		$params         = ComponentHelper::getParams('com_localise');
-		$reftag	        = $params->get('reference');
+		$reftag	        = !empty($params->get('reference') ? $params->get('reference') : 'en-GB');
 
 		$formdata       = $this->form->getData();
 		$langtag        = $formdata["language"];
@@ -114,7 +114,7 @@ class TranslationsField extends GroupedlistField
 
 						$files = Folder::files("$path/$tag", ".ini$");
 
-						if ($client == 'site' && $tag == $reftag)
+						if ($client == 'Site' && $tag == $reftag)
 						{
 							$noncorefiles[$client] = array_diff($files, $coresitefiles);
 						}
@@ -123,7 +123,7 @@ class TranslationsField extends GroupedlistField
 							$noncorefiles[$client] = array_diff($files, $coreadminfiles);
 						}
 
-						if ($istranslation && $client == 'site' && $tag == $langtag)
+						if ($istranslation && $client == 'Site' && $tag == $langtag)
 						{
 							$extrafiles[$client] = array_diff($files, $coresitefiles);
 						}
