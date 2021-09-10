@@ -46,7 +46,7 @@ class TranslationsField extends GroupedlistField
 	protected function getGroups()
 	{
 		$params         = ComponentHelper::getParams('com_localise');
-		$reftag	        = !empty($params->get('reference') ? $params->get('reference') : 'en-GB');
+		$reftag	        = $params->get('reference', '');
 
 		$formdata       = $this->form->getData();
 		$langtag        = $formdata["language"];
@@ -63,6 +63,11 @@ class TranslationsField extends GroupedlistField
 		if ($istranslation)
 		{
 			$requiredtags[] = $langtag;
+		}
+
+		if (empty($reftag))
+		{
+			$reftag = 'en-GB';
 		}
 
 		// Remove '.ini' from values
