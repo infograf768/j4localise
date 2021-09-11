@@ -65,35 +65,25 @@ Factory::getDocument()->addScriptDeclaration("
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
 						<div class="row">
 						<div class="col-lg-12 col-xl-6">
-							<?php if (!empty($fieldSets['default']->description)):?>
+							<fieldset id="fieldset-default" class="options-form">
+								<?php if (!empty($fieldSets['default']->description)):?>
 									<legend><?php echo Text::_($fieldSets['default']->description); ?></legend>
-							<?php endif;?>
-							<?php foreach($this->form->getFieldset('default') as $field): ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $field->label; ?>
-										</div>
-										<div class="controls">
-											<?php echo $field->input; ?>
-										</div>
-									</div>
-							<?php endforeach; ?>
+								<?php endif;?>
+								<?php foreach($this->form->getFieldset('default') as $field): ?>
+									<?php echo $field->renderField(); ?>
+								<?php endforeach; ?>
+							</fieldset>
 						</div>
 						<div class="col-lg-12 col-xl-6">
-							 <legend><?php echo Text::_($fieldSets['translations']->label); ?></legend>
-							<?php if (!empty($fieldSets['translations']->description)):?>
+							<fieldset id="fieldset-translations" class="options-form">
+							 	<legend><?php echo Text::_($fieldSets['translations']->label); ?></legend>
+								<?php if (!empty($fieldSets['translations']->description)):?>
 									<legend><?php echo Text::_($fieldSets['translations']->description); ?></legend>
-							<?php endif;?>
-							<?php foreach($this->form->getFieldset('translations') as $field): ?>
-									<div class="control-group form-vertical">
-										<div class="control-label">
-											<?php echo $field->label; ?>
-										</div>
-										<div class="controls">
-											<?php echo $field->input; ?>
-										</div>
-									</div>
-							<?php endforeach; ?>
+								<?php endif;?>
+								<?php foreach($this->form->getFieldset('translations') as $field): ?>
+									<?php echo $field->renderField(); ?>
+								<?php endforeach; ?>
+							</fieldset>
 						</div>
 						</div>
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>

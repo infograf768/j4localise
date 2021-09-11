@@ -10,6 +10,7 @@ namespace Joomla\Component\Localise\Administrator\Field;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Field\GroupedlistField;
@@ -42,12 +43,44 @@ class ExtensiontranslationsField extends GroupedlistField
 	 */
 	protected function getGroups()
 	{
+		$params         = ComponentHelper::getParams('com_localise');
+		$reftag	        = $params->get('reference', '');
+
+		$formdata       = $this->form->getData();
+		$langtag        = $formdata["language"];
+
+		$istranslation  = $reftag != $langtag;
+
+		$coreadminfiles = array();
+		$coresitefiles  = array();
+		$noncorefiles   = array();
+		$extrafiles     = array();
+
+		$requiredtags   = array($reftag);
+
+		if ($istranslation)
+		{
+			$requiredtags[] = $langtag;
+		}
+
+		$requiredtypes  = array('_thirdparty');
+
+		if (empty($reftag))
+		{
+			$reftag = 'en-GB';
+		}
+
 		// Remove '.ini' from values
 		if (is_array($this->value))
 		{
 			foreach ($this->value as $key => $val)
 			{
-				$this->value[$key] = substr($val, 0, -4);
+				$ext = File::getExt($val);
+
+				if ($ext == "ini")
+				{
+					$this->value[$key] = substr($val, 0, -4);
+				}
 			}
 		}
 
@@ -66,7 +99,10 @@ class ExtensiontranslationsField extends GroupedlistField
 
 		foreach (array('Site', 'Administrator') as $client)
 		{
-			$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
+			$noncorefiles[$client] = array();
+			$extrafiles[$client]   = array();
+
+			$path                  = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
 
 			if (Folder::exists($path))
 			{
@@ -76,22 +112,69 @@ class ExtensiontranslationsField extends GroupedlistField
 				{
 					foreach ($tags as $tag)
 					{
+						if (!in_array($tag, $requiredtags))
+						{
+							continue;
+						}
+
 						$files = Folder::files("$path/$tag", ".ini$");
 
-						$files = str_replace($tag . '.', '', $files);
-						$files = array_diff($files, $coreadminfiles);
-						$files = array_diff($files, $coresitefiles);
-						$files = array_diff($files, array('ini'));
+						if ($client == 'Site' && $tag == $reftag)
+						{
+							$noncorefiles[$client] = array_diff($files, $coresitefiles);
+						}
+						elseif ($client == 'Administrator' && $tag == $reftag)
+						{
+							$noncorefiles[$client] = array_diff($files, $coreadminfiles);
+						}
+
+						if ($istranslation && $client == 'Site' && $tag == $langtag)
+						{
+							$extrafiles[$client] = array_diff($files, $coresitefiles);
+						}
+						elseif ($istranslation && $client == 'Administrator' && $tag == $langtag)
+						{
+							$extrafiles[$client] = array_diff($files, $coreadminfiles);
+						}
 
 						foreach ($files as $file)
 						{
-							$basename = $file;
-							$key      = substr($basename, 0, strlen($basename) - 4);
-							$value    = $key;
-							$origin   = LocaliseHelper::getOrigin($key, strtolower($client));
-							$disabled = $origin != $package && $origin != '_thirdparty';
 
-							$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
+							$class = '';
+
+							if (in_array($file, $noncorefiles[$client]) && $tag == $reftag)
+							{
+								$class = 'reference-in-core-folder';
+							}
+							elseif (in_array($file, $extrafiles[$client]) && $tag == $langtag)
+							{
+								$class = 'translation-extra-in-core-folder';
+							}
+							else
+							{
+								continue;
+							}
+
+							if ($file == 'joomla.ini')
+							{
+								$key      = 'joomla';
+								$value    = Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA');
+								$origin   = LocaliseHelper::getOrigin('', strtolower($client));
+								$disabled = $origin != $package && $origin != '_thirdparty';
+							}
+							else
+							{
+								$key      = substr($file, 0, strlen($file) - 4);
+								$value    = $key;
+								$origin   = LocaliseHelper::getOrigin($key, strtolower($client));
+								$disabled = $origin != $package && $origin != '_thirdparty';
+							}
+
+							if (!array_key_exists($key, $groups[$client]))
+							{
+								$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
+								$groups[$client][$key]->class = $class;
+							}
 						}
 					}
 				}
@@ -112,9 +195,10 @@ class ExtensiontranslationsField extends GroupedlistField
 
 			foreach ($extensions as $extension)
 			{
-				// Take off core extensions containing a language folder
-				if ($extension != 'mod_multilangstatus'
-					&& $extension != 'atum' && $extension != 'cassiopeia' && $extension != 'languagecode')
+				// Take off core extensions
+				$file = "$prefix$extension$suffix.ini";
+
+				if (($client == 'Site' && !in_array($file, $coresitefiles)) || ($client == 'Administrator' && !in_array($file, $coreadminfiles)))
 				{
 					if (Folder::exists("$path$extension/language"))
 					{
@@ -123,20 +207,26 @@ class ExtensiontranslationsField extends GroupedlistField
 
 						foreach ($tags as $tag)
 						{
-							$file = "$path$extension/language/$tag/$tag.$prefix$extension$suffix.ini";
-
-							if (File::exists($file))
+							if (!in_array($tag, $requiredtags))
 							{
-								$origin   = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
-								$disabled = $origin != $package && $origin != '_thirdparty';
+								continue;
+							}
 
-							/* @ Todo: $disabled prevents choosing some core files when creating package.
-							 $groups[$client]["$prefix$extension$suffix"] = JHtml::_(
-							'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
-							*/
-							$groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
-									'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
-							);
+							$file   = "$path$extension/language/$tag/$prefix$extension$suffix.ini";
+
+							//Getting the $origin to avoid add, for example, overrides
+							$origin = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
+
+							if (File::exists($file) && in_array($origin, $requiredtypes))
+							{
+								if (!array_key_exists("$prefix$extension$suffix", $groups[$client]))
+								{
+									$groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
+											'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
+									);
+
+									$groups[$client]["$prefix$extension$suffix"]->class = "in-$type-folder";
+								}
 							}
 						}
 					}
