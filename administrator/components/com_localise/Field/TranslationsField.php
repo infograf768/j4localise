@@ -56,6 +56,8 @@ class TranslationsField extends GroupedlistField
 		$coreadminfiles = array();
 		$coresitefiles  = array();
 		$noncorefiles   = array();
+		$allfiles       = array();
+		$missedfiles    = array();
 		$extrafiles     = array();
 
 		$requiredtags   = array($reftag);
@@ -99,6 +101,7 @@ class TranslationsField extends GroupedlistField
 
 		foreach (array('Site', 'Administrator', 'Installation') as $client)
 		{
+			$allfiles[$client]     = array();
 			$noncorefiles[$client] = array();
 			$extrafiles[$client]   = array();
 
@@ -117,43 +120,20 @@ class TranslationsField extends GroupedlistField
 							continue;
 						}
 
-						$files = Folder::files("$path/$tag", ".ini$");
+						$allfiles[$client][$tag] = array();
+						$files                   = Folder::files("$path/$tag", ".ini$");
 
-						if ($client == 'Site' && $tag == $reftag)
+						if ($client == 'Site')
 						{
 							$noncorefiles[$client] = array_diff($files, $coresitefiles);
 						}
-						elseif ($client == 'Administrator' && $tag == $reftag)
+						elseif ($client == 'Administrator')
 						{
 							$noncorefiles[$client] = array_diff($files, $coreadminfiles);
 						}
 
-						if ($istranslation && $client == 'Site' && $tag == $langtag)
-						{
-							$extrafiles[$client] = array_diff($files, $coresitefiles);
-						}
-						elseif ($istranslation && $client == 'Administrator' && $tag == $langtag)
-						{
-							$extrafiles[$client] = array_diff($files, $coreadminfiles);
-						}
-
 						foreach ($files as $file)
 						{
-							$class = '';
-
-							if (in_array($file, $noncorefiles[$client]))
-							{
-								$class = 'not-in-core';
-							}
-							elseif (in_array($file, $extrafiles[$client]))
-							{
-								$class = 'extra-in-translation';
-							}
-							else
-							{
-								$class = 'core-file';
-							}
-
 							if ($file == 'joomla.ini')
 							{
 								$key      = 'joomla';
@@ -169,12 +149,55 @@ class TranslationsField extends GroupedlistField
 								$disabled = $origin != $package && $origin != '_thirdparty';
 							}
 
+							if (!in_array($key, $allfiles[$client][$tag]))
+							{
+								$allfiles[$client][$tag][] = $key;
+							}
+
 							if (!array_key_exists($key, $groups[$client]))
 							{
 								$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
-								$groups[$client][$key]->class = $class;
+
+								if (in_array($file, $noncorefiles[$client]))
+								{
+									$groups[$client][$key]->class = 'not-in-core-list';
+								}
+								else
+								{
+									$groups[$client][$key]->class = 'core-file';
+								}
 							}
 						}
+					}
+				}
+			}
+		}
+
+		foreach (array('Site', 'Administrator', 'Installation') as $client)
+		{
+			$missedfiles[$client] = array();
+			$extrafiles[$client]  = array();
+
+			if (!empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
+			{
+				$missedfiles[$client] = array_diff($allfiles[$client][$reftag], $allfiles[$client][$langtag]);
+				$extrafiles[$client]  = array_diff($allfiles[$client][$langtag], $allfiles[$client][$reftag]);
+
+				if (!empty($missedfiles[$client]))
+				{
+					foreach ($missedfiles[$client] as $id => $file)
+					{
+						$prevclass = $groups[$client][$file]->class;
+						$groups[$client][$file]->class = $prevclass . " missed";
+					}
+				}
+
+				if (!empty($extrafiles[$client]))
+				{
+					foreach ($extrafiles[$client] as $id => $file)
+					{
+						$prevclass = $groups[$client][$file]->class;
+						$groups[$client][$file]->class = $prevclass . " extra";
 					}
 				}
 			}
