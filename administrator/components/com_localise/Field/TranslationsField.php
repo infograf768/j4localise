@@ -201,6 +201,22 @@ class TranslationsField extends GroupedlistField
 					}
 				}
 			}
+			elseif (!empty($allfiles[$client][$reftag]) && empty($allfiles[$client][$langtag]))
+			{
+				foreach ($allfiles[$client][$reftag] as $id => $file)
+				{
+					$prevclass = $groups[$client][$file]->class;
+					$groups[$client][$file]->class = $prevclass . " missed";
+				}
+			}
+			elseif (empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
+			{
+				foreach ($allfiles[$client][$langtag] as $id => $file)
+				{
+					$prevclass = $groups[$client][$file]->class;
+					$groups[$client][$file]->class = $prevclass . " extra";
+				}
+			}
 		}
 
 		foreach ($groups as $client => $extensions)
