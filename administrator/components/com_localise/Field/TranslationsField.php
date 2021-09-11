@@ -173,48 +173,51 @@ class TranslationsField extends GroupedlistField
 			}
 		}
 
-		foreach (array('Site', 'Administrator', 'Installation') as $client)
+		if ($istranslation)
 		{
-			$missedfiles[$client] = array();
-			$extrafiles[$client]  = array();
-
-			if (!empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
+			foreach (array('Site', 'Administrator', 'Installation') as $client)
 			{
-				$missedfiles[$client] = array_diff($allfiles[$client][$reftag], $allfiles[$client][$langtag]);
-				$extrafiles[$client]  = array_diff($allfiles[$client][$langtag], $allfiles[$client][$reftag]);
+				$missedfiles[$client] = array();
+				$extrafiles[$client]  = array();
 
-				if (!empty($missedfiles[$client]))
+				if (!empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
 				{
-					foreach ($missedfiles[$client] as $id => $file)
+					$missedfiles[$client] = array_diff($allfiles[$client][$reftag], $allfiles[$client][$langtag]);
+					$extrafiles[$client]  = array_diff($allfiles[$client][$langtag], $allfiles[$client][$reftag]);
+
+					if (!empty($missedfiles[$client]))
+					{
+						foreach ($missedfiles[$client] as $id => $file)
+						{
+							$prevclass = $groups[$client][$file]->class;
+							$groups[$client][$file]->class = $prevclass . " missed";
+						}
+					}
+
+					if (!empty($extrafiles[$client]))
+					{
+						foreach ($extrafiles[$client] as $id => $file)
+						{
+							$prevclass = $groups[$client][$file]->class;
+							$groups[$client][$file]->class = $prevclass . " extra";
+						}
+					}
+				}
+				elseif (!empty($allfiles[$client][$reftag]) && empty($allfiles[$client][$langtag]))
+				{
+					foreach ($allfiles[$client][$reftag] as $id => $file)
 					{
 						$prevclass = $groups[$client][$file]->class;
 						$groups[$client][$file]->class = $prevclass . " missed";
 					}
 				}
-
-				if (!empty($extrafiles[$client]))
+				elseif (empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
 				{
-					foreach ($extrafiles[$client] as $id => $file)
+					foreach ($allfiles[$client][$langtag] as $id => $file)
 					{
 						$prevclass = $groups[$client][$file]->class;
 						$groups[$client][$file]->class = $prevclass . " extra";
 					}
-				}
-			}
-			elseif (!empty($allfiles[$client][$reftag]) && empty($allfiles[$client][$langtag]))
-			{
-				foreach ($allfiles[$client][$reftag] as $id => $file)
-				{
-					$prevclass = $groups[$client][$file]->class;
-					$groups[$client][$file]->class = $prevclass . " missed";
-				}
-			}
-			elseif (empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
-			{
-				foreach ($allfiles[$client][$langtag] as $id => $file)
-				{
-					$prevclass = $groups[$client][$file]->class;
-					$groups[$client][$file]->class = $prevclass . " extra";
 				}
 			}
 		}
