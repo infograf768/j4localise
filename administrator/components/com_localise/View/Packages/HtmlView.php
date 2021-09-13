@@ -10,13 +10,13 @@ namespace Joomla\Component\Localise\Administrator\View\Packages;
 
 defined('_JEXEC') or die;
 
+use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 
 /**
  * Packages View class for the Localise component
@@ -62,7 +62,7 @@ class HtmlView extends BaseHtmlView
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			throw new \JViewGenericdataexception(implode("\n", $errors), 500);
+			throw new GenericDataException(implode("\n", $errors), 500);
 
 			return false;
 		}
