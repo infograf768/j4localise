@@ -355,7 +355,6 @@ class LanguageModel extends AdminModel
 			$text = '';
 			$text .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 			$text .= '<metafile client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
-			$text .= "\t" . '<tag>' . htmlspecialchars($tag, ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
 			$text .= "\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
 			$text .= "\t" . '<version>' . htmlspecialchars($data['version'], ENT_COMPAT, 'UTF-8') . '</version>' . "\n";
 			$text .= "\t" . '<creationDate>' . date('Y-m-d') . '</creationDate>' . "\n";
