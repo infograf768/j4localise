@@ -288,6 +288,52 @@ class LanguagesModel extends ListModel
 	 */
 	public function reformat()
 	{
+		// Reformat ini files in extensions language folder
+		$scans = LocaliseHelper::getScans();
+
+		foreach ($scans as $scan)
+		{
+			$prefix     = $scan['prefix'];
+			$suffix     = $scan['suffix'];
+			$type       = $scan['type'];
+			$client     = ucfirst($scan['client']);
+			$path       = $scan['path'];
+			$folder     = $scan['folder'];
+			$extensions = Folder::folders($path);
+
+			foreach ($extensions as $extension)
+			{
+				if (Folder::exists("$path$extension/language"))
+				{
+					$tags = Folder::folders("$path$extension/language");
+
+					foreach ($tags as $tag)
+					{
+						$extlangpath = $path . $extension . '/language/' . $tag;
+						$inifiles    = Folder::files($extlangpath, '.ini$');
+
+						foreach ($inifiles as $inifile)
+						{
+							$newinifile = str_replace($tag . '.', '', $inifile);
+							rename( $extlangpath . '/' . $inifile,  $extlangpath . '/' . $newinifile);
+
+							if (strpos($inifile, $tag . '.') !== false)
+							{
+								$shortpath  = str_replace(JPATH_ROOT . '/', '', $path);
+
+								Factory::getApplication()->enqueueMessage(Text::sprintf('COM_LOCALISE_REFORMAT_EXTENSION_SUCCESS', $shortpath . $extension . '/language/' . $tag . '/'), 'message');
+
+								$return = true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// End scanning for extensions language folders
+		// Start core language folders
+
 		$clients = array('site', 'administrator');
 
 		if (LocaliseHelper::hasInstallation())
