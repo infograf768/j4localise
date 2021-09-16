@@ -349,3 +349,10 @@ color:#8B0000 !important;
 .info-line {
   line-height: 1.2rem;
 }
+/* AJAX calls */
+.flash-message {
+  position: absolute !important;
+  top: 45% !important;
+  right: 45% !important;
+  z-index: 100 !important;
+}

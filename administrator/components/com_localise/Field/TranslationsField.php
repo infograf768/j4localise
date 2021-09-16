@@ -45,6 +45,8 @@ class TranslationsField extends GroupedlistField
 	 */
 	protected function getGroups()
 	{
+		HTMLHelper::_('stylesheet', 'com_localise/package.css', array('version' => 'auto', 'relative' => true));
+
 		$params         = ComponentHelper::getParams('com_localise');
 		$reftag	        = $params->get('reference', '');
 
@@ -53,8 +55,22 @@ class TranslationsField extends GroupedlistField
 			$reftag = 'en-GB';
 		}
 
+		//Form priority
 		$formdata       = $this->form->getData();
 		$langtag        = $formdata["language"];
+
+		//Ajax priority
+		$ajaxlangtag = (string) $this->element['langtag'];
+
+		if (!empty($ajaxlangtag))
+		{
+			$langtag = $ajaxlangtag;
+		}
+
+		if (empty($langtag))
+		{
+			$langtag = $reftag;
+		}
 
 		$istranslation  = $reftag != $langtag;
 
@@ -62,7 +78,7 @@ class TranslationsField extends GroupedlistField
 		$coresitefiles  = array();
 		$noncorefiles   = array();
 		$allfiles       = array();
-		$missedfiles    = array();
+		$missingfiles   = array();
 		$extrafiles     = array();
 
 		$requiredtags   = array($reftag);
@@ -105,7 +121,7 @@ class TranslationsField extends GroupedlistField
 			$noncorefiles[$client] = array();
 			$extrafiles[$client]   = array();
 
-			$path                  = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
+			$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
 
 			if (Folder::exists($path))
 			{
@@ -138,15 +154,11 @@ class TranslationsField extends GroupedlistField
 							{
 								$key      = 'joomla';
 								$value    = Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA');
-								$origin   = LocaliseHelper::getOrigin('', strtolower($client));
-								$disabled = $origin != $package && $origin != '_thirdparty';
 							}
 							else
 							{
 								$key      = substr($file, 0, strlen($file) - 4);
 								$value    = $key;
-								$origin   = LocaliseHelper::getOrigin($key, strtolower($client));
-								$disabled = $origin != $package && $origin != '_thirdparty';
 							}
 
 							if (!in_array($key, $allfiles[$client][$tag]))
@@ -177,20 +189,20 @@ class TranslationsField extends GroupedlistField
 		{
 			foreach (array('Site', 'Administrator', 'Installation') as $client)
 			{
-				$missedfiles[$client] = array();
-				$extrafiles[$client]  = array();
+				$missingfiles[$client] = array();
+				$extrafiles[$client]   = array();
 
 				if (!empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
 				{
-					$missedfiles[$client] = array_diff($allfiles[$client][$reftag], $allfiles[$client][$langtag]);
-					$extrafiles[$client]  = array_diff($allfiles[$client][$langtag], $allfiles[$client][$reftag]);
+					$missingfiles[$client] = array_diff($allfiles[$client][$reftag], $allfiles[$client][$langtag]);
+					$extrafiles[$client]   = array_diff($allfiles[$client][$langtag], $allfiles[$client][$reftag]);
 
-					if (!empty($missedfiles[$client]))
+					if (!empty($missingfiles[$client]))
 					{
-						foreach ($missedfiles[$client] as $id => $file)
+						foreach ($missingfiles[$client] as $id => $file)
 						{
 							$prevclass = $groups[$client][$file]->class;
-							$groups[$client][$file]->class = $prevclass . " missed";
+							$groups[$client][$file]->class = $prevclass . " missing";
 						}
 					}
 
@@ -208,7 +220,7 @@ class TranslationsField extends GroupedlistField
 					foreach ($allfiles[$client][$reftag] as $id => $file)
 					{
 						$prevclass = $groups[$client][$file]->class;
-						$groups[$client][$file]->class = $prevclass . " missed";
+						$groups[$client][$file]->class = $prevclass . " missing";
 					}
 				}
 				elseif (empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))

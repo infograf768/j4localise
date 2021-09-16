@@ -19,6 +19,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Router\Route;
@@ -1330,5 +1332,104 @@ class PackageModel extends AdminModel
 		}
 
 		return true;
+	}
+
+	/**
+	 * Method to get the HTML output required to update the translations field list by the selected language tag.
+	 *
+	 * @return   string  The data for the jform_translations field.
+	 */
+	public function updateTranslationsList($data)
+	{
+		$params = ComponentHelper::getParams('com_localise');
+		$reftag	= $params->get('reference', '');
+
+		if (empty($reftag))
+		{
+			$reftag = 'en-GB';
+		}
+
+		//Getting the data from ajax call
+		$packagename = htmlspecialchars($data[0]->packagename);
+		$langtag     = htmlspecialchars($data[0]->languagetag);
+
+        //Initiating form instance
+        $filepath = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
+        $form_packagefile = Form::getInstance("packagefile", $filepath, array("control" => "jform"));
+
+        //Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_localise/Field');
+        //Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_localise/forms');
+
+		//Adding next params at translations field only when Ajax call.
+		$form_packagefile->setFieldAttribute($name = 'translations', 'reftag', $reftag);
+		$form_packagefile->setFieldAttribute($name = 'translations', 'langtag', $langtag);
+
+		$html_output = $form_packagefile->renderField('translations');
+
+		//Cases to "selected" from the xml file if the package filename exists
+		$xml     = false;
+		$xmlpath = JPATH_ADMINISTRATOR . '/components/com_localise/packages/' . $packagename . '.xml';
+
+		if (!empty($packagename) && File::exists($xmlpath))
+		{
+			$xml = simplexml_load_file($xmlpath);
+		}
+
+		if ($xml)
+		{
+			$lines = preg_split("/\\r\\n|\\r|\\n/", $html_output);
+
+			if ($xml->administrator)
+			{
+				foreach ($xml->administrator->children() as $file)
+				{
+					$data = (string) $file;
+					$key  = substr($file, 0, strlen($file) - 4);
+					$string = preg_quote('value="administrator_'  . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content = 'value="administrator_' . $key .'"';
+								$newcontent = 'value="administrator_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+							}
+						}
+					}
+				}
+
+
+			}
+
+			if ($xml->site)
+			{
+				foreach ($xml->site->children() as $file)
+				{
+					$data = (string) $file;
+					$key  = substr($file, 0, strlen($file) - 4);
+					$string = preg_quote('value="site_'  . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content = 'value="site_' . $key .'"';
+								$newcontent = 'value="site_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+							}
+						}
+					}
+				}
+			}
+
+			$html_output = implode("\n", $lines);
+		}
+
+		return $html_output;
 	}
 }

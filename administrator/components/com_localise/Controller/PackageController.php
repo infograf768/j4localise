@@ -13,6 +13,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Response\JsonResponse;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Router\Route;
 
@@ -134,4 +136,47 @@ class PackageController extends FormController
 
 		$this->setRedirect(Route::_($url, false));
 	}
+	/**
+	 * Method to update the translarions field list by AJAX call.
+	 *
+	 * @return object
+	 */
+    public function updatetranslationslist()
+    {
+		//Case invalid token, ajax call die here.
+		$this->checkToken() or die( 'Invalid Token' );
+
+		// Initialise variables.
+		$app   = Factory::getApplication();
+		$input = $app->input;
+		$reply = new \JObject;
+
+		try
+		{
+			$data  = $input->get('data', null, 'RAW');
+			$data  = json_decode($data);
+
+			$reply->success_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_SUCCESS');
+
+			$model = $this->getModel();
+			$html = $model->updateTranslationsList($data);
+			$reply->html = $html;
+
+			//If required send a notice apply it before echo
+     		$app->enqueueMessage(Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_SUCCESS'), 'notice');
+
+			echo new JsonResponse($reply, 'Done!');
+		}
+		catch(Exception $e)
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_ERROR', $e->getMessage()), 'error');
+
+			$reply->error_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_ERROR');
+			$reply->error         = $e;
+
+			echo new JsonResponse($reply);
+		}
+
+		$app->close();
+    }
 }

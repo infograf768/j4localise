@@ -1,0 +1,22 @@
+option.missing::before {
+  content: "● ";
+  color: red;
+}
+option.extra::before {
+  content: "● ";
+  color: darkorange;
+}
+option.missing {
+  color: red;
+}
+option.extra {
+  color: darkorange;
+}
+span.missing::before {
+  content: "● ";
+  color: red;
+}
+span.extra::before {
+  content: "● ";
+  color: darkorange;
+}
