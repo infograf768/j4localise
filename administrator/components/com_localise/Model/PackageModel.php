@@ -1349,18 +1349,18 @@ class PackageModel extends AdminModel
 			$reftag = 'en-GB';
 		}
 
-		//Getting the data from ajax call
+		// Getting the data from ajax call
 		$packagename = htmlspecialchars($data[0]->packagename);
 		$langtag     = htmlspecialchars($data[0]->languagetag);
 
-		//Initiating form instance
+		// Initiating form instance
 		$filepath = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
 		$form_package = Form::getInstance("package", $filepath, array("control" => "jform"));
 
 		//Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_localise/Field');
 		//Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_localise/forms');
 
-		//Adding the params bellow at translations field only when Ajax call.
+		// Adding the params bellow at translations field only when Ajax call.
 		$form_package->setFieldAttribute($name = 'translations', 'reftag', $reftag);
 		$form_package->setFieldAttribute($name = 'translations', 'langtag', $langtag);
 

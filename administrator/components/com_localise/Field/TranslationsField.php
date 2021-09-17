@@ -55,11 +55,11 @@ class TranslationsField extends GroupedlistField
 			$reftag = 'en-GB';
 		}
 
-		//Form priority
+		// Form priority
 		$formdata = $this->form->getData();
 		$langtag  = $formdata["language"];
 
-		//Ajax priority
+		// Ajax priority
 		$ajaxlangtag = (string) $this->element['langtag'];
 
 		if (!empty($ajaxlangtag))
