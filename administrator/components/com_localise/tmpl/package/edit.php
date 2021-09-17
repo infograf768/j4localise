@@ -152,6 +152,9 @@ Factory::getDocument()->addScriptDeclaration("
 						<div class="col-lg-12 col-xl-6">
 							<fieldset id="fieldset-translations" class="options-form">
 								<legend><?php echo Text::_($fieldSets['translations']->label); ?></legend>
+								<?php if (!empty($fieldSets['translations']->description)):?>
+										<legend><?php echo Text::_($fieldSets['translations']->description); ?></legend>
+								<?php endif;?>
 								<?php foreach($this->form->getFieldset('translations') as $field) : ?>
 									<?php echo $field->renderField(); ?>
 								<?php endforeach; ?>
