@@ -13,10 +13,10 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Response\JsonResponse;
-use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 /**
  * Package Controller class for the Localise component
@@ -141,35 +141,47 @@ class PackageController extends FormController
 	 *
 	 * @return object
 	 */
-    public function updatetranslationslist()
-    {
-		//Case invalid token, ajax call die here.
-		$this->checkToken() or die( 'Invalid Token' );
-
-		// Initialise variables.
-		$app   = Factory::getApplication();
-		$input = $app->input;
-		$reply = new \JObject;
-
+	public function updatetranslationslist()
+	{
 		try
 		{
+			// Case invalid token, ajax call die here.
+			$this->checkToken() or die();
+
+			// Initialise variables.
+			$app   = Factory::getApplication();
+			$input = $app->input;
+			$reply = new \JObject;
 			$data  = $input->get('data', null, 'RAW');
 			$data  = json_decode($data);
 
-			$reply->success_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_SUCCESS');
-
 			$model = $this->getModel();
-			$html = $model->updateTranslationsList($data);
-			$reply->html = $html;
+			$html  = $model->updateTranslationsList($data);
 
-			//If required send a notice apply it before echo
-     		$app->enqueueMessage(Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_SUCCESS'), 'notice');
+			if ($html)
+			{
+				// If required send a notice as system message do it before "echo new JsonResponse", if not, comment next line.
+		 		$app->enqueueMessage(Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_SUCCESS'), 'notice');
+
+				// Adding a success message type "flash" to display after ajax call.
+				$reply->success_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_SUCCESS');
+				$reply->html            = $html;
+			}
+			else
+			{
+				// If required send an error as system message do it before "echo new JsonResponse", if not, comment next line.
+		 		$app->enqueueMessage(Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_ERROR'), 'error');
+
+				// Adding an error message type "flash" to display after ajax call.
+				$reply->error_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_ERROR');
+				$reply->html          = '';
+			}
 
 			echo new JsonResponse($reply, 'Done!');
 		}
 		catch(Exception $e)
 		{
-			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_ERROR', $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_ERROR', $e->getMessage()), 'error');
 
 			$reply->error_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_ERROR');
 			$reply->error         = $e;
@@ -178,5 +190,5 @@ class PackageController extends FormController
 		}
 
 		$app->close();
-    }
+	}
 }

@@ -45,10 +45,10 @@ class TranslationsField extends GroupedlistField
 	 */
 	protected function getGroups()
 	{
-		HTMLHelper::_('stylesheet', 'com_localise/package.css', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('stylesheet', 'com_localise/localise.css', array('version' => 'auto', 'relative' => true));
 
-		$params         = ComponentHelper::getParams('com_localise');
-		$reftag	        = $params->get('reference', '');
+		$params = ComponentHelper::getParams('com_localise');
+		$reftag	= $params->get('reference', '');
 
 		if (empty($reftag))
 		{
@@ -56,8 +56,8 @@ class TranslationsField extends GroupedlistField
 		}
 
 		//Form priority
-		$formdata       = $this->form->getData();
-		$langtag        = $formdata["language"];
+		$formdata = $this->form->getData();
+		$langtag  = $formdata["language"];
 
 		//Ajax priority
 		$ajaxlangtag = (string) $this->element['langtag'];
@@ -260,7 +260,10 @@ class TranslationsField extends GroupedlistField
 			return false;
 		}
 
-		// Suffix the values and respect the keys
+		// Add a suffix to the values without change the keys.
+		// For example when $suffix = '.ini', if the stored key in array is "com_localise" the asigned value to that key will change to "com_localise.ini".
+		// Usefull when we get the "$xml = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/core.xml');"
+		// due at "core.xml" file, the file names have not the '.ini' suffix added.
 		foreach ($array as $key => $value)
 		{
 			if (!is_string($value))

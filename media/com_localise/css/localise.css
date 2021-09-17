@@ -349,9 +349,33 @@ color:#8B0000 !important;
 .info-line {
   line-height: 1.2rem;
 }
+/* TanslationsField list */
+option.missing::before {
+  content: "● ";
+  color: red;
+}
+option.extra::before {
+  content: "● ";
+  color: darkorange;
+}
+option.missing {
+  color: red;
+}
+option.extra {
+  color: darkorange;
+}
+span.missing::before {
+  content: "● ";
+  color: red;
+}
+span.extra::before {
+  content: "● ";
+  color: darkorange;
+}
+
 /* AJAX calls */
 .flash-message {
-  position: absolute !important;
+  position: fixed !important;
   top: 45% !important;
   right: 45% !important;
   z-index: 100 !important;

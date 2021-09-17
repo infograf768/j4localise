@@ -1353,20 +1353,20 @@ class PackageModel extends AdminModel
 		$packagename = htmlspecialchars($data[0]->packagename);
 		$langtag     = htmlspecialchars($data[0]->languagetag);
 
-        //Initiating form instance
-        $filepath = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
-        $form_package = Form::getInstance("package", $filepath, array("control" => "jform"));
+		//Initiating form instance
+		$filepath = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
+		$form_package = Form::getInstance("package", $filepath, array("control" => "jform"));
 
-        //Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_localise/Field');
-        //Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_localise/forms');
+		//Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_localise/Field');
+		//Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_localise/forms');
 
-		//Adding next params at translations field only when Ajax call.
+		//Adding the params bellow at translations field only when Ajax call.
 		$form_package->setFieldAttribute($name = 'translations', 'reftag', $reftag);
 		$form_package->setFieldAttribute($name = 'translations', 'langtag', $langtag);
 
 		$html_output = $form_package->renderField('translations');
 
-		//Cases to "selected" from the xml file if the package filename exists
+		// The highligthted cases to set as "selected" getting it from the package xml file, if the package filename exists.
 		$xml     = false;
 		$xmlpath = JPATH_ADMINISTRATOR . '/components/com_localise/packages/' . $packagename . '.xml';
 
@@ -1383,8 +1383,8 @@ class PackageModel extends AdminModel
 			{
 				foreach ($xml->administrator->children() as $file)
 				{
-					$key  = substr($file, 0, strlen($file) - 4);
-					$string = preg_quote('value="administrator_'  . $key . '"');
+					$key    = substr($file, 0, strlen($file) - 4);
+					$string = preg_quote('value="administrator_' . $key . '"');
 
 					foreach ($lines as $index => $line)
 					{
@@ -1392,23 +1392,21 @@ class PackageModel extends AdminModel
 						{
 							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
 							{
-								$content = 'value="administrator_' . $key .'"';
-								$newcontent = 'value="administrator_' . $key .'" selected="selected" ';
+								$content       = 'value="administrator_' . $key .'"';
+								$newcontent    = 'value="administrator_' . $key .'" selected="selected" ';
 								$lines[$index] = str_replace($content, $newcontent, $line);
 							}
 						}
 					}
 				}
-
-
 			}
 
 			if ($xml->site)
 			{
 				foreach ($xml->site->children() as $file)
 				{
-					$key  = substr($file, 0, strlen($file) - 4);
-					$string = preg_quote('value="site_'  . $key . '"');
+					$key    = substr($file, 0, strlen($file) - 4);
+					$string = preg_quote('value="site_' . $key . '"');
 
 					foreach ($lines as $index => $line)
 					{
@@ -1416,8 +1414,66 @@ class PackageModel extends AdminModel
 						{
 							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
 							{
-								$content = 'value="site_' . $key .'"';
-								$newcontent = 'value="site_' . $key .'" selected="selected" ';
+								$content       = 'value="site_' . $key .'"';
+								$newcontent    = 'value="site_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+							}
+						}
+					}
+				}
+			}
+
+			$html_output = implode("\n", $lines);
+		}
+		elseif (!$xml && $reftag == 'en-GB')
+		{
+			// Useful when creating a new core package that does not have a package name assigned
+			// In that case, the translations to be highlighted from the list will be the set by mandatory from core
+			// when selected language is changed and run this ajax call.
+
+			$xml   = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/core.xml');
+			$lines = preg_split("/\\r\\n|\\r|\\n/", $html_output);
+
+			if ($xml->administrator)
+			{
+				foreach ($xml->administrator->children() as $file)
+				{
+					// core.xml file never have the '.ini' added at file names, so, in this case, is not required delete the '.ini'.
+					//$key    = substr($file, 0, strlen($file) - 4);
+
+					$key    = (string) $file;
+					$string = preg_quote('value="administrator_' . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content       = 'value="administrator_' . $key .'"';
+								$newcontent    = 'value="administrator_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+							}
+						}
+					}
+				}
+			}
+
+			if ($xml->site)
+			{
+				foreach ($xml->site->children() as $file)
+				{
+					$key    = (string) $file;
+					$string = preg_quote('value="site_' . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content       = 'value="site_' . $key .'"';
+								$newcontent    = 'value="site_' . $key .'" selected="selected" ';
 								$lines[$index] = str_replace($content, $newcontent, $line);
 							}
 						}

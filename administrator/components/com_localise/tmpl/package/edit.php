@@ -71,24 +71,33 @@ Factory::getDocument()->addScriptDeclaration("
 									'languagetag': languagetag
 									}]);
 		jQuery.post('index.php',{
-				                'option' : 'com_localise',
-				                'controller' : 'package',
-				                'task' : 'package.updatetranslationslist',
-				                'format' : 'raw',                   
-				                'data' : required_data,                   
-				                [token] : '1',
-				                'dataType' : 'json'
-				        },function(result){                     
-				         //handle the result here
+								'option' : 'com_localise',
+								'controller' : 'package',
+								'task' : 'package.updatetranslationslist',
+								'format' : 'raw',
+								'data' : required_data,
+								[token] : '1',
+								'dataType' : 'json'
+						},function(result){
+						// Handle the result here
 						const reply = JSON.parse(result);
+
 						//console.log(reply);
+
 						if (reply.success)
 						{
-							jQuery('#jform_translations').html(reply.data.html);
+							if (reply.data.html !== '')
+							{
+								jQuery('#jform_translations').html(reply.data.html);
+							}
 
 							if (reply.data.success_message)
 							{
 								jQuery('#flash-message-success').empty().show().html(reply.data.success_message).delay(2000).fadeOut(300);
+							}
+							else if (reply.data.error_message)
+							{
+								jQuery('#flash-message-danger').empty().show().html(reply.data.error_message).delay(2000).fadeOut(300);
 							}
 						}
 						else
@@ -99,13 +108,13 @@ Factory::getDocument()->addScriptDeclaration("
 							}
 						}
 
-						// display the enqueued messages in the message area
+						// Display the enqueued messages in the message area
 						if (reply.messages)
 						{
 							Joomla.renderMessages(reply.messages);
 						}
 
-				        return;
+						return;
 		})
 	}
 
@@ -117,9 +126,9 @@ Factory::getDocument()->addScriptDeclaration("
 ");
 ?>
 <?php
-	echo '<div class="text-center"><div id="flash-message-danger" class="alert alert-danger flash-message" style="position: fixed; top:45%; right:45%; z-index: 9; display: none;"></div></div>';
-	echo '<div class="text-center"><div id="flash-message-notice" class="alert alert-notice flash-message" style="position: fixed; top:45%; right:45%; z-index: 9; display: none;"></div></div>';
-	echo '<div class="text-center"><div id="flash-message-success" class="alert alert-success flash-message" style="position: fixed; top:45%; right:45%; z-index: 9; display: none;"></div></div>';
+	echo '<div class="text-center"><div id="flash-message-danger" class="alert alert-danger flash-message" style="display: none;"></div></div>';
+	echo '<div class="text-center"><div id="flash-message-notice" class="alert alert-notice flash-message" style="display: none;"></div></div>';
+	echo '<div class="text-center"><div id="flash-message-success" class="alert alert-success flash-message" style="display: none;"></div></div>';
 ?>
 <form action="<?php echo Route::_('index.php?option=com_localise&view=package&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-package-form" class="form-validate">
 	<div class="row-fluid">
@@ -153,7 +162,7 @@ Factory::getDocument()->addScriptDeclaration("
 							<fieldset id="fieldset-translations" class="options-form">
 								<legend><?php echo Text::_($fieldSets['translations']->label); ?></legend>
 								<?php if (!empty($fieldSets['translations']->description)):?>
-										<legend><?php echo Text::_($fieldSets['translations']->description); ?></legend>
+										<p><?php echo Text::_($fieldSets['translations']->description); ?></p>
 								<?php endif;?>
 								<?php foreach($this->form->getFieldset('translations') as $field) : ?>
 									<?php echo $field->renderField(); ?>
