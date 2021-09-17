@@ -1355,16 +1355,16 @@ class PackageModel extends AdminModel
 
         //Initiating form instance
         $filepath = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
-        $form_packagefile = Form::getInstance("packagefile", $filepath, array("control" => "jform"));
+        $form_package = Form::getInstance("package", $filepath, array("control" => "jform"));
 
         //Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_localise/Field');
         //Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_localise/forms');
 
 		//Adding next params at translations field only when Ajax call.
-		$form_packagefile->setFieldAttribute($name = 'translations', 'reftag', $reftag);
-		$form_packagefile->setFieldAttribute($name = 'translations', 'langtag', $langtag);
+		$form_package->setFieldAttribute($name = 'translations', 'reftag', $reftag);
+		$form_package->setFieldAttribute($name = 'translations', 'langtag', $langtag);
 
-		$html_output = $form_packagefile->renderField('translations');
+		$html_output = $form_package->renderField('translations');
 
 		//Cases to "selected" from the xml file if the package filename exists
 		$xml     = false;
@@ -1383,7 +1383,6 @@ class PackageModel extends AdminModel
 			{
 				foreach ($xml->administrator->children() as $file)
 				{
-					$data = (string) $file;
 					$key  = substr($file, 0, strlen($file) - 4);
 					$string = preg_quote('value="administrator_'  . $key . '"');
 
@@ -1408,7 +1407,6 @@ class PackageModel extends AdminModel
 			{
 				foreach ($xml->site->children() as $file)
 				{
-					$data = (string) $file;
 					$key  = substr($file, 0, strlen($file) - 4);
 					$string = preg_quote('value="site_'  . $key . '"');
 
