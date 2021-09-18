@@ -137,7 +137,7 @@ class PackageController extends FormController
 		$this->setRedirect(Route::_($url, false));
 	}
 	/**
-	 * Method to update the translarions field list by AJAX call.
+	 * Method to update the translations field list by AJAX call.
 	 *
 	 * @return object
 	 */

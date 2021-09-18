@@ -1342,7 +1342,7 @@ class PackageModel extends AdminModel
 	public function updateTranslationsList($data)
 	{
 		$params = ComponentHelper::getParams('com_localise');
-		$reftag	= $params->get('reference', '');
+		$reftag = $params->get('reference', '');
 
 		if (empty($reftag))
 		{
@@ -1354,13 +1354,13 @@ class PackageModel extends AdminModel
 		$langtag     = htmlspecialchars($data[0]->languagetag);
 
 		// Initiating form instance
-		$filepath = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
+		$filepath     = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
 		$form_package = Form::getInstance("package", $filepath, array("control" => "jform"));
 
 		//Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_localise/Field');
 		//Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_localise/forms');
 
-		// Adding the params bellow at translations field only when Ajax call.
+		// Adding the params below at translations field only when Ajax call.
 		$form_package->setFieldAttribute($name = 'translations', 'reftag', $reftag);
 		$form_package->setFieldAttribute($name = 'translations', 'langtag', $langtag);
 
@@ -1438,9 +1438,6 @@ class PackageModel extends AdminModel
 			{
 				foreach ($xml->administrator->children() as $file)
 				{
-					// core.xml file never have the '.ini' added at file names, so, in this case, is not required delete the '.ini'.
-					//$key    = substr($file, 0, strlen($file) - 4);
-
 					$key    = (string) $file;
 					$string = preg_quote('value="administrator_' . $key . '"');
 
