@@ -35,8 +35,9 @@
 			name="language"
 			type="corelanguage"
 			label="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE"
-			description="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE_DESC"
-			required="true" />
+			required="true">
+			<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
+		</field>
 		<field
 			id="version"
 			name="version"
