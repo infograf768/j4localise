@@ -187,7 +187,6 @@ class PackageModel extends AdminModel
 			// If the package exists get it
 			$table = $this->getTable();
 
-
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -196,7 +195,6 @@ class PackageModel extends AdminModel
 			$table->load($id);
 
 			$package->setProperties($table->getProperties());
-
 
 			// Get the manifest
 			$xml = simplexml_load_file($table->path);
