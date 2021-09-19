@@ -187,12 +187,14 @@ class PackageModel extends AdminModel
 			// If the package exists get it
 			$table = $this->getTable();
 
+
 			if (is_array($id))
 			{
 				$id = $id[0];
 			}
 
 			$table->load($id);
+
 			$package->setProperties($table->getProperties());
 
 
@@ -590,7 +592,7 @@ class PackageModel extends AdminModel
 			return false;
 		}
 		*/
-		if ($path == $oldpath)
+		if ($path == $oldpath || (!empty($path) && $oldpath == NULL))
 		{
 			$id = LocaliseHelper::getFileId($path);
 			$this->setState('package.id', $id);
