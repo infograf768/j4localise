@@ -161,19 +161,19 @@ class PackageController extends FormController
 			if ($html)
 			{
 				// If required send a notice as system message do it before "echo new JsonResponse", if not, comment next line.
-		 		$app->enqueueMessage(Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_SUCCESS'), 'notice');
+		 		$app->enqueueMessage(Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_SUCCESS'), 'notice');
 
 				// Adding a success message type "flash" to display after ajax call.
-				$reply->success_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_SUCCESS');
+				$reply->success_message = Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_SUCCESS_FLASH');
 				$reply->html            = $html;
 			}
 			else
 			{
 				// If required send an error as system message do it before "echo new JsonResponse", if not, comment next line.
-		 		$app->enqueueMessage(Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_ERROR'), 'error');
+		 		$app->enqueueMessage(Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR'), 'error');
 
 				// Adding an error message type "flash" to display after ajax call.
-				$reply->error_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_ERROR');
+				$reply->error_message = Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR_FLASH');
 				$reply->html          = '';
 			}
 
@@ -181,9 +181,9 @@ class PackageController extends FormController
 		}
 		catch(Exception $e)
 		{
-			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_ERROR', $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR', $e->getMessage()), 'error');
 
-			$reply->error_message = Text::_('COM_LOCALISE_UPDATE_TRANSLATIONS_LIST_TASK_FLASH_ERROR');
+			$reply->error_message = Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR_FLASH');
 			$reply->error         = $e;
 
 			echo new JsonResponse($reply);

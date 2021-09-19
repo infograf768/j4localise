@@ -1341,6 +1341,14 @@ class PackageModel extends AdminModel
 	 */
 	public function updateTranslationsList($data)
 	{
+		// Ready to enqueue message if required
+		$app    = Factory::getApplication();
+
+		// Sample
+		//$app->enqueueMessage(Text::_('Fake test returning false from updateTranslationsList function at package model'), 'warning');
+		//return false;
+
+		// Getting params
 		$params = ComponentHelper::getParams('com_localise');
 		$reftag = $params->get('reference', '');
 
