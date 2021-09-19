@@ -169,6 +169,7 @@ class PackageController extends FormController
 			}
 			else
 			{
+				// $html is returning 'false'
 				// If required send an error as system message do it before "echo new JsonResponse", if not, comment next line.
 		 		$app->enqueueMessage(Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR'), 'error');
 

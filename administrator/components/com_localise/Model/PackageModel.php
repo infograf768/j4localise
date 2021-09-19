@@ -1403,6 +1403,8 @@ class PackageModel extends AdminModel
 								$content       = 'value="administrator_' . $key .'"';
 								$newcontent    = 'value="administrator_' . $key .'" selected="selected" ';
 								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
 							}
 						}
 					}
@@ -1425,6 +1427,8 @@ class PackageModel extends AdminModel
 								$content       = 'value="site_' . $key .'"';
 								$newcontent    = 'value="site_' . $key .'" selected="selected" ';
 								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
 							}
 						}
 					}
@@ -1458,6 +1462,8 @@ class PackageModel extends AdminModel
 								$content       = 'value="administrator_' . $key .'"';
 								$newcontent    = 'value="administrator_' . $key .'" selected="selected" ';
 								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
 							}
 						}
 					}
@@ -1480,6 +1486,8 @@ class PackageModel extends AdminModel
 								$content       = 'value="site_' . $key .'"';
 								$newcontent    = 'value="site_' . $key .'" selected="selected" ';
 								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
 							}
 						}
 					}
