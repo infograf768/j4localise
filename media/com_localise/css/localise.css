@@ -349,7 +349,7 @@ color:#8B0000 !important;
 .info-line {
   line-height: 1.2rem;
 }
-/* TanslationsField list */
+/* TranslationsField list */
 option.missing::before {
   content: "● ";
   color: red;

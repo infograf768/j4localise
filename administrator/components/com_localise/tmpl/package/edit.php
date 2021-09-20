@@ -17,18 +17,18 @@ use Joomla\CMS\Session\Session;
 
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('jquery.framework');
-HTMLHelper::_('bootstrap.modal', '.modal', []);
-
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
+
 Text::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
+
 Factory::getDocument()->addScriptDeclaration("
 	(function($){
 		$(document).ready(function () {
 			$('.fileupload').click(function(e){
 
-				var form   = $('#filemodalForm');
+				var form = $('#filemodalForm');
 
 				// Assign task
 				form.find('input[name=task]').val('package.uploadOtherFile');

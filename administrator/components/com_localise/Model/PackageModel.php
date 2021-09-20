@@ -361,9 +361,9 @@ class PackageModel extends AdminModel
 	public function save($data)
 	{
 		// When editing a package, find the original path
-		$app = Factory::getApplication('administrator');
+		$app        = Factory::getApplication('administrator');
 		$originalId = $app->getUserState('com_localise.edit.package.id');
-		$oldpath = null;
+		$oldpath    = null;
 
 		$originalId = is_array($originalId) && count($originalId) > 0 ?
 						$originalId[0] : $originalId;
@@ -1342,7 +1342,7 @@ class PackageModel extends AdminModel
 	public function updateTranslationsList($data)
 	{
 		// Ready to enqueue message if required
-		$app    = Factory::getApplication();
+		$app = Factory::getApplication();
 
 		// Sample
 		//$app->enqueueMessage(Text::_('Fake test returning false from updateTranslationsList function at package model'), 'warning');
