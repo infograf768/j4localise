@@ -15,7 +15,14 @@
 			class="ltr"
 			required="true"
 			label="COM_LOCALISE_LABEL_PACKAGE_NAME"
-			description="COM_LOCALISE_LABEL_PACKAGE_NAME_DESC" />
+			description="COM_LOCALISE_LABEL_PACKAGEFILE_NAME_DESC" />
+		<field
+			id="extensionname"
+			name="extensionname"
+			type="extensionname"
+			label="COM_LOCALISE_LABEL_PACKAGEFILE_EXTENSION_NAME"
+			description="COM_LOCALISE_LABEL_PACKAGEFILE_EXTENSION_NAME_DESC" />
+			<option value="">COM_LOCALISE_OPTION_EXTENSION_NAME_SELECT</option>
 		<field
 			id="description"
 			name="description"
@@ -30,6 +37,7 @@
 			label="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE"
 			description="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE_DESC"
 			required="true" />
+			<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
 		<field
 			id="version"
 			name="version"
@@ -113,7 +121,8 @@
 	</fieldset>
 	<fieldset
 		name="translations"
-		label="COM_LOCALISE_FIELDSET_PACKAGE_TRANSLATIONS">
+		label="COM_LOCALISE_FIELDSET_PACKAGE_TRANSLATIONS"
+		description="COM_LOCALISE_FIELDSET_PACKAGE_TRANSLATIONS_DESC">
 		<field
 			id="translations"
 			name="translations"

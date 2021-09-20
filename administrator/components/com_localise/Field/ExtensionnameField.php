@@ -13,42 +13,40 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Form\Field\GroupedlistField;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
-use Joomla\Utilities\ArrayHelper;
 
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/Helper/defines.php';
 
 /**
- * Form Field ExtensionTranslations class.
+ * Form Field ExtensionsName class.
  *
  * @package     Extensions.Components
  * @subpackage  Localise
  *
  * @since       1.0
  */
-class ExtensiontranslationsField extends GroupedlistField
+class ExtensionnameField extends FormField
 {
 	/**
 	 * The field type.
 	 *
 	 * @var    string
 	 */
-	protected $type = 'Extensiontranslations';
+	protected $type = 'Extensionname';
 
 	/**
-	 * Method to get a list of options for a list input.
+	 * Method to get the field input markup.
 	 *
-	 * @return  array    An array of JHtml options.
+	 * @return  string	The field input markup.
 	 */
-	protected function getGroups()
+	protected function getInput()
 	{
-		HTMLHelper::_('stylesheet', 'com_localise/localise.css', array('version' => 'auto', 'relative' => true));
-
-		$params = ComponentHelper::getParams('com_localise');
-		$reftag	= $params->get('reference', '');
+		$attributes = '';
+		$params     = ComponentHelper::getParams('com_localise');
+		$reftag	    = $params->get('reference', '');
 
 		if (empty($reftag))
 		{
@@ -79,15 +77,12 @@ class ExtensiontranslationsField extends GroupedlistField
 			$langtag = $reftag;
 		}
 
-
 		$istranslation  = $reftag != $langtag;
 
 		$coreadminfiles = array();
 		$coresitefiles  = array();
 		$noncorefiles   = array();
-		$allfiles       = array();
-		$missingfiles   = array();
-		$extrafiles     = array();
+		$allnames       = array();
 
 		$requiredtags   = array($reftag);
 
@@ -127,9 +122,7 @@ class ExtensiontranslationsField extends GroupedlistField
 
 		foreach (array('Site', 'Administrator') as $client)
 		{
-			$allfiles[$client]     = array();
 			$noncorefiles[$client] = array();
-			$extrafiles[$client]   = array();
 
 			$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
 
@@ -146,9 +139,7 @@ class ExtensiontranslationsField extends GroupedlistField
 							continue;
 						}
 
-						$allfiles[$client][$tag] = array();
-						$files                   = Folder::files("$path/$tag", ".ini$");
-						$extname                 = '';
+						$files = Folder::files("$path/$tag", ".ini$");
 
 						if ($client == 'Site')
 						{
@@ -161,38 +152,18 @@ class ExtensiontranslationsField extends GroupedlistField
 
 						foreach ($files as $file)
 						{
+							$extensionname = '';
+
 							if (!in_array($file, $noncorefiles[$client]))
 							{
 								continue;
 							}
 
-							$extname = self::get_extension_name($file);
+							$extensionname = self::get_extension_name($file);
 
-							if (!empty($extensionname) && $extname != $extensionname)
+							if (!in_array($extensionname, $allnames))
 							{
-								continue;
-							}
-
-							if ($file == 'joomla.ini')
-							{
-								$key      = 'joomla';
-								$value    = Text::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA');
-							}
-							else
-							{
-								$key      = substr($file, 0, strlen($file) - 4);
-								$value    = $key;
-							}
-
-							if (!in_array($key, $allfiles[$client][$tag]))
-							{
-								$allfiles[$client][$tag][] = $key;
-							}
-
-							if (!array_key_exists($key, $groups[$client]))
-							{
-								$groups[$client][$key] = HTMLHelper::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
-								$groups[$client][$key]->class = "in-core-folder";
+								$allnames[] = $extensionname;
 							}
 						}
 					}
@@ -231,32 +202,19 @@ class ExtensiontranslationsField extends GroupedlistField
 								continue;
 							}
 
-							$file   = "$path$extension/language/$tag/$prefix$extension$suffix.ini";
-
-							$extname = self::get_extension_name($extension);
-
-							if (!empty($extensionname) && $extname != $extensionname)
-							{
-								continue;
-							}
+							$extensionname = '';
+							$file          = "$path$extension/language/$tag/$prefix$extension$suffix.ini";
 
 							//Getting the $origin to avoid add, for example, overrides
 							$origin = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
 
 							if (File::exists($file) && in_array($origin, $requiredtypes))
 							{
-								if (!in_array("$prefix$extension$suffix", $allfiles[$client][$tag]))
-								{
-									$allfiles[$client][$tag][] = "$prefix$extension$suffix";
-								}
+								$extensionname = self::get_extension_name($extension);
 
-								if (!array_key_exists("$prefix$extension$suffix", $groups[$client]))
+								if (!in_array($extensionname, $allnames))
 								{
-									$groups[$client]["$prefix$extension$suffix"] = HTMLHelper::_(
-											'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
-									);
-
-									$groups[$client]["$prefix$extension$suffix"]->class = "in-$type-folder";
+									$allnames[] = $extensionname;
 								}
 							}
 						}
@@ -265,89 +223,53 @@ class ExtensiontranslationsField extends GroupedlistField
 			}
 		}
 
-		if ($istranslation)
+		// To avoid user's confusion, readonly="true" should imply disabled="true".
+		if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true')
 		{
-			foreach (array('Site', 'Administrator') as $client)
-			{
-				$missingfiles[$client] = array();
-				$extrafiles[$client]  = array();
-
-				if (!empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
-				{
-					$missingfiles[$client] = array_diff($allfiles[$client][$reftag], $allfiles[$client][$langtag]);
-					$extrafiles[$client]  = array_diff($allfiles[$client][$langtag], $allfiles[$client][$reftag]);
-
-					if (!empty($missingfiles[$client]))
-					{
-						foreach ($missingfiles[$client] as $id => $file)
-						{
-							$prevclass = $groups[$client][$file]->class;
-							$groups[$client][$file]->class = $prevclass . " missing";
-
-							//Sample case to allow block the missing files.
-							//It does not seems good idea due in this case it means we are allowing attempt to download incomplete packages
-							//The sample try to show how to handle the object at this last step to configure it such as we wanna finally set it
-							//To test, simply uncomment the next line
-
-							//$groups[$client][$file]->disable = true;
-						}
-					}
-
-					if (!empty($extrafiles[$client]))
-					{
-						foreach ($extrafiles[$client] as $id => $file)
-						{
-							$prevclass = $groups[$client][$file]->class;
-							$groups[$client][$file]->class = $prevclass . " extra";
-						}
-					}
-				}
-				elseif (!empty($allfiles[$client][$reftag]) && empty($allfiles[$client][$langtag]))
-				{
-						foreach ($allfiles[$client][$reftag] as $id => $file)
-						{
-							$prevclass = $groups[$client][$file]->class;
-							$groups[$client][$file]->class = $prevclass . " missing";
-
-							//Sample case to allow block the missing files
-							//It does not seems good idea due in this case it means we are allowing attempt to download incomplete packages
-							//The sample try to show how to handle the object at this last step to configure it such as we wanna finally set it
-							//To test, simply uncomment the next line
-
-							//$groups[$client][$file]->disable = true;
-						}
-				}
-				elseif (empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
-				{
-						foreach ($allfiles[$client][$langtag] as $id => $file)
-						{
-							$prevclass = $groups[$client][$file]->class;
-							$groups[$client][$file]->class = $prevclass . " extra";
-						}
-				}
-			}
+			$attributes .= ' disabled="disabled"';
 		}
 
-		foreach ($groups as $client => $extensions)
+		if ($v = (string) $this->element['onchange'])
 		{
-			if (count($groups[$client]) == 0)
-			{
-				// Odd case when value is '' due when "render" seems than it make the option as selected="selected" and it crash the validation after ajax call.
-				// due is invalid set an option as diabled and selected at same time. Previous line:
-				//$groups[$client][] = HTMLHelper::_('select.option', '',  Text::_('COM_LOCALISE_NOTRANSLATION'), 'value', 'text', true);
-				// To solve, next line:
-				$groups[$client][] = HTMLHelper::_('select.option', 'empty_' . $client,  Text::_('COM_LOCALISE_NOTRANSLATION'), 'value', 'text', true);
-			}
-			else
-			{
-				ArrayHelper::sortObjects($groups[$client], 'text');
-			}
+			$attributes .= ' onchange="' . $v . '"';
 		}
 
-		// Merge any additional options in the XML definition.
-		$groups = array_merge(parent::getGroups(), $groups);
+		$attributes .= ' class="custom-select"';
 
-		return $groups;
+		$options = array();
+
+		foreach ($this->element->children() as $option)
+		{
+			$options[] = HTMLHelper::_('select.option', $option->attributes('value'), Text::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
+		}
+
+		$options[] = HTMLHelper::_('select.option', '', Text::_('COM_LOCALISE_OPTION_EXTENSION_NAME_SELECT'));
+
+		asort($allnames);
+
+		foreach ($allnames as $name)
+		{
+			$options[] = HTMLHelper::_('select.option', $name, ucfirst($name), array('option.attr' => 'attributes', 'attr' => '')
+						);
+		}
+
+		$return = array();
+
+		if ((string) $this->element['readonly'] == 'true')
+		{
+			$return[] = HTMLHelper::_('select.genericlist', $options, '', array('id' => $this->id,
+						'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
+						);
+			$return[] = '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '"/>';
+		}
+		else
+		{
+			$return[] = HTMLHelper::_('select.genericlist', $options, $this->name, array('id' => $this->id,
+						'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
+						);
+		}
+
+		return implode($return);
 	}
 
 	/**
