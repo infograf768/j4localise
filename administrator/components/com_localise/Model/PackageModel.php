@@ -19,6 +19,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Router\Route;
@@ -191,8 +193,8 @@ class PackageModel extends AdminModel
 			}
 
 			$table->load($id);
-			$package->setProperties($table->getProperties());
 
+			$package->setProperties($table->getProperties());
 
 			// Get the manifest
 			$xml = simplexml_load_file($table->path);
@@ -359,9 +361,9 @@ class PackageModel extends AdminModel
 	public function save($data)
 	{
 		// When editing a package, find the original path
-		$app = Factory::getApplication('administrator');
+		$app        = Factory::getApplication('administrator');
 		$originalId = $app->getUserState('com_localise.edit.package.id');
-		$oldpath = null;
+		$oldpath    = null;
 
 		$originalId = is_array($originalId) && count($originalId) > 0 ?
 						$originalId[0] : $originalId;
@@ -588,7 +590,7 @@ class PackageModel extends AdminModel
 			return false;
 		}
 		*/
-		if ($path == $oldpath)
+		if ($path == $oldpath || (!empty($path) && $oldpath == NULL))
 		{
 			$id = LocaliseHelper::getFileId($path);
 			$this->setState('package.id', $id);
@@ -1330,5 +1332,171 @@ class PackageModel extends AdminModel
 		}
 
 		return true;
+	}
+
+	/**
+	 * Method to get the HTML output required to update the translations field list by the selected language tag.
+	 *
+	 * @return   string  The data for the jform_translations field.
+	 */
+	public function updateTranslationsList($data)
+	{
+		// Ready to enqueue message if required
+		$app = Factory::getApplication();
+
+		// Sample
+		//$app->enqueueMessage(Text::_('Fake test returning false from updateTranslationsList function at package model'), 'warning');
+		//return false;
+
+		// Getting params
+		$params = ComponentHelper::getParams('com_localise');
+		$reftag = $params->get('reference', '');
+
+		if (empty($reftag))
+		{
+			$reftag = 'en-GB';
+		}
+
+		// Getting the data from ajax call
+		$packagename = htmlspecialchars($data[0]->packagename);
+		$langtag     = htmlspecialchars($data[0]->languagetag);
+
+		// Initiating form instance
+		$filepath     = JPATH_ADMINISTRATOR . "/components/com_localise/forms/package.xml";
+		$form_package = Form::getInstance("package", $filepath, array("control" => "jform"));
+
+		//Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_localise/Field');
+		//Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_localise/forms');
+
+		// Adding the params below at translations field only when Ajax call.
+		$form_package->setFieldAttribute($name = 'translations', 'reftag', $reftag);
+		$form_package->setFieldAttribute($name = 'translations', 'langtag', $langtag);
+
+		$html_output = $form_package->renderField('translations');
+
+		// The highligthted cases to set as "selected" getting it from the package xml file, if the package filename exists.
+		$xml     = false;
+		$xmlpath = JPATH_ADMINISTRATOR . '/components/com_localise/packages/' . $packagename . '.xml';
+
+		if (!empty($packagename) && File::exists($xmlpath))
+		{
+			$xml = simplexml_load_file($xmlpath);
+		}
+
+		if ($xml)
+		{
+			$lines = preg_split("/\\r\\n|\\r|\\n/", $html_output);
+
+			if ($xml->administrator)
+			{
+				foreach ($xml->administrator->children() as $file)
+				{
+					$key    = substr($file, 0, strlen($file) - 4);
+					$string = preg_quote('value="administrator_' . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content       = 'value="administrator_' . $key .'"';
+								$newcontent    = 'value="administrator_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if ($xml->site)
+			{
+				foreach ($xml->site->children() as $file)
+				{
+					$key    = substr($file, 0, strlen($file) - 4);
+					$string = preg_quote('value="site_' . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content       = 'value="site_' . $key .'"';
+								$newcontent    = 'value="site_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			$html_output = implode("\n", $lines);
+		}
+		elseif (!$xml && $reftag == 'en-GB')
+		{
+			// Useful when creating a new core package that does not have a package name assigned
+			// In that case, the translations to be highlighted from the list will be the set by mandatory from core
+			// when selected language is changed and run this ajax call.
+
+			$xml   = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/core.xml');
+			$lines = preg_split("/\\r\\n|\\r|\\n/", $html_output);
+
+			if ($xml->administrator)
+			{
+				foreach ($xml->administrator->children() as $file)
+				{
+					$key    = (string) $file;
+					$string = preg_quote('value="administrator_' . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content       = 'value="administrator_' . $key .'"';
+								$newcontent    = 'value="administrator_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if ($xml->site)
+			{
+				foreach ($xml->site->children() as $file)
+				{
+					$key    = (string) $file;
+					$string = preg_quote('value="site_' . $key . '"');
+
+					foreach ($lines as $index => $line)
+					{
+						if (!empty($line))
+						{
+							if (preg_match("/^(.*)$string(.*)$/", $line, $matches))
+							{
+								$content       = 'value="site_' . $key .'"';
+								$newcontent    = 'value="site_' . $key .'" selected="selected" ';
+								$lines[$index] = str_replace($content, $newcontent, $line);
+
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			$html_output = implode("\n", $lines);
+		}
+
+		return $html_output;
 	}
 }
