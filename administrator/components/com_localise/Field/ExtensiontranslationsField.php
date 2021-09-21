@@ -56,11 +56,11 @@ class ExtensiontranslationsField extends GroupedlistField
 		}
 
 		// Form priority
-		$formdata      = $this->form->getData();
-		$langtag       = $formdata["language"];
+		$formdata = $this->form->getData();
+		$langtag  = $formdata["language"];
 
 		// Ajax priority
-		$ajaxlangtag       = (string) $this->element['langtag'];
+		$ajaxlangtag = (string) $this->element['langtag'];
 
 		if (!empty($ajaxlangtag))
 		{
@@ -71,7 +71,6 @@ class ExtensiontranslationsField extends GroupedlistField
 		{
 			$langtag = $reftag;
 		}
-
 
 		$istranslation  = $reftag != $langtag;
 
@@ -306,7 +305,7 @@ class ExtensiontranslationsField extends GroupedlistField
 			}
 		}
 
-		foreach ($groups as $client => $extensions)
+		foreach ($groups as $client => &$extensions)
 		{
 			if (count($groups[$client]) == 0)
 			{
@@ -318,7 +317,7 @@ class ExtensiontranslationsField extends GroupedlistField
 			}
 			else
 			{
-				ArrayHelper::sortObjects($groups[$client], 'text');
+				sort($extensions);
 			}
 		}
 
