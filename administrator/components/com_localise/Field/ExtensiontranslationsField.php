@@ -296,11 +296,11 @@ class ExtensiontranslationsField extends GroupedlistField
 				}
 				elseif (empty($allfiles[$client][$reftag]) && !empty($allfiles[$client][$langtag]))
 				{
-						foreach ($allfiles[$client][$langtag] as $id => $file)
-						{
-							$prevclass = $groups[$client][$file]->class;
-							$groups[$client][$file]->class = $prevclass . " extra";
-						}
+					foreach ($allfiles[$client][$langtag] as $id => $file)
+					{
+						$prevclass = $groups[$client][$file]->class;
+						$groups[$client][$file]->class = $prevclass . " extra";
+					}
 				}
 			}
 		}

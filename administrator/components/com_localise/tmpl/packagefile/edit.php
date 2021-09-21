@@ -46,17 +46,17 @@ function updateTranslationsList() {
 	var languagetag   = jQuery('#jform_language').val();
 	var token         = '". Session::getFormToken() ."';
 	var required_data = JSON.stringify([{
-										'packagename'   : packagename,
-										'languagetag'   : languagetag
+										'packagename' : packagename,
+										'languagetag' : languagetag
 										}]);
 	jQuery.post('index.php',{
-		'option' : 'com_localise',
+		'option'     : 'com_localise',
 		'controller' : 'packagefile',
-		'task' : 'packagefile.updatetranslationslist',
-		'format' : 'raw',
-		'data' : required_data,
-		[token] : '1',
-		'dataType' : 'json'
+		'task'       : 'packagefile.updatetranslationslist',
+		'format'     : 'raw',
+		'data'       : required_data,
+		[token]      : '1',
+		'dataType'   : 'json'
 		})
 	.done(function(result, textStatus, jqXHR)
 	{
@@ -117,7 +117,7 @@ function updateTranslationsList() {
 		// Here we can handle an alert message type 'System message', creating it. Sample:
 		//var messages = {
 		//					'message': ['Sample message one', 'Sample message two'],
-		//					'error': ['Sample error one', 'Sample error two']
+		//					'error'  : ['Sample error one', 'Sample error two']
 		//};
 
 		var messages = {

@@ -931,7 +931,7 @@ class PackageFileModel extends AdminModel
 		$app = Factory::getApplication();
 
 		// Sample
-		//$app->enqueueMessage(Text::_('Fake test returning false from updateTranslationsList function at package model'), 'warning');
+		//$app->enqueueMessage(Text::_('Fake test returning false from updateTranslationsList function at packagefile model'), 'warning');
 		//return false;
 
 		// Getting params
