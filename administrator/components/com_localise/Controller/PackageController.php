@@ -14,7 +14,9 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 /**
  * Package Controller class for the Localise component
@@ -133,5 +135,62 @@ class PackageController extends FormController
 		$url = 'index.php?option=com_localise&task=package.edit&cid[]=' . $id;
 
 		$this->setRedirect(Route::_($url, false));
+	}
+
+	/**
+	 * Method to update the translations field list by AJAX call.
+	 *
+	 * @return object
+	 */
+	public function updatetranslationslist()
+	{
+		try
+		{
+			// Case invalid token, ajax call die here.
+			$this->checkToken() or die();
+
+			// Initialise variables.
+			$app   = Factory::getApplication();
+			$input = $app->input;
+			$reply = new \JObject;
+			$data  = $input->get('data', null, 'RAW');
+			$data  = json_decode($data);
+
+			$model = $this->getModel();
+			$html  = $model->updateTranslationsList($data);
+
+			if ($html)
+			{
+				// If required send a notice as system message do it before "echo new JsonResponse", if not, comment next line.
+		 		$app->enqueueMessage(Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_SUCCESS'), 'notice');
+
+				// Adding a success message type "flash" to display after ajax call.
+				$reply->success_message = Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_SUCCESS_FLASH');
+				$reply->html            = $html;
+			}
+			else
+			{
+				// $html is returning 'false'
+				// If required send an error as system message do it before "echo new JsonResponse", if not, comment next line.
+		 		$app->enqueueMessage(Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR'), 'error');
+
+				// Adding an error message type "flash" to display after ajax call.
+				$reply->error_message = Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR_FLASH');
+				$reply->html          = '';
+			}
+
+			echo new JsonResponse($reply, 'Done!');
+		}
+		catch(Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR', $e->getMessage()), 'error');
+
+			$reply->error_message = Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR_FLASH');
+			$reply->error         = $e;
+
+			echo new JsonResponse($reply);
+		}
+
+		$app->close();
 	}
 }
