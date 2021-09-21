@@ -43,12 +43,10 @@ Factory::getDocument()->addScriptDeclaration("
 Factory::getDocument()->addScriptDeclaration("
 function updateTranslationsList() {
 	var packagename   = jQuery('#jform_name').val();
-	var extensionname = jQuery('#jform_extensionname').val();
 	var languagetag   = jQuery('#jform_language').val();
 	var token         = '". Session::getFormToken() ."';
 	var required_data = JSON.stringify([{
 										'packagename'   : packagename,
-										'extensionname' : extensionname,
 										'languagetag'   : languagetag
 										}]);
 	jQuery.post('index.php',{
@@ -89,7 +87,6 @@ function updateTranslationsList() {
 				if (reply.data.html)
 				{
 					jQuery('#jform_translations').html(reply.data.translations);
-					jQuery('#jform_extensionname').html(reply.data.extensionname);
 				}
 
 				if (reply.data.success_message)
@@ -138,12 +135,6 @@ jQuery(document).ready(function() {
 	jQuery('#jform_language').change(function(){
 		updateTranslationsList();
 	})
-
-	jQuery('#jform_extensionname').change(function(){
-		updateTranslationsList();
-                //jQuery('#jform_language').addClass('invalid');
-	})
-
 });
 ");
 ?>

@@ -58,20 +58,13 @@ class ExtensiontranslationsField extends GroupedlistField
 		// Form priority
 		$formdata      = $this->form->getData();
 		$langtag       = $formdata["language"];
-		$extensionname = $formdata["extensionname"];
 
 		// Ajax priority
 		$ajaxlangtag       = (string) $this->element['langtag'];
-		$ajaxextensionname = (string) $this->element['extensionname'];
 
 		if (!empty($ajaxlangtag))
 		{
 			$langtag = $ajaxlangtag;
-		}
-
-		if (!empty($ajaxextensionname))
-		{
-			$extensionname = $ajaxextensionname;
 		}
 
 		if (empty($langtag))
@@ -148,7 +141,6 @@ class ExtensiontranslationsField extends GroupedlistField
 
 						$allfiles[$client][$tag] = array();
 						$files                   = Folder::files("$path/$tag", ".ini$");
-						$extname                 = '';
 
 						if ($client == 'Site')
 						{
@@ -162,13 +154,6 @@ class ExtensiontranslationsField extends GroupedlistField
 						foreach ($files as $file)
 						{
 							if (!in_array($file, $noncorefiles[$client]))
-							{
-								continue;
-							}
-
-							$extname = self::get_extension_name($file);
-
-							if (!empty($extensionname) && $extname != $extensionname)
 							{
 								continue;
 							}
@@ -231,14 +216,7 @@ class ExtensiontranslationsField extends GroupedlistField
 								continue;
 							}
 
-							$file   = "$path$extension/language/$tag/$prefix$extension$suffix.ini";
-
-							$extname = self::get_extension_name($extension);
-
-							if (!empty($extensionname) && $extname != $extensionname)
-							{
-								continue;
-							}
+							$file = "$path$extension/language/$tag/$prefix$extension$suffix.ini";
 
 							//Getting the $origin to avoid add, for example, overrides
 							$origin = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
@@ -380,54 +358,5 @@ class ExtensiontranslationsField extends GroupedlistField
 		}
 
 		return $array;
-	}
-
-	/**
-	 * Method to get the extension name from a filename.
-	 *
-	 * @param   string  $filename  The full file name.
-	 *
-	 * @return  string  The extension name without prefix or suffixes
-	 */
-	public static function get_extension_name($filename)
-	{
-		if (empty($filename))
-		{
-			return false;
-		}
-
-		$extensionname = $filename;
-		$parts         = explode('.', $filename);
-
-		if (!empty($parts[1]))
-		{
-			$extensionname = $parts[0];
-		}
-
-			switch (substr($filename, 0, 4))
-			{
-				case 'com_':
-					$extensionname = str_replace('com_', '', $extensionname);
-
-					break;
-
-				case 'mod_':
-					$extensionname = str_replace('mod_', '', $extensionname);
-
-					break;
-
-				case 'plg_':
-					$extensionname = str_replace('plg_', '', $extensionname);
-
-					break;
-
-				case 'tpl_':
-					$extensionname = str_replace('tpl_', '', $extensionname);
-
-					break;
-
-			}
-
-		return $extensionname;
 	}
 }

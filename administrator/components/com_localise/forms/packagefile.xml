@@ -17,13 +17,6 @@
 			label="COM_LOCALISE_LABEL_PACKAGE_NAME"
 			description="COM_LOCALISE_LABEL_PACKAGEFILE_NAME_DESC" />
 		<field
-			id="extensionname"
-			name="extensionname"
-			type="extensionname"
-			label="COM_LOCALISE_LABEL_PACKAGEFILE_EXTENSION_NAME"
-			description="COM_LOCALISE_LABEL_PACKAGEFILE_EXTENSION_NAME_DESC" />
-			<option value="">COM_LOCALISE_OPTION_EXTENSION_NAME_SELECT</option>
-		<field
 			id="description"
 			name="description"
 			type="textarea"
@@ -43,13 +36,12 @@
 			name="version"
 			type="text"
 			required="true"
-			label="COM_LOCALISE_LABEL_PACKAGE_EXTENSION_VERSION"
-			description="COM_LOCALISE_LABEL_PACKAGE_EXTENSION_VERSION_DESC" />
+			label="COM_LOCALISE_LABEL_PACKAGEFILE_VERSION"
+			description="COM_LOCALISE_LABEL_PACKAGEFILE_VERSION_DESC" />
 		<field
 			id="packversion"
 			name="packversion"
 			type="text"
-			required="true"
 			label="COM_LOCALISE_LABEL_PACKAGE_PACK_VERSION"
 			description="COM_LOCALISE_LABEL_PACKAGE_PACK_VERSION_DESC" />
 		<field

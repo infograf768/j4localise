@@ -220,7 +220,6 @@ class PackageFileModel extends AdminModel
 				// $package->standalone  = substr($manifest, 0, 4) == 'fil_';
 				$package->core          = ((string) $xml->attributes()->core) == 'true';
 				$package->title         = (string) $xml->title;
-				$package->extensionname = (string) $xml->extensionname;
 				$package->version       = (string) $xml->version;
 				$package->packversion   = (string) $xml->packversion;
 				$package->description   = (string) $xml->description;
@@ -402,7 +401,6 @@ class PackageFileModel extends AdminModel
 
 			// Add main package information
 			$titleElement = $dom->createElement('title', $title);
-			$extensionnameElement = $dom->createElement('extensionname', $data['extensionname']);
 			$descriptionElement = $dom->createElement('description', $description);
 			$manifestElement = $dom->createElement('manifest', $manifest);
 			$versionElement = $dom->createElement('version', $data['version']);
@@ -428,7 +426,6 @@ class PackageFileModel extends AdminModel
 
 			// Add all the elements to the parent <package> tag
 			$packageXml->appendChild($titleElement);
-			$packageXml->appendChild($extensionnameElement);
 			$packageXml->appendChild($descriptionElement);
 			$packageXml->appendChild($manifestElement);
 			$packageXml->appendChild($versionElement);
@@ -666,7 +663,7 @@ class PackageFileModel extends AdminModel
 		$app = Factory::getApplication();
 
 		// Prevent generating and downloading Master package
-		if (strpos($data['name'], 'master_') !== false || strpos($data['name'], 'masterfile_') !== false)
+		if (strpos($data['name'], 'master_') !== false)
 		{
 			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
 			$app->redirect(Route::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
@@ -676,7 +673,7 @@ class PackageFileModel extends AdminModel
 
 		$administrator = array();
 		$site          = array();
-		$msg = null;
+		$msg           = null;
 
 		// Delete old files
 		$delete = Folder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
@@ -713,8 +710,7 @@ class PackageFileModel extends AdminModel
 		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$text .= '<extension type="file" version="' . $small_version . '" method="upgrade">' . "\n";
 		$text .= "\t" . '<name>' . $data['name'] . $data['language'] . '</name>' . "\n";
-		$text .= "\t" . '<extensionname>' . $data['extensionname'] . '</extensionname>' . "\n";
-		$text .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
+		$text .= "\t" . '<version>' . $data['version'] . (!empty($data['packversion']) ? '.' . $data['packversion'] : '') . '</version>' . "\n";
 		$text .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
 		$text .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 		$text .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
@@ -925,9 +921,9 @@ class PackageFileModel extends AdminModel
 	}
 
 	/**
-	 * Method to get the HTML output required to update the translations field list by the selected language tag, with extension name as filter.
+	 * Method to get the HTML output required to update the translations field list by the selected language tag.
 	 *
-	 * @return   object  The data for the jform_translations and jformextensionname fields.
+	 * @return   object  The data for the jform_translations
 	 */
 	public function updateTranslationsList($data)
 	{
@@ -948,9 +944,8 @@ class PackageFileModel extends AdminModel
 		}
 
 		// Getting the data from ajax call
-		$packagename   = htmlspecialchars($data[0]->packagename);
-		$extensionname = htmlspecialchars($data[0]->extensionname);
-		$langtag       = htmlspecialchars($data[0]->languagetag);
+		$packagename = htmlspecialchars($data[0]->packagename);
+		$langtag     = htmlspecialchars($data[0]->languagetag);
 
 		// Initiating form instance
 		$filepath     = JPATH_ADMINISTRATOR . "/components/com_localise/forms/packagefile.xml";
@@ -962,15 +957,9 @@ class PackageFileModel extends AdminModel
 		// Adding the params below at required fields only when Ajax call.
 		$form_package->setFieldAttribute($name = 'translations', 'reftag', $reftag);
 		$form_package->setFieldAttribute($name = 'translations', 'langtag', $langtag);
-		$form_package->setFieldAttribute($name = 'translations', 'extensionname', $extensionname);
 
-		$form_package->setFieldAttribute($name = 'extensionname', 'reftag', $reftag);
-		$form_package->setFieldAttribute($name = 'extensionname', 'langtag', $langtag);
-		$form_package->setFieldAttribute($name = 'extensionname', 'extensionname', $extensionname);
-
-		$html_outputs = new \JObject;
-		$html_outputs->translations = $form_package->renderField('translations');
-		$html_outputs->extensionname = $form_package->renderField('extensionname');
+		$html_output = new \JObject;
+		$html_output->translations = $form_package->renderField('translations');
 
 		// The highligthted cases to set as "selected" getting it from the package xml file, if the package filename exists.
 		$xml     = false;
@@ -983,7 +972,7 @@ class PackageFileModel extends AdminModel
 
 		if ($xml)
 		{
-			$lines = preg_split("/\\r\\n|\\r|\\n/", $html_outputs->translations);
+			$lines = preg_split("/\\r\\n|\\r|\\n/", $html_output->translations);
 
 			if ($xml->administrator)
 			{
@@ -1033,97 +1022,9 @@ class PackageFileModel extends AdminModel
 				}
 			}
 
-			$html_outputs->translations = implode($lines);
-		}
-		elseif (!$xml && $reftag == 'en-GB')
-		{
-			// Useful when creating a new non core package that does not have a package name assigned
-			// In that case, the translations to be highlighted from the list will be the set by mandatory from that non core extension name
-			// when selected language is changed and run this ajax call.
-
-			$noncorexml     = false;
-			$noncorexmlpath = JPATH_ADMINISTRATOR . '/components/com_localise/packages/masterfile_' . ucfirst($extensionname) . '.xml';
-
-			if (!empty($extensionname) && File::exists($noncorexmlpath))
-			{
-				$xml   = simplexml_load_file($xmlpath);
-				$lines = preg_split("/\\r\\n|\\r|\\n/", $html_output);
-
-				if ($xml->administrator)
-				{
-					foreach ($xml->administrator->children() as $file)
-					{
-						$key    = substr($file, 0, strlen($file) - 4);
-						$string = preg_quote('value="administrator_' . $key . '"');
-
-						foreach ($lines as $index => $line)
-						{
-							if (!empty($line))
-							{
-								if (preg_match("/^(.*)$string(.*)$/", $line, $matches) && !preg_match("/^(.*)disabled(.*)$/", $line, $matches))
-								{
-									$content       = 'value="administrator_' . $key .'"';
-									$newcontent    = 'value="administrator_' . $key .'" selected="selected" ';
-									$lines[$index] = str_replace($content, $newcontent, $line);
-
-									break;
-								}
-							}
-						}
-					}
-				}
-
-				if ($xml->site)
-				{
-					foreach ($xml->site->children() as $file)
-					{
-						$key    = substr($file, 0, strlen($file) - 4);
-						$string = preg_quote('value="site_' . $key . '"');
-
-						foreach ($lines as $index => $line)
-						{
-							if (!empty($line))
-							{
-								if (preg_match("/^(.*)$string(.*)$/", $line, $matches) && !preg_match("/^(.*)disabled(.*)$/", $line, $matches))
-								{
-									$content       = 'value="site_' . $key .'"';
-									$newcontent    = 'value="site_' . $key .'" selected="selected" ';
-									$lines[$index] = str_replace($content, $newcontent, $line);
-
-									break;
-								}
-							}
-						}
-					}
-				}
-
-				$html_outputs->translations = implode($lines);
-			}
+			$html_output->translations = implode($lines);
 		}
 
-		if (!empty($extensionname))
-		{
-			$lines  = preg_split("/\\r\\n|\\r|\\n/", $html_outputs->extensionname);
-			$string = preg_quote('value="' . $extensionname . '"');
-
-			foreach ($lines as $index => $line)
-			{
-				if (!empty($line))
-				{
-					if (preg_match("/^(.*)$string(.*)$/", $line, $matches) && !preg_match("/^(.*)disabled(.*)$/", $line, $matches))
-					{
-						$content       = 'value="' . $extensionname . '"';
-						$newcontent    = 'value="' . $extensionname . '" selected="selected" ';
-						$lines[$index] = str_replace($content, $newcontent, $line);
-
-						break;
-					}
-				}
-			}
-
-			$html_outputs->extensionname = implode($lines);
-		}
-
-		return $html_outputs;
+		return $html_output;
 	}
 }

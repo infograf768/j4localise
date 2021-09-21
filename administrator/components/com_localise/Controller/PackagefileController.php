@@ -98,10 +98,10 @@ class PackageFileController extends FormController
 			$data  = $input->get('data', null, 'RAW');
 			$data  = json_decode($data);
 
-			$model        = $this->getModel();
-			$html_outputs = $model->updateTranslationsList($data);
+			$model       = $this->getModel();
+			$html_output = $model->updateTranslationsList($data);
 
-			if ($html_outputs->translations && $html_outputs->extensionname)
+			if ($html_output->translations)
 			{
 				// If required send a notice as system message do it before "echo new JsonResponse", if not, comment next line.
 		 		$app->enqueueMessage(Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_SUCCESS'), 'notice');
@@ -109,12 +109,11 @@ class PackageFileController extends FormController
 				// Adding a success message type "flash" to display after ajax call.
 				$reply->success_message = Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_SUCCESS_FLASH');
 				$reply->html            = true;
-				$reply->translations    = $html_outputs->translations;
-				$reply->extensionname   = $html_outputs->extensionname;
+				$reply->translations    = $html_output->translations;
 			}
 			else
 			{
-				// $html_outputs is returning 'false'
+				// $html_output is returning 'false'
 				// If required send an error as system message do it before "echo new JsonResponse", if not, comment next line.
 		 		$app->enqueueMessage(Text::_('COM_LOCALISE_TASK_UPDATE_TRANSLATIONS_LIST_ERROR'), 'error');
 
