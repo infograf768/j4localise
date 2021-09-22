@@ -686,7 +686,7 @@ class PackageModel extends AdminModel
 			return false;
 		}
 
-		// Necessary variables if xx-XX.localise.php is not present in target language
+		// Necessary variables if localise.php is not present in target language
 		$params			= ComponentHelper::getParams('com_localise');
 		$reftag			= $params->get('reference');
 		$refclassname	= str_replace('-', '_', $reftag);
@@ -813,7 +813,7 @@ class PackageModel extends AdminModel
 			$site_txt .= "\t" . '<files>' . "\n";
 			$site_txt .= "\t\t" . '<folder>/</folder>' . "\n";
 
-			// As this is a core package, the main joomla file xx-XX.ini should be in the package
+			// As this is a core package, the main joomla file joomla.ini should be in the package
 			$path = JPATH_ROOT . '/language/' . $data['language'] . '/joomla.ini';
 
 			if (File::exists($path))
@@ -857,7 +857,7 @@ class PackageModel extends AdminModel
 				$language_data = file_get_contents($path);
 			}
 
-			// Create a basic xx-XX.localise.php if not present in target language
+			// Create a basic localise.php if not present in target language
 			elseif (!File::exists($path) || empty($languagedata))
 			{
 				$language_data = file_get_contents(JPATH_ROOT . '/language/' . $reftag . '/localise.php');
@@ -1004,7 +1004,7 @@ class PackageModel extends AdminModel
 			$admin_txt .= "\t" . '<files>' . "\n";
 			$admin_txt .= "\t\t" . '<folder>/</folder>' . "\n";
 
-			// As this is a core package, the main joomla file xx-XX.ini should be in the package
+			// As this is a core package, the main joomla file joomla.ini should be in the package
 			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/joomla.ini';
 
 			if (File::exists($path))
@@ -1048,7 +1048,7 @@ class PackageModel extends AdminModel
 				$language_data = file_get_contents($path);
 			}
 
-			// Create a basic xx-XX.localise.php if not present in target language
+			// Create a basic localise.php if not present in target language
 			elseif (!File::exists($path) || empty($languagedata))
 			{
 				$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $reftag . '/localise.php');
@@ -1136,7 +1136,7 @@ class PackageModel extends AdminModel
 		$api_txt .= "\t" . '<files>' . "\n";
 		$api_txt .= "\t\t" . '<folder>/</folder>' . "\n";
 
-		// As this is a core package, the main joomla file xx-XX.ini is a copy of the administrator joomla file
+		// As this is a core package, the main joomla file joomla.ini is a copy of the administrator joomla file
 		$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/joomla.ini';
 
 		if (File::exists($path))
@@ -1301,7 +1301,7 @@ class PackageModel extends AdminModel
 		$ext      = File::getExt($fileName);
 
 		// Prevent uploading some file types
-		if (!($ext == "ini" || $fileName == $tag . '.css' || $fileName == $tag . '.localise.php'))
+		if (!($ext == "ini" || $fileName == $tag . '.css' || $fileName == 'localise.php'))
 		{
 			$app->enqueueMessage(Text::sprintf('COM_LOCALISE_FILE_TYPE_ERROR', $fileName), 'error');
 
