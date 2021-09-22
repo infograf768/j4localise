@@ -108,6 +108,6 @@ class HtmlView extends BaseHtmlView
 			ToolBarHelper::divider();
 		}
 
-		ToolBarHelper::help('screen.language', true);
+		// ToolBarHelper::help('screen.language', true);
 	}
 }
