@@ -101,8 +101,8 @@ class HtmlView extends BaseHtmlView
 		ToolbarHelper::custom('packagefile.download', 'out.png', 'out.png', 'COM_LOCALISE_TOOLBAR_PACKAGE_DOWNLOAD', false);
 
 		ToolBarHelper::cancel("packagefile.cancel", $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
-		ToolBarHelper::divider();
-		ToolBarHelper::help('screen.packagefile', true);
+		// ToolBarHelper::divider();
+		// ToolBarHelper::help('screen.packagefile', true);
 	}
 
 	/**

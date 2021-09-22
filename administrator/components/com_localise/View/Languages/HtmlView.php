@@ -101,9 +101,7 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::divider();
 		}
 
-		ToolBarHelper::help('screen.languages', true);
-
-		\JHtmlSidebar::setAction('index.php?option=com_localise&view=languages');
+		// ToolBarHelper::help('screen.languages', true);
 	}
 
 	/**
