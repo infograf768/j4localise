@@ -62,6 +62,7 @@ $has_translatedkeys   = !empty($this->item->translatedkeys) ? 1 : 0;
 $has_untranslatedkeys = !empty($this->item->untranslatedkeys) ? 1 : 0;
 $has_unchangedkeys    = !empty($this->item->unchangedkeys) ? 1 : 0;
 $has_textchangedkeys  = !empty($this->item->textchangedkeys) ? 1 : 0;
+$has_notinref         = ($this->item->notinref) ? 1 : 0;
 
 if (isset($posted['select']['keystatus'])
 	&& !empty($posted['select']['keystatus'])
@@ -89,11 +90,31 @@ $fieldSets = $this->form->getFieldsets();
 $sections  = $this->form->getFieldsets('strings');
 $ftpSets   = $this->formftp->getFieldsets();
 
-// Prepare Bing translation
-Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
-Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
-
 Factory::getDocument()->addScriptDeclaration("
+	Joomla.submitbutton = function(task)
+	{
+		if ((task == 'translation.apply' || task == 'translation.save') && document.formvalidator.isValid(document.getElementById('localise-translation-form')))
+		{
+			Joomla.submitform(task, document.getElementById('localise-translation-form'));
+		}
+		else if (task == 'translation.notinref' && document.formvalidator.isValid(document.getElementById('localise-translation-form')))
+		{
+			var form = $('#localise-translation-form');
+
+			// Set to the hidden form field 'delete_notinref' the value 'true'
+			form.find('input[name=delete_notinref]').val('true');
+
+			// Changing the task to 'apply'
+			task = 'translation.apply';
+
+			Joomla.submitform(task, document.getElementById('localise-translation-form'));
+		}
+		else if (task == 'translation.cancel')
+		{
+			Joomla.submitform(task, document.getElementById('localise-translation-form'));
+		}
+	}
+
 	function returnAll()
 	{
 		$('.return').trigger('click');
@@ -127,6 +148,8 @@ Factory::getDocument()->addScriptDeclaration("
 			}
 		});
 	})(jQuery);
+
+
 ");
 ?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">

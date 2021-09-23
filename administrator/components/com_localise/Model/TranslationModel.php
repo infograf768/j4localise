@@ -201,13 +201,15 @@ class TranslationModel extends AdminModel
 				$this->setState('translation.textchangedkeys', array());
 				$this->setState('translation.revisedchanges', array());
 				$this->setState('translation.developdata', array());
+				$this->setState('translation.notinref', false);
 
 				$translatedkeys   = $this->getState('translation.translatedkeys');
 				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
 				$unchangedkeys    = $this->getState('translation.unchangedkeys');
 				$textchangedkeys  = $this->getState('translation.textchangedkeys');
-				$revisedchanges  = $this->getState('translation.revisedchanges');
+				$revisedchanges   = $this->getState('translation.revisedchanges');
 				$developdata      = $this->getState('translation.developdata');
+				$notinref         = $this->getState('translation.notinref');
 
 				$this->item = new CMSObject(
 									array
@@ -242,6 +244,7 @@ class TranslationModel extends AdminModel
 										'linesrefpath'        => 0,
 										'linesdevpath'        => 0,
 										'linescustompath'     => 0,
+										'notinref'            => false,
 										'complete'            => false,
 										'source'              => '',
 										'error'               => array()
@@ -647,6 +650,13 @@ class TranslationModel extends AdminModel
 						{
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
+								if (!$notinref)
+								{
+									$this->setState('translation.notinref', true);
+
+									$notinref = $this->getState('translation.notinref');
+								}
+
 								$this->item->extra++;
 							}
 						}
@@ -1167,15 +1177,16 @@ class TranslationModel extends AdminModel
 	 */
 	public function saveFile($data)
 	{
-		$client     = $this->getState('translation.client');
-		$tag        = $this->getState('translation.tag');
-		$reftag     = $this->getState('translation.reference');
-		$path       = $this->getState('translation.path');
-		$refpath    = $this->getState('translation.refpath');
-		$devpath    = LocaliseHelper::searchDevpath($client, $refpath);
-		$custompath = LocaliseHelper::searchCustompath($client, $refpath);
-		$exists     = File::exists($path);
-		$refexists  = File::exists($refpath);
+		$client          = $this->getState('translation.client');
+		$tag             = $this->getState('translation.tag');
+		$reftag          = $this->getState('translation.reference');
+		$path            = $this->getState('translation.path');
+		$refpath         = $this->getState('translation.refpath');
+		$devpath         = LocaliseHelper::searchDevpath($client, $refpath);
+		$custompath      = LocaliseHelper::searchCustompath($client, $refpath);
+		$exists          = File::exists($path);
+		$refexists       = File::exists($refpath);
+		$delete_notinref = $data['delete_notinref'];
 
 		if ($refexists && !empty($devpath))
 		{
@@ -1412,7 +1423,7 @@ class TranslationModel extends AdminModel
 				$line = $stream->gets();
 			}
 
-			if (!empty($strings))
+			if (!empty($strings) && !$delete_notinref)
 			{
 				$contents[] = "\n[" . Text::_('COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE') . "]\n\n";
 
@@ -1420,6 +1431,12 @@ class TranslationModel extends AdminModel
 				{
 					$contents[] = $key . '="' . str_replace('"', '\"', $string) . "\"\n";
 				}
+			}
+			else
+			{
+				Factory::getApplication()->enqueueMessage(
+					Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF'),
+					'notice');
 			}
 
 			$stream->close();

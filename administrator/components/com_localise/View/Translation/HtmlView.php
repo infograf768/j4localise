@@ -77,9 +77,10 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		$user		= Factory::getUser();
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
-		$complete   = (int) ComponentHelper::getParams('com_localise')->get('complete', 0);
+		$user		  = Factory::getUser();
+		$checkedOut	  = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$complete     = (int) ComponentHelper::getParams('com_localise')->get('complete', 0);
+		$has_notinref = $this->state->get('translation.notinref');
 
 		$toolbar = Toolbar::getInstance('toolbar');
 
@@ -104,9 +105,7 @@ class HtmlView extends BaseHtmlView
 			if ($complete === 1)
 			{
 				$toolbar->confirmButton('apply')
-					->text('JAPPLY')
-					->message('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')
-					->task('translation.apply');
+					->text('JAPPLY');
 
 				$toolbar->confirmButton('save')
 					->text('JSAVE')
@@ -117,6 +116,23 @@ class HtmlView extends BaseHtmlView
 			{
 				ToolbarHelper::apply('translation.apply');
 				ToolbarHelper::save('translation.save');
+			}
+
+			if ($has_notinref)
+			{
+				$toolbar->confirmButton('translation.notinref')
+					->icon('icon-delete')
+ 					->buttonClass('btn btn-danger')
+					->text('COM_LOCALISE_BUTTON_TRANSLATION_NOTINREF')
+					->message('COM_LOCALISE_CONFIRM_TRANSLATION_NOTINREF')
+					->task('translation.apply');
+			}
+			else
+			{
+				$toolbar->standardButton('delete')
+					->icon('icon-delete')
+ 					->buttonClass('btn btn-info disabled')
+					->text('COM_LOCALISE_BUTTON_TRANSLATION_NOTINREF');
 			}
 
 		}
