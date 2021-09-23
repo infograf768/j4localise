@@ -17,6 +17,7 @@ use Joomla\CMS\Session\Session;
 
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('jquery.framework');
+HTMLHelper::_('bootstrap.modal', '.modal', []);
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
@@ -88,7 +89,7 @@ function updateTranslationsList() {
 		{
 			// Success flag is set to 'false' and main response message given
 			// so we can alert it or insert it into some HTML element
-			alert(result.message);
+			alert(reply.message);
 		}
 
 		if (reply.messages)
@@ -181,7 +182,7 @@ jQuery(document).ready(function() {
 						<?php foreach($this->formftp->getFieldset('ftp',false) as $field) : ?>
 							<?php echo $field->renderField(); ?>
 						<?php endforeach; ?>
-					<?php echo HTMLHelper::_('uitab.endTab');; ?>
+					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php endif; ?>
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'default', Text::_($fieldSets['default']->label, true)); ?>
 						<div class="row">
