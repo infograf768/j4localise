@@ -1432,7 +1432,7 @@ class TranslationModel extends AdminModel
 					$contents[] = $key . '="' . str_replace('"', '\"', $string) . "\"\n";
 				}
 			}
-			else
+			elseif (!empty($strings) && $delete_notinref)
 			{
 				Factory::getApplication()->enqueueMessage(
 					Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF'),
