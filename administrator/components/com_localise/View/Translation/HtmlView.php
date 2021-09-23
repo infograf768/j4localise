@@ -105,7 +105,9 @@ class HtmlView extends BaseHtmlView
 			if ($complete === 1)
 			{
 				$toolbar->confirmButton('apply')
-					->text('JAPPLY');
+					->text('JAPPLY')
+					->message('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')
+					->task('translation.apply');
 
 				$toolbar->confirmButton('save')
 					->text('JSAVE')
