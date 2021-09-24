@@ -40,9 +40,9 @@ CodeMirror.defineMode("parseini", function() {
 				stream.skipTo("]"); stream.eat("]");
 				return "group";
 			}
-			else if (sol && /[A-Z_\.]/.test(ch) && state.position === 'identifier')
+			else if (sol && /[A-Z_:\.]/.test(ch) && state.position === 'identifier')
 			{
-				stream.eatWhile(/[A-Z_\*\.\-0-9]/);
+				stream.eatWhile(/[A-Z_:\*\.\-0-9]/);
 				state.position = "equal";
 				blacklist = ["YES", "NO", "NULL", "FALSE", "ON", "OFF", "NONE", "TRUE"];
 				if(blacklist.indexOf(stream.current()) > -1)
