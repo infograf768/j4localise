@@ -62,7 +62,7 @@ $has_translatedkeys   = !empty($this->item->translatedkeys) ? 1 : 0;
 $has_untranslatedkeys = !empty($this->item->untranslatedkeys) ? 1 : 0;
 $has_unchangedkeys    = !empty($this->item->unchangedkeys) ? 1 : 0;
 $has_textchangedkeys  = !empty($this->item->textchangedkeys) ? 1 : 0;
-$has_notinref         = ($this->item->notinref) ? 1 : 0;
+$has_notinref         = !empty($this->item->notinref) ? 1 : 0;
 
 if (isset($posted['select']['keystatus'])
 	&& !empty($posted['select']['keystatus'])
@@ -101,7 +101,7 @@ Factory::getDocument()->addScriptDeclaration("
 		{
 			var form = $('#localise-translation-form');
 
-			// Set to the hidden form field 'delete_notinref' the value 'true'
+			// Set to hidden form field 'delete_notinref' the value 'true'
 			form.find('input[name=delete_notinref]').val('true');
 
 			// Changing the task to 'apply'
@@ -148,8 +148,6 @@ Factory::getDocument()->addScriptDeclaration("
 			}
 		});
 	})(jQuery);
-
-
 ");
 ?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
@@ -361,6 +359,5 @@ Factory::getDocument()->addScriptDeclaration("
 		<!-- End Localise Translation -->
 		<input type="hidden" name="task" value="" />
 		<?php echo HTMLHelper::_('form.token'); ?>
-
 	</div>
 </form>
