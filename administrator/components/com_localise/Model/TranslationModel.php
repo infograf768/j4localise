@@ -456,7 +456,7 @@ class TranslationModel extends AdminModel
 						$lineNumber++;
 						$line = str_replace('\"', '"_QQ_"', $line);
 
-						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
+						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_:\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
 						{
 							$this->item->error[] = $lineNumber;
 						}
@@ -976,7 +976,7 @@ class TranslationModel extends AdminModel
 						continue;
 					}
 					// Key lines
-					elseif (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
+					elseif (preg_match('/^([A-Z][A-Z0-9_:\*\-\.]*)\s*=/', $line, $matches))
 					{
 						$header     = false;
 						$key        = $matches[1];
@@ -1071,7 +1071,7 @@ class TranslationModel extends AdminModel
 						$field->addAttribute('filter', 'raw');
 						continue;
 					}
-					elseif (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
+					elseif (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_:\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
 					{
 						$this->item->error[] = $lineNumber;
 					}
@@ -1389,7 +1389,7 @@ class TranslationModel extends AdminModel
 					$contents[] = "[" . $matches[1] . "]\n";
 				}
 				// Key lines
-				elseif (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
+				elseif (preg_match('/^([A-Z][A-Z0-9_:\*\-\.]*)\s*=/', $line, $matches))
 				{
 					$key = $matches[1];
 					$commented = '';
