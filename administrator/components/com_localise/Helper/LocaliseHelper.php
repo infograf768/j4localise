@@ -26,7 +26,6 @@ use Joomla\Component\Localise\Administrator\Model\TranslationModel;
 use Joomla\Github\Github;
 use Joomla\Registry\Registry;
 
-
 jimport("joomla.utilities.date");
 
 require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
@@ -953,14 +952,91 @@ abstract class LocaliseHelper
 			}
 
 			$all_files_list = self::getLanguagefileslist($custom_client_path);
+
+			foreach ($all_files_list as $id => $file)
+			{
+				$has_tag = substr($file, 0, 6);
+
+				if ($has_tag == 'en-GB.')
+				{
+					$ext = File::getExt($file);
+
+					if ($ext == "ini" && $file == 'en-GB.ini')
+					{
+						$all_files_list[$id] = str_replace('en-GB.', 'joomla.', $file);
+					}
+					else if ($ext == "ini")
+					{
+						$all_files_list[$id] = str_replace('en-GB.', '', $file);
+					}
+
+					if ($ext == "xml" && $file == 'en-GB.xml')
+					{
+						$all_files_list[$id] = str_replace('en-GB.', 'langmetadata.', $file);
+					}
+
+					if ($file == 'en-GB.localise.php')
+					{
+						$all_files_list[$id] = 'localise.php';
+					}
+
+				}
+			}
+
 			$ini_files_list = self::getInifileslist($custom_client_path);
+
+			foreach ($ini_files_list as $id => $file)
+			{
+				$has_tag = substr($file, 0, 6);
+
+				if ($has_tag == 'en-GB.')
+				{
+					$ext = File::getExt($file);
+
+					if ($ext == "ini" && $file == 'en-GB.ini')
+					{
+						$ini_files_list[$id] = str_replace('en-GB.', 'joomla.', $file);
+					}
+					else if ($ext == "ini")
+					{
+						$ini_files_list[$id] = str_replace('joomla.', '', $file);
+					}
+				}
+			}
 
 			$files_to_include = array();
 
 			foreach ($repostoryfiles as $repostoryfile)
 			{
 				$file_to_include = $repostoryfile->name;
-				$file_path = Folder::makeSafe($custom_client_path . '/' . $file_to_include);
+
+				$has_tag = substr($file_to_include, 0, 6);
+
+				if ($has_tag == 'en-GB.')
+				{
+					$ext = File::getExt($file_to_include);
+
+					if ($ext == "ini" && $file_to_include == 'en-GB.ini')
+					{
+						$file_to_include = str_replace('en-GB.', 'joomla.', $file_to_include);
+					}
+					else if ($ext == "ini")
+					{
+						$file_to_include = str_replace('en-GB.', '', $file_to_include);
+					}
+
+					if ($ext == "xml" && $file_to_include == 'en-GB.xml')
+					{
+						$file_to_include = str_replace('en-GB.', 'langmetadata.', $file_to_include);
+					}
+
+					if ($file_to_include == 'en-GB.localise.php')
+					{
+						$file_to_include = 'localise.php';
+					}
+				}
+
+				$file_path           = Folder::makeSafe($custom_client_path . '/' . $file_to_include);
 				$reference_file_path = Folder::makeSafe($reference_client_path . '/' . $file_to_include);
 
 				$custom_file = $github->repositories->contents->get(
@@ -976,6 +1052,7 @@ abstract class LocaliseHelper
 				{
 					$file_to_include = $repostoryfile->name;
 					$file_contents   = base64_decode($custom_file->content);
+
 					File::write($file_path, $file_contents);
 
 					if (!File::exists($file_path))
@@ -1298,6 +1375,20 @@ abstract class LocaliseHelper
 		$last_ini_files_list   = self::getInifileslist($develop_client_path);
 
 		$files_to_exclude = array();
+
+		foreach ($custom_ini_files_list as $id => $file)
+		{
+			$has_tag = substr($file, 0, 6);
+
+			if ($has_tag == 'en-GB.' && $file == 'en-GB.ini')
+			{
+				$custom_ini_files_list[$id] = str_replace('en-GB.', 'joomla.', $file);
+			}
+			else
+			{
+				$custom_ini_files_list[$id] = str_replace('en-GB.', '', $file);
+			}
+		}
 
 		if (!File::exists($develop_client_path . '/langmetadata.xml'))
 		{
