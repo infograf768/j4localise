@@ -182,13 +182,13 @@ class TranslationModel extends AdminModel
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
-				$params              = ComponentHelper::getParams('com_localise');
-				$allow_develop       = $params->get('gh_allow_develop', 0);
-				$gh_client           = $this->getState('translation.client');
-				$tag                 = $this->getState('translation.tag');
-				$reftag              = $this->getState('translation.reference');
-				$refpath             = $this->getState('translation.refpath');
-				$istranslation       = 0;
+				$params        = ComponentHelper::getParams('com_localise');
+				$allow_develop = $params->get('gh_allow_develop', 0);
+				$gh_client     = $this->getState('translation.client');
+				$tag           = $this->getState('translation.tag');
+				$reftag        = $this->getState('translation.reference');
+				$refpath       = $this->getState('translation.refpath');
+				$istranslation = 0;
 
 				if (!empty($tag) && $tag != $reftag)
 				{
@@ -206,7 +206,7 @@ class TranslationModel extends AdminModel
 				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
 				$unchangedkeys    = $this->getState('translation.unchangedkeys');
 				$textchangedkeys  = $this->getState('translation.textchangedkeys');
-				$revisedchanges  = $this->getState('translation.revisedchanges');
+				$revisedchanges   = $this->getState('translation.revisedchanges');
 				$developdata      = $this->getState('translation.developdata');
 
 				$this->item = new CMSObject(
@@ -750,11 +750,6 @@ class TranslationModel extends AdminModel
 			$form->setFieldAttribute('additionalcopyright', 'readonly', 'true');
 		}
 
-		if ($params->get('license'))
-		{
-			$form->setFieldAttribute('license', 'readonly', 'true');
-		}
-
 		return $form;
 	}
 
@@ -1176,6 +1171,7 @@ class TranslationModel extends AdminModel
 		$custompath = LocaliseHelper::searchCustompath($client, $refpath);
 		$exists     = File::exists($path);
 		$refexists  = File::exists($refpath);
+		$notinref   = (array) $data['notinref'];
 
 		if ($refexists && !empty($devpath))
 		{
@@ -1410,6 +1406,22 @@ class TranslationModel extends AdminModel
 				}
 
 				$line = $stream->gets();
+			}
+
+			// Handle the here the not in ref cases before add the "Not in reference" comment.
+			if (!empty($strings) && !empty($notinref))
+			{
+				foreach ($strings as $key => $string)
+				{
+					if (in_array($key, $notinref))
+					{
+						unset($strings[$key]);
+					}
+				}
+
+				Factory::getApplication()->enqueueMessage(
+					Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF'),
+					'notice');
 			}
 
 			if (!empty($strings))

@@ -356,7 +356,36 @@ class KeyField extends FormField
 
 			if ($status= 'extra')
 			{
-				$button = '';
+				$notinref_key         = (string) $this->element['label'];
+				$notinref_checkbox_id = "notinref_checkbox_id_" . str_replace(array("_", ":"), "", $this->element['name']);
+
+				$notinref_onclick = "
+									var checked_values = document.getElementsByName('jform[notinref]');
+									var form           = $('#localise-translation-form');
+
+									// Set to the hidden form field 'notinref' the value of the selected checkboxes.
+									form.find('input[name=notinref]').val(checked_values);
+									";
+
+				$title = Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_NOTINREF');
+				$class = '';
+
+				$notinref_checkbox = '<div><input style="max-width:5%; min-width:5%;"';
+				$notinref_checkbox .= ' title="' . $title . '"';
+				$notinref_checkbox .= ' id="' . $notinref_checkbox_id . '"';
+				$notinref_checkbox .= ' type="checkbox" ';
+				$notinref_checkbox .= ' name="jform[notinref][]"';
+				$notinref_checkbox .= ' value="' . $this->element['name'] . '"';
+				$notinref_checkbox .= ' onclick="';
+				$notinref_checkbox .= $notinref_onclick;
+				$notinref_checkbox .= '" class="' . $class . '"';
+				$notinref_checkbox .= '></input></div><br>';
+
+				$button   = '<span style="width:5%;">'
+						. HTMLHelper::_('image', 'com_localise/icon-16-notice-note.png', '', '', true) . '</span>';
+				$button2 = $notinref_checkbox;
+
+				return $button . $input . $button2;
 			}
 		}
 

@@ -68,30 +68,26 @@ if (isset($posted['select']['keystatus'])
 	&& $posted['select']['keystatus'] != 'allkeys'
 	)
 {
-	$filter			= $posted['select']['keystatus'];
-	$keystofilter	= array ($this->item->$filter);
-	$tabchoised		= 'strings';
+	$filter      = $posted['select']['keystatus'];
+	$keystofilte = array ($this->item->$filter);
+	$tabchoised  = 'strings';
 }
 elseif (empty($posted['select']['keystatus']))
 {
-	$filter			= 'allkeys';
-	$keystofilter	= array();
-	$tabchoised		= 'default';
+	$filter       = 'allkeys';
+	$keystofilter = array();
+	$tabchoised   = 'default';
 }
 else
 {
-	$filter			= 'allkeys';
-	$keystofilter	= array();
-	$tabchoised		= 'default';
+	$filter       = 'allkeys';
+	$keystofilter = array();
+	$tabchoised   = 'default';
 }
 
 $fieldSets = $this->form->getFieldsets();
 $sections  = $this->form->getFieldsets('strings');
 $ftpSets   = $this->formftp->getFieldsets();
-
-// Prepare Bing translation
-Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
-Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 
 Factory::getDocument()->addScriptDeclaration("
 	function returnAll()
@@ -337,6 +333,7 @@ Factory::getDocument()->addScriptDeclaration("
 		</div>
 		<!-- End Localise Translation -->
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="notinref" value="" />
 		<?php echo HTMLHelper::_('form.token'); ?>
 
 	</div>

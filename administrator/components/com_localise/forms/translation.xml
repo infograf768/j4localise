@@ -87,6 +87,9 @@
 		<field
 			name="target_text_changes"
 			type="hidden" />
+		<field
+			name="notinref"
+			type="hidden" />
 	</fieldset>
 	<fields name="select">
 		<fieldset name="select">
