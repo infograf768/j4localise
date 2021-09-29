@@ -233,6 +233,11 @@ span.icon-16-notice-note {
 	float: left;
 	margin: 5px 5px 5px 0;
 }
+.pointer-not-allowed {
+	cursor: not-allowed;
+	float: left;
+	margin: 5px 5px 5px 0;
+}
 div.filter-select select {
 	background-image: none;
 }

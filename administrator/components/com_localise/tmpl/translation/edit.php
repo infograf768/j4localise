@@ -68,9 +68,9 @@ if (isset($posted['select']['keystatus'])
 	&& $posted['select']['keystatus'] != 'allkeys'
 	)
 {
-	$filter      = $posted['select']['keystatus'];
-	$keystofilte = array ($this->item->$filter);
-	$tabchoised  = 'strings';
+	$filter       = $posted['select']['keystatus'];
+	$keystofilter = array ($this->item->$filter);
+	$tabchoised   = 'strings';
 }
 elseif (empty($posted['select']['keystatus']))
 {
@@ -89,41 +89,54 @@ $fieldSets = $this->form->getFieldsets();
 $sections  = $this->form->getFieldsets('strings');
 $ftpSets   = $this->formftp->getFieldsets();
 
-Factory::getDocument()->addScriptDeclaration("
-	function returnAll()
-	{
-		$('.return').trigger('click');
-	}
+if ($istranslation)
+{
+	// Only add the JS realted with the filters or others only showed at 'istranslation' case
+	Factory::getDocument()->addScriptDeclaration("
+		function returnAll()
+		{
+			$('.return').trigger('click');
+		}
 
-	(function($){
-		$(document).ready(function () {
-			var has_translatedkeys   = " . $has_translatedkeys . ";
-			var has_untranslatedkeys = " . $has_untranslatedkeys . ";
-			var has_unchangedkeys    = " . $has_unchangedkeys . ";
-			var has_textchangedkeys  = " . $has_textchangedkeys . ";
+		(function($){
+			$(document).ready(function() {
+				var has_translatedkeys   = " . $has_translatedkeys . ";
+				var has_untranslatedkeys = " . $has_untranslatedkeys . ";
+				var has_unchangedkeys    = " . $has_unchangedkeys . ";
+				var has_textchangedkeys  = " . $has_textchangedkeys . ";
 
-			if (has_translatedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[2].disabled = true;
-			}
+				if (has_translatedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[2].disabled = true;
+				}
 
-			if (has_untranslatedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[3].disabled = true;
-			}
+				if (has_untranslatedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[3].disabled = true;
+				}
 
-			if (has_unchangedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[4].disabled = true;
-			}
+				if (has_unchangedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[4].disabled = true;
+				}
 
-			if (has_textchangedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[5].disabled = true;
-			}
-		});
-	})(jQuery);
-");
+				if (has_textchangedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[5].disabled = true;
+				}
+			});
+		})(jQuery);
+	");
+}
+else
+{
+	Factory::getDocument()->addScriptDeclaration("
+		function returnAll()
+		{
+			$('.return').trigger('click');
+		}
+	");
+}
 ?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<div class="row">

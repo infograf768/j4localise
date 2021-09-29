@@ -543,16 +543,32 @@ class TranslationModel extends AdminModel
 									$changesdata['target_text']   = $target_text;
 									$changesdata['source_text']   = $source_text;
 									$changesdata['istranslation'] = $istranslation;
+									$changesdata['isgrammar']     = '0';
 									$changesdata['catch_grammar'] = '0';
 
-									$change_status = LocaliseHelper::searchRevisedvalue($changesdata);
+									$change_status                = LocaliseHelper::searchRevisedvalue($changesdata);
 									$revisedchanges[$key_changed] = $change_status;
 
-									if ($change_status == 1)
+									if ($istranslation)
+									{
+										$changesdata['catch_grammar'] = '1';
+
+										$changesdata['isgrammar'] = LocaliseHelper::searchRevisedvalue($changesdata);
+									}
+
+									if (!$istranslation && $change_status == 1)
 									{
 										$developdata['text_changes']['revised']++;
 									}
-									else
+									else if	(!$istranslation && $change_status == 0)
+									{
+										$developdata['text_changes']['unrevised']++;
+									}
+									else if	($istranslation && !$changesdata['isgrammar'] && $change_status == 1)
+									{
+										$developdata['text_changes']['revised']++;
+									}
+									else if	($istranslation && !$changesdata['isgrammar'] && $change_status == 0)
 									{
 										$developdata['text_changes']['unrevised']++;
 									}
@@ -904,7 +920,7 @@ class TranslationModel extends AdminModel
 				$refsections = LocaliseHelper::parseSections($refpath);
 			}
 
-			$addform     = new \SimpleXMLElement('<form />');
+			$addform = new \SimpleXMLElement('<form />');
 
 			$group = $addform->addChild('fields');
 			$group->addAttribute('name', 'strings');
@@ -1010,7 +1026,7 @@ class TranslationModel extends AdminModel
 
 							$label   = '<strong>'
 								. $key
-								. '</strong><br /><p class="text_changes">'
+								. '</strong><br><p class="text_changes">'
 								. $change
 								. '</p>';
 
@@ -1025,7 +1041,7 @@ class TranslationModel extends AdminModel
 								. Text::_('COM_LOCALISE_NEW_KEY_IN_DEVELOP')
 								. ']</strong> </span><strong>'
 								. $key
-								. '</strong><br />'
+								. '</strong><br>'
 								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 
 							$field->attributes()->isextraindev = 1;
@@ -1034,7 +1050,7 @@ class TranslationModel extends AdminModel
 						{
 							$label   = '<strong>'
 								. $key
-								. '</strong><br />'
+								. '</strong><br>'
 								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 						}
 
@@ -1054,6 +1070,7 @@ class TranslationModel extends AdminModel
 						$field->addAttribute('name', $key);
 						$field->addAttribute('type', 'key');
 						$field->addAttribute('filter', 'raw');
+
 						continue;
 					}
 					elseif (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_:\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
@@ -1087,9 +1104,18 @@ class TranslationModel extends AdminModel
 							$field   = $fieldset->addChild('field');
 							$status  = 'extra';
 							$default = $string;
-							$label   = '<strong>' . $key . '</strong>';
+
+							$label   = '<br><strong>'
+								. '<span class="new_word"">['
+								. Text::_('COM_LOCALISE_NOTINREF_KEY')
+								. '] '
+								. '</span>'
+								. $key
+								. '</strong>';
+
 							$field->addAttribute('status', $status);
 							$field->addAttribute('description', $string);
+							$field->addAttribute('istranslation', $istranslation);
 
 							if ($default)
 							{
@@ -1162,16 +1188,17 @@ class TranslationModel extends AdminModel
 	 */
 	public function saveFile($data)
 	{
-		$client     = $this->getState('translation.client');
-		$tag        = $this->getState('translation.tag');
-		$reftag     = $this->getState('translation.reference');
-		$path       = $this->getState('translation.path');
-		$refpath    = $this->getState('translation.refpath');
-		$devpath    = LocaliseHelper::searchDevpath($client, $refpath);
-		$custompath = LocaliseHelper::searchCustompath($client, $refpath);
-		$exists     = File::exists($path);
-		$refexists  = File::exists($refpath);
-		$notinref   = (array) $data['notinref'];
+		$client        = $this->getState('translation.client');
+		$tag           = $this->getState('translation.tag');
+		$reftag        = $this->getState('translation.reference');
+		$path          = $this->getState('translation.path');
+		$refpath       = $this->getState('translation.refpath');
+		$devpath       = LocaliseHelper::searchDevpath($client, $refpath);
+		$custompath    = LocaliseHelper::searchCustompath($client, $refpath);
+		$exists        = File::exists($path);
+		$refexists     = File::exists($refpath);
+		$notinref      = (array) $data['notinref'];
+		$istranslation = $tag != $reftag;
 
 		if ($refexists && !empty($devpath))
 		{
@@ -1408,8 +1435,8 @@ class TranslationModel extends AdminModel
 				$line = $stream->gets();
 			}
 
-			// Handle the here the not in ref cases before add the "Not in reference" comment.
-			if (!empty($strings) && !empty($notinref))
+			// Handle here the not in ref cases before add the "Not in reference" comment.
+			if (!empty($strings) && !empty($notinref) && $istranslation)
 			{
 				foreach ($strings as $key => $string)
 				{
