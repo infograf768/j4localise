@@ -1435,6 +1435,7 @@ class TranslationModel extends AdminModel
 				$line = $stream->gets();
 			}
 
+			$catched = false;
 			// Handle here the not in ref cases before add the "Not in reference" comment.
 			if (!empty($strings) && !empty($notinref) && $istranslation)
 			{
@@ -1442,13 +1443,23 @@ class TranslationModel extends AdminModel
 				{
 					if (in_array($key, $notinref))
 					{
+						$catched = true;
 						unset($strings[$key]);
 					}
 				}
 
-				Factory::getApplication()->enqueueMessage(
-					Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF'),
-					'notice');
+				if ($catched)
+				{
+					Factory::getApplication()->enqueueMessage(
+						Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF'),
+						'notice');
+				}
+				else
+				{
+					Factory::getApplication()->enqueueMessage(
+						Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITED'),
+						'notice');
+				}
 			}
 
 			if (!empty($strings))
