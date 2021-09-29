@@ -264,7 +264,7 @@ class KeyField extends FormField
 			{
 				$input  = '';
 				$input .= '<textarea name="' . $textarea_name;
-				$input .= '" id="' . $textarea_id . '" class="width-90 ' . $status . ' ">';
+				$input .= '" id="' . $textarea_id . '" class="width-45 ' . $status . ' ">';
 				$input .= htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 
 				$notinref_key         = (string) $this->element['label'];
@@ -281,7 +281,7 @@ class KeyField extends FormField
 				$class   = '';
 				$button  = '<br>';
 				$button .= '<i class="icon-16-notinreference hasTooltip pointer" title="';
-				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT');
+				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_EXTRA_KEYS_IN_TRANSLATION');
 				$button .= '" onclick="' . $onclick . '"></i>';
 
 				$button2 = '';
