@@ -543,32 +543,24 @@ class TranslationModel extends AdminModel
 									$changesdata['target_text']   = $target_text;
 									$changesdata['source_text']   = $source_text;
 									$changesdata['istranslation'] = $istranslation;
-									$changesdata['isgrammar']     = '0';
-									$changesdata['catch_grammar'] = '0';
+									$changesdata['catch_grammar'] = '1';
 
+									$isgrammar = LocaliseHelper::searchRevisedvalue($changesdata);
+
+									if ($istranslation && $isgrammar)
+									{
+										continue;
+									}
+
+									$changesdata['catch_grammar'] = '0';
 									$change_status                = LocaliseHelper::searchRevisedvalue($changesdata);
 									$revisedchanges[$key_changed] = $change_status;
 
-									if ($istranslation)
-									{
-										$changesdata['catch_grammar'] = '1';
-
-										$changesdata['isgrammar'] = LocaliseHelper::searchRevisedvalue($changesdata);
-									}
-
-									if (!$istranslation && $change_status == 1)
+									if ($change_status == 1)
 									{
 										$developdata['text_changes']['revised']++;
 									}
-									else if	(!$istranslation && $change_status == 0)
-									{
-										$developdata['text_changes']['unrevised']++;
-									}
-									else if	($istranslation && !$changesdata['isgrammar'] && $change_status == 1)
-									{
-										$developdata['text_changes']['revised']++;
-									}
-									else if	($istranslation && !$changesdata['isgrammar'] && $change_status == 0)
+									else
 									{
 										$developdata['text_changes']['unrevised']++;
 									}
@@ -1448,26 +1440,26 @@ class TranslationModel extends AdminModel
 				if ($catched)
 				{
 					Factory::getApplication()->enqueueMessage(
-						Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF', $counted),
+						Text::plural('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF', $counted),
 						'notice');
 
 					if (!empty($strings))
 					{
 						Factory::getApplication()->enqueueMessage(
-						Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
+						Text::plural('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
 							'notice');
 					}
 					else
 					{
 						Factory::getApplication()->enqueueMessage(
-							Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_ALL', count($strings)),
+							Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_ALL'),
 							'notice');
 					}
 				}
 				elseif (empty($notinref[0]))
 				{
 					Factory::getApplication()->enqueueMessage(
-						Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
+						Text::plural('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
 						'notice');
 				}
 			}

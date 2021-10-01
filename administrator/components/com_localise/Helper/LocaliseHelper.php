@@ -1849,12 +1849,10 @@ abstract class LocaliseHelper
 				if (array_key_exists($key, $develop_sections['keys']))
 				{
 					$string_in_develop = $develop_sections['keys'][$key];
-					$text_changes      = self::htmlgetTextchanges($string, $string_in_develop);
+					$text_changes = self::htmlgetTextchanges($string, $string_in_develop);
 
 					if (!empty($text_changes))
 					{
-						$info['isgrammar'] = 0;
-
 						if ($istranslation == 1)
 						{
 							$info['key']           = $key;
@@ -1863,10 +1861,15 @@ abstract class LocaliseHelper
 							$info['catch_grammar'] = 1;
 							$info['revised']       = 0;
 
-							$info['isgrammar'] = self::searchRevisedvalue($info);
+							$grammar_case = self::searchRevisedvalue($info);
+						}
+						else
+						{
+
+							$grammar_case = '0';
 						}
 
-						if ($info['isgrammar'] == '0')
+						if ($grammar_case == '0')
 						{
 							$developdata['text_changes']['amount']++;
 							$developdata['text_changes']['keys'][]           = $key;
@@ -2209,7 +2212,7 @@ abstract class LocaliseHelper
 				$search_target_text = $db->quote($target_text);
 				$search_source_text = $db->quote($source_text);
 
-				if ($catch_grammar && $reftag != $tag)
+				if ($catch_grammar && $reftag !== $tag)
 				{
 					$search_tag = $db->quote($reftag);
 				}
@@ -2272,7 +2275,12 @@ abstract class LocaliseHelper
 					// Returns if in en-GB has been checked as grammar case or not
 					return $result;
 				}
-				elseif (!$catch_grammar)
+				elseif (is_null($result) && $catch_grammar)
+				{
+					// Returns than at en-GB has not been checked as grammar case
+					return 0;
+				}
+				elseif (is_null($result) && !$catch_grammar)
 				{
 					if (self::saveRevisedvalue($data))
 					{
