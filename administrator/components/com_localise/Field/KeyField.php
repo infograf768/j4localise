@@ -417,7 +417,7 @@ class KeyField extends FormField
 				$onclick = '';
 				$button  = '';
 				$button .= '<i class="icon-joomla hasTooltip pointer-not-allowed" title="';
-				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_KEYS_TO_DELETE');
+				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_KEY_TO_DELETE');
 				$button .= '" onclick="' . $onclick . '"></i>';
 
 				$input  = '';

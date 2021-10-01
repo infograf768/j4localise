@@ -167,7 +167,11 @@ else
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
 						<div class="alert alert-info">
 							<span class="fas fa-info-circle info-line" aria-hidden="true"</span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
-							<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE'); ?>
+							<?php if ($istranslation) : ?>
+								<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE'); ?>
+							<?php else : ?>
+								<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE_ENGB'); ?>
+							<?php endif; ?>
 						</div>
 						<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-legend', array('active' => '')); ?>
 						<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-legend', Text::_($fieldSets['legend']->label), 'legend'); ?>
@@ -211,7 +215,16 @@ else
 									$i = 0;
 									foreach ($sections as $name => $fieldSet) :
 										echo HTMLHelper::_('bootstrap.addSlide', 'localise-translation-sliders', Text::_($fieldSet->label), 'collapse' . $i++);
-									?>
+										if ($fieldSet->label == "COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE") : ?>
+											<div class="alert alert-info">
+												<span class="fas fa-info-circle info-line" aria-hidden="true"</span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+												<?php if ($istranslation) : ?>
+													<?php echo Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_EXTRA_KEYS_IN_TRANSLATION'); ?>
+												<?php else : ?>
+													<?php echo Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_KEYS_TO_DELETE'); ?>
+												<?php endif; ?>
+											</div>
+										<?php endif; ?>
 										<ul class="adminformlist">
 											<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 												<?php

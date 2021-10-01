@@ -1105,13 +1105,7 @@ class TranslationModel extends AdminModel
 							$status  = 'extra';
 							$default = $string;
 
-							$label   = '<br><strong>'
-								. '<span class="new_word"">['
-								. Text::_('COM_LOCALISE_NOTINREF_KEY')
-								. '] '
-								. '</span>'
-								. $key
-								. '</strong>';
+							$label = '<br><strong>' . $key . '</strong>';
 
 							$field->addAttribute('status', $status);
 							$field->addAttribute('description', $string);
@@ -1436,6 +1430,7 @@ class TranslationModel extends AdminModel
 			}
 
 			$catched = false;
+			$counted = 0;
 			// Handle here the not in ref cases before add the "Not in reference" comment.
 			if (!empty($strings) && !empty($notinref) && $istranslation)
 			{
@@ -1444,6 +1439,8 @@ class TranslationModel extends AdminModel
 					if (in_array($key, $notinref))
 					{
 						$catched = true;
+						$counted++;
+
 						unset($strings[$key]);
 					}
 				}
@@ -1451,13 +1448,26 @@ class TranslationModel extends AdminModel
 				if ($catched)
 				{
 					Factory::getApplication()->enqueueMessage(
-						Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF'),
+						Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF', $counted),
 						'notice');
+
+					if (!empty($strings))
+					{
+						Factory::getApplication()->enqueueMessage(
+						Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
+							'notice');
+					}
+					else
+					{
+						Factory::getApplication()->enqueueMessage(
+							Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_ALL', count($strings)),
+							'notice');
+					}
 				}
-				else
+				elseif (empty($notinref[0]))
 				{
 					Factory::getApplication()->enqueueMessage(
-						Text::_('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITED'),
+						Text::sprintf('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
 						'notice');
 				}
 			}
