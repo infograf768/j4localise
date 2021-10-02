@@ -1370,7 +1370,7 @@ class TranslationModel extends AdminModel
 			while (!$stream->eof())
 			{
 			// Mounting the language file in this way will help to avoid save files with errors at the content.
-
+				$line = $stream->gets();
 				// Blank lines
 				if (preg_match('/^\s*$/', $line))
 				{
@@ -1389,7 +1389,7 @@ class TranslationModel extends AdminModel
 				// Key lines
 				elseif (preg_match('/^([A-Z][A-Z0-9_:\*\-\.]*)\s*=/', $line, $matches))
 				{
-					$key = $matches[1];
+					$key       = $matches[1];
 					$commented = '';
 
 					preg_match('/(\s;\s.*)$/', $line, $contextcomment);
@@ -1417,14 +1417,12 @@ class TranslationModel extends AdminModel
 					$application = Factory::getApplication();
 					$application->enqueueMessage(Text::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
 				}
-
-				$line = $stream->gets();
 			}
 
 			$catched = false;
 			$counted = 0;
 			// Handle here the not in ref cases before add the "Not in reference" comment.
-			if (!empty($strings) && !empty($notinref) && $istranslation)
+			if (!empty($strings) && !empty($notinref[0]) && $istranslation)
 			{
 				foreach ($strings as $key => $string)
 				{
@@ -1456,12 +1454,12 @@ class TranslationModel extends AdminModel
 							'notice');
 					}
 				}
-				elseif (empty($notinref[0]))
-				{
-					Factory::getApplication()->enqueueMessage(
-						Text::plural('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
-						'notice');
-				}
+			}
+			elseif (!empty($strings) && $istranslation)
+			{
+				Factory::getApplication()->enqueueMessage(
+					Text::plural('COM_LOCALISE_NOTICE_TRANSLATION_DELETE_NOTINREF_OMITTED', count($strings)),
+					'notice');
 			}
 
 			if (!empty($strings))
