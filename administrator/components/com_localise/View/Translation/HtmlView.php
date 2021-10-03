@@ -87,11 +87,11 @@ class HtmlView extends BaseHtmlView
 
 		if ($this->state->get('translation.filename') == 'joomla')
 		{
-			$filename = $this->state->get('translation.tag') . '.ini';
+			$filename = 'joomla.ini';
 		}
 		else
 		{
-			$filename = $this->state->get('translation.tag') . '.' . $this->state->get('translation.filename') . '.ini';
+			$filename = $this->state->get('translation.filename') . '.ini';
 		}
 
 		ToolbarHelper::title(

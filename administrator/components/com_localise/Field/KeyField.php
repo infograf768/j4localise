@@ -141,7 +141,7 @@ class KeyField extends FormField
 		{
 			$class                = '';
 			$tip                  = Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_NOTINREF');
-			$title                = Text::_('Delete');
+			$title                = Text::_('COM_LOCALISE_DELETE');
 			$notinref_key         = (string) $this->element['label'];
 			$notinref_checkbox_id = "notinref_checkbox_id_" . str_replace(array("_", ":"), "", $this->element['name']);
 
@@ -281,7 +281,7 @@ class KeyField extends FormField
 				$class   = '';
 				$button  = '<br>';
 				$button .= '<i class="icon-16-notinreference hasTooltip pointer" title="';
-				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_EXTRA_KEYS_IN_TRANSLATION');
+				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_EXTRA_KEYS_IN_TRANSLATION_ICON');
 				$button .= '" onclick="' . $onclick . '"></i>';
 
 				$button2 = '';
@@ -372,7 +372,8 @@ class KeyField extends FormField
 			// So, is not allowed delete not in ref keys at en-GB
 			// due if applied have the same effect than lost that en-GB string in the actual installed instance of Joomla.
 			//
-			// Is allowed handle "Grammar cases" at en-GB: the checked here is not showed as "changed text" at xx-XX. Not good idea with en-XX languages
+			// Is allowed handle "Grammar cases" at en-GB, with the string as read-only.
+			// The checked here is not showed as "changed text" at xx-XX. Not good idea with en-XX languages
 			// , only with all others can to be useful if we wanna avoid show en-GB grammar cases as changed text at xx-XX languages.
 
 			// Adjusting the stuff when all them are reference keys.
@@ -438,6 +439,31 @@ class KeyField extends FormField
 
 				return $button . $button2 . $commented . $input;
 			}
+			elseif ($istextchange)
+			{
+				// The string is read-only at en-GB file edition to avoid handle bugged counter results.
+				$readonly  = ' readonly="readonly" ';
+				$class    .= ' disabled ';
+				$textvalue = htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8');
+				$title     = '';
+
+				// Is read only, so no changes.
+				$onkeyup = "";
+				$onclick = '';
+				$button  = '';
+				$button .= '<i class="icon-joomla hasTooltip pointer-not-allowed" title="';
+				$button .= $title;
+				$button .= '" onclick="' . $onclick . '"></i>';
+
+				$input  = '';
+				$input .= '<textarea name="' . $this->name . '" id="';
+				$input .= $this->id . '"' . $readonly . ' onfocus="this.select()" class="width-45 pointer-not-allowed ';
+				$input .= $class;
+				$input .= '" onkeyup="' . $onkeyup . '">' . $textvalue;
+				$input .= '</textarea>';
+
+				return $button . $button2 . $commented . $input;
+			}
 
 			$input  = '';
 			$input .= '<textarea name="' . $this->name . '" id="';
@@ -448,6 +474,5 @@ class KeyField extends FormField
 
 			return $button . $button2 . $commented . $input;
 		}
-
 	}
 }

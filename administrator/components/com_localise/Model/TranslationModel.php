@@ -1370,7 +1370,9 @@ class TranslationModel extends AdminModel
 			while (!$stream->eof())
 			{
 			// Mounting the language file in this way will help to avoid save files with errors at the content.
+
 				$line = $stream->gets();
+
 				// Blank lines
 				if (preg_match('/^\s*$/', $line))
 				{
