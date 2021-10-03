@@ -80,8 +80,13 @@ class HtmlView extends BaseHtmlView
 		$user		   = Factory::getUser();
 		$checkedOut	   = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$complete      = (int) ComponentHelper::getParams('com_localise')->get('complete', 0);
-		$has_notinref  = ($this->get('Item')->developdata['extra_keys']['amount'] > 0 ? true : false);
 		$istranslation = $this->get('Item')->istranslation;
+		$has_notinref  = false;
+
+		if (!empty($this->get('Item')->developdata))
+		{
+			$has_notinref = ($this->get('Item')->developdata['extra_keys']['amount'] > 0 ? true : false);
+		}
 
 		$toolbar = Toolbar::getInstance('toolbar');
 
@@ -103,15 +108,24 @@ class HtmlView extends BaseHtmlView
 
 		if (!$checkedOut)
 		{
-			if ($complete === 1)
+			if ($complete === 1 && !$has_notinref)
 			{
 				$message = 'COM_LOCALISE_CONFIRM_TRANSLATION_SAVE';
 
-				if ($has_notinref && $istranslation)
-				{
-					$message = 'COM_LOCALISE_CONFIRM_TRANSLATION_SAVE_AND_NOTINREF';
-				}
+				$toolbar->confirmButton('apply')
+					->text('JAPPLY')
+					->message($message)
+					->task('translation.apply');
 
+				$toolbar->confirmButton('save')
+					->text('JSAVE')
+					->message($message)
+					->task('translation.save');
+			}
+			elseif ($has_notinref && $istranslation)
+			{
+				$message = 'COM_LOCALISE_CONFIRM_TRANSLATION_SAVE_NOTINREF';
+				
 				$toolbar->confirmButton('apply')
 					->text('JAPPLY')
 					->message($message)
