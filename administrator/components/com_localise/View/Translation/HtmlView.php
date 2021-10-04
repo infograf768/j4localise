@@ -108,24 +108,15 @@ class HtmlView extends BaseHtmlView
 
 		if (!$checkedOut)
 		{
-			if ($complete === 1 && !$has_notinref)
+			if ($complete === 1)
 			{
-				$message = 'COM_LOCALISE_CONFIRM_TRANSLATION_SAVE';
+				$message = Text::_('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 
-				$toolbar->confirmButton('apply')
-					->text('JAPPLY')
-					->message($message)
-					->task('translation.apply');
+				if ($has_notinref && $istranslation)
+				{
+					$message .= '\\n' . Text::_('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE_NOTINREF');
+				}
 
-				$toolbar->confirmButton('save')
-					->text('JSAVE')
-					->message($message)
-					->task('translation.save');
-			}
-			elseif ($has_notinref && $istranslation)
-			{
-				$message = 'COM_LOCALISE_CONFIRM_TRANSLATION_SAVE_NOTINREF';
-				
 				$toolbar->confirmButton('apply')
 					->text('JAPPLY')
 					->message($message)
