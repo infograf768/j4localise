@@ -89,7 +89,7 @@ class KeyField extends FormField
 			else
 			{
 				$title = Text::_('COM_LOCALISE_CHECKBOX_TRANSLATION_GRAMMAR_CASE');
-				$tip   = Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_GRAMMAR_CASE');
+				$tip   = '';
 			}
 
 			$textchanges_checkbox  = '';
@@ -446,6 +446,7 @@ class KeyField extends FormField
 				$class    .= ' disabled ';
 				$textvalue = htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8');
 				$title     = '';
+				$tip       = '<div> <span class="badge bg-warning">' . Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_GRAMMAR_CASE') . '</span></div>';
 
 				// Is read only, so no changes.
 				$onkeyup = "";
@@ -462,7 +463,7 @@ class KeyField extends FormField
 				$input .= '" onkeyup="' . $onkeyup . '">' . $textvalue;
 				$input .= '</textarea>';
 
-				return $button . $button2 . $commented . $input;
+				return $button . $button2 . $tip . $commented . $input;
 			}
 
 			$input  = '';
