@@ -1865,7 +1865,6 @@ abstract class LocaliseHelper
 						}
 						else
 						{
-
 							$grammar_case = '0';
 						}
 

@@ -114,7 +114,8 @@ class HtmlView extends BaseHtmlView
 
 				if ($has_notinref && $istranslation)
 				{
-					$message .= '\\n' . Text::_('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE_NOTINREF');
+					$message .= '\\n'
+					. Text::_('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE_NOTINREF');
 				}
 
 				$toolbar->confirmButton('apply')
