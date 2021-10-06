@@ -446,7 +446,7 @@ class KeyField extends FormField
 				$class    .= ' disabled ';
 				$textvalue = htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8');
 				$title     = '';
-				$tip       = '<div> <span class="badge bg-warning">' . Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_GRAMMAR_CASE') . '</span></div>';
+				$tip       = '<div> <span class="badge bg-warning text-dark grammar">' . Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_GRAMMAR_CASE') . '</span></div>';
 
 				// Is read only, so no changes.
 				$onkeyup = "";
