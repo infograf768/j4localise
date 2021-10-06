@@ -385,3 +385,12 @@ span.extra::before {
   right: 45% !important;
   z-index: 100 !important;
 }
+
+/*grammar case*/
+.grammar {
+  text-align: start;
+  margin-top: .3rem;
+  font-size: .90rem;
+  font-weight: 400;
+  line-height: normal;
+}
