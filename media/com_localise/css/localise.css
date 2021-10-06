@@ -386,7 +386,7 @@ span.extra::before {
   z-index: 100 !important;
 }
 
-/*grammar case*/
+/* grammar case */
 .grammar {
   text-align: start;
   margin-top: .3rem;
