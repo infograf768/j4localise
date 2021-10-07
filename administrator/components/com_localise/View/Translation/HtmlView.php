@@ -77,19 +77,21 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		$user		= Factory::getUser();
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
-		$complete   = (int) ComponentHelper::getParams('com_localise')->get('complete', 0);
+		$user          = Factory::getUser();
+		$checkedOut    = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$complete      = (int) ComponentHelper::getParams('com_localise')->get('complete', 0);
+		$istranslation = $this->item->istranslation;
+		$has_notinref  = $this->item->extra > 0 ? true : false;
 
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		if ($this->state->get('translation.filename') == 'joomla')
 		{
-			$filename = $this->state->get('translation.tag') . '.ini';
+			$filename = 'joomla.ini';
 		}
 		else
 		{
-			$filename = $this->state->get('translation.tag') . '.' . $this->state->get('translation.filename') . '.ini';
+			$filename = $this->state->get('translation.filename') . '.ini';
 		}
 
 		ToolbarHelper::title(
@@ -103,14 +105,21 @@ class HtmlView extends BaseHtmlView
 		{
 			if ($complete === 1)
 			{
+				$message = Text::_('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
+
+				if ($has_notinref && $istranslation)
+				{
+					$message .= '\n\n' . Text::_('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE_NOTINREF');
+				}
+
 				$toolbar->confirmButton('apply')
 					->text('JAPPLY')
-					->message('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')
+					->message($message)
 					->task('translation.apply');
 
 				$toolbar->confirmButton('save')
 					->text('JSAVE')
-					->message('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')
+					->message($message)
 					->task('translation.save');
 			}
 			else
@@ -118,7 +127,6 @@ class HtmlView extends BaseHtmlView
 				ToolbarHelper::apply('translation.apply');
 				ToolbarHelper::save('translation.save');
 			}
-
 		}
 
 		ToolbarHelper::cancel('translation.cancel');

@@ -233,6 +233,11 @@ span.icon-16-notice-note {
 	float: left;
 	margin: 5px 5px 5px 0;
 }
+.pointer-not-allowed {
+	cursor: not-allowed;
+	float: left;
+	margin: 5px 5px 5px 0;
+}
 div.filter-select select {
 	background-image: none;
 }
@@ -379,4 +384,13 @@ span.extra::before {
   top: 45% !important;
   right: 45% !important;
   z-index: 100 !important;
+}
+
+/* grammar case */
+.grammar {
+  text-align: start;
+  margin-top: .3rem;
+  font-size: .90rem;
+  font-weight: 400;
+  line-height: normal;
 }

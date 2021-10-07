@@ -2211,6 +2211,11 @@ abstract class LocaliseHelper
 				$search_target_text = $db->quote($target_text);
 				$search_source_text = $db->quote($source_text);
 
+				if ($catch_grammar && $reftag !== $tag)
+				{
+					$search_tag = $db->quote($reftag);
+				}
+
 				$query->select(
 						array	(
 							$db->quoteName('revised')
@@ -2260,25 +2265,31 @@ abstract class LocaliseHelper
 
 			$result = $db->loadResult();
 
-				if (!is_null($result))
+			if (!is_null($result) && !$catch_grammar)
+			{
+				return (int) $result;
+			}
+			elseif (!is_null($result) && $catch_grammar)
+			{
+				// Returns if in en-GB has been checked as grammar case or not
+				return $result;
+			}
+			elseif (is_null($result) && $catch_grammar)
+			{
+				// Returns than at en-GB has not been checked as grammar case
+				return 0;
+			}
+			elseif (is_null($result) && !$catch_grammar)
+			{
+				if (self::saveRevisedvalue($data))
 				{
-					return (int) $result;
-				}
-				elseif ($catch_grammar == '1')
-				{
-					return '0';
+					return (int) $revised;
 				}
 				else
 				{
-					if (self::saveRevisedvalue($data))
-					{
-						return (int) $revised;
-					}
-					else
-					{
-						return null;
-					}
+					return null;
 				}
+			}
 		}
 
 		return null;
