@@ -48,6 +48,9 @@ class KeyField extends FormField
 	 */
 	protected function getLabel()
 	{
+		// Set the class for the label.
+		$class         = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
+
 		$istranslation = (int) $this->element['istranslation'];
 		$status        = (string) $this->element['status'];
 		$istextchange  = (int) $this->element['istextchange'];
@@ -78,22 +81,24 @@ class KeyField extends FormField
 							'value', document.getElementById('" . $textchange_visible_id . "' ).checked
 							);";
 
-			if ($istranslation == '1')
+			if ($istranslation)
 			{
 				$title = Text::_('COM_LOCALISE_REVISED');
+				$tip   = $title;
 			}
 			else
 			{
-				$title = 'Grammar case';
+				$title = Text::_('COM_LOCALISE_CHECKBOX_TRANSLATION_GRAMMAR_CASE');
+				$tip   = '';
 			}
 
-			$textchanges_checkbox = '';
+			$textchanges_checkbox  = '';
 			$textchanges_checkbox .= '<div><strong>' . $title . '</strong><input style="max-width:5%; min-width:5%;" id="';
 			$textchanges_checkbox .= $textchange_visible_id;
 			$textchanges_checkbox .= '" type="checkbox" ';
 			$textchanges_checkbox .= ' name="jform[vtext_changes][]" value="';
 			$textchanges_checkbox .= $this->element['name'];
-			$textchanges_checkbox .= '" title="' . $title . '" onclick="';
+			$textchanges_checkbox .= '" title="' . $tip . '" onclick="';
 			$textchanges_checkbox .= $textchanges_onclick;
 			$textchanges_checkbox .= '" ';
 			$textchanges_checkbox .= $textchange_checked;
@@ -120,8 +125,7 @@ class KeyField extends FormField
 			$textchanges_checkbox .= htmlspecialchars($textchange_target, ENT_COMPAT, 'UTF-8');
 			$textchanges_checkbox .= '" ></input>';
 
-			$return = '';
-
+			$return  = '';
 			$return .= '<div><label id="';
 			$return .= $this->id;
 			$return .= '-lbl" for="';
@@ -133,11 +137,87 @@ class KeyField extends FormField
 
 			return $return;
 		}
+		else if ($status == 'extra' && $istranslation)
+		{
+			$class                = '';
+			$tip                  = Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_NOTINREF');
+			$title                = Text::_('COM_LOCALISE_DELETE');
+			$notinref_key         = (string) $this->element['label'];
+			$notinref_checkbox_id = "notinref_checkbox_id_" . str_replace(array("_", ":"), "", $this->element['name']);
+
+			$notinref_onclick     = "javascript:";
+			$notinref_onclick    .= "var checked_values = document.getElementsByName('jform[notinref]');
+									var form           = $('#localise-translation-form');
+
+									// Set to the hidden form field 'notinref' the value of the selected checkboxes.
+									form.find('input[name=notinref]').val(checked_values);
+									";
+
+			$notinref_checkbox  = '';
+			$notinref_checkbox .= '<div><strong>' . $title . '</strong><input style="max-width:5%; min-width:5%;"';
+			$notinref_checkbox .= ' title="' . $tip . '"';
+			$notinref_checkbox .= ' id="' . $notinref_checkbox_id . '"';
+			$notinref_checkbox .= ' type="checkbox" ';
+			$notinref_checkbox .= ' name="jform[notinref][]"';
+			$notinref_checkbox .= ' value="' . $this->element['name'] . '"';
+			$notinref_checkbox .= ' onclick="';
+			$notinref_checkbox .= $notinref_onclick;
+			$notinref_checkbox .= '" class="' . $class . '"';
+			$notinref_checkbox .= '></input></div>';
+
+			$return  = '';
+			$return .= '<div><label id="';
+			$return .= $this->id;
+			$return .= '-lbl" for="';
+			$return .= $this->id;
+			$return .= '">';
+			$return .= $this->element['label'];
+			$return .= $notinref_checkbox;
+			$return .= '</label></div>';
+
+			return $return;
+		}
+		else if ($status == 'extra' && !$istranslation)
+		{
+			// Set the class for the label when it is an extra key in the en-GB language.
+			$class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
+
+			// If a description is specified, use it to build a tooltip.
+			if (!empty($this->descText))
+			{
+				$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '" title="'
+						. htmlspecialchars(htmlspecialchars('::' . str_replace("\n", "\\n", $this->descText), ENT_QUOTES, 'UTF-8')) . '">';
+			}
+			else
+			{
+				$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '">';
+			}
+
+			$label .= $this->element['label'];
+			$label .= '</label>';
+
+			return $label;
+		}
 		else
 		{
-			return '<label id="' . $this->id . '-lbl" for="' . $this->id . '">'
-						. $this->element['label']
-					. '</label>';
+			// Set the class for the label for any other case.
+			$class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
+
+			// If a description is specified, use it to build a tooltip.
+			if (!empty($this->descText))
+			{
+				$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '" title="'
+						. htmlspecialchars(htmlspecialchars('::' . str_replace("\n", "\\n", $this->descText), ENT_QUOTES, 'UTF-8')) . '">';
+			}
+			else
+			{
+				$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '">';
+			}
+
+			$label .= $this->element['label'];
+			$label .= '</label>';
+
+			return $label;
 		}
 	}
 
@@ -148,7 +228,7 @@ class KeyField extends FormField
 	 */
 	protected function getInput()
 	{
-		// Set the class for the label.
+		// Set the class for the label for any other case.
 		$class         = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
 		$istranslation = (int) $this->element['istranslation'];
 		$istextchange  = (int) $this->element['istextchange'];
@@ -170,108 +250,104 @@ class KeyField extends FormField
 			$commented = '<div> <span class="badge"> </span></div>';
 		}
 
-		if ($istranslation == '1')
+		if ($istranslation)
 		{
-			// If a description is specified, use it to build a tooltip.
-			if (!empty($this->descText))
-			{
-				$label = '<label id="' . $label_id . '-lbl" for="' . $label_for . '" class="' . $class . '" title="'
-						. htmlspecialchars(htmlspecialchars('::' . str_replace("\n", "\\n", $this->descText), ENT_QUOTES, 'UTF-8')) . '">';
-			}
-			else
-			{
-				$label = '<label id="' . $label_id . '-lbl" for="' . $label_for . '" class="' . $class . '">';
-			}
-
-			Text::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
-
-			$label .= $this->element['label'] . '<br />' . (string) $this->element['description'];
-			$label .= '</label>';
-
-			$onclick = '';
-			$button  = '';
+			$onclick  = '';
+			$button   = '';
 
 			$onclick2 = '';
 			$button2  = '';
 
+			$onfocus = "";
+
 			if ($status == 'extra')
 			{
-				$onclick = '';
-				$button  = '<span style="width:5%;">'
-						. HTMLHelper::_('image', 'com_localise/icon-16-arrow-gray.png', '', array('class' => 'pointer'), true) . '</span>';
-
-				$onclick2 = '';
-				$button2  = '<span style="width:5%;">'
-						. HTMLHelper::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
 				$input  = '';
 				$input .= '<textarea name="' . $textarea_name;
 				$input .= '" id="' . $textarea_id . '" class="width-45 ' . $status . ' ">';
 				$input .= htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
+
+				$notinref_key         = (string) $this->element['label'];
+				$notinref_checkbox_id = "notinref_checkbox_id_" . str_replace(array("_", ":"), "", $this->element['name']);
+
+				$notinref_onclick = "javascript:";
+				$notinref_onclick = "var checked_values = document.getElementsByName('jform[notinref]');
+									var form           = $('#localise-translation-form');
+
+									// Set to the hidden form field 'notinref' the value of the selected checkboxes.
+									form.find('input[name=notinref]').val(checked_values);
+									";
+
+				$class   = '';
+				$button  = '<br>';
+				$button .= '<i class="icon-16-notinreference hasTooltip pointer" title="';
+				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_EXTRA_KEYS_IN_TRANSLATION_ICON');
+				$button .= '" onclick="' . $onclick . '"></i>';
+
+				$button2 = '';
+
+				$input  = '';
+				$input .= '<textarea name="' . $textarea_name . '" id="' . $textarea_id . '"';
+				$input .= ' class="width-45 ' . $status . '">';
+				$input .= htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea><br>';
+
+				return $button . $button2 . $commented . $input;
 			}
 			else
 			{
-				$token    = Session::getFormToken();
+				$onclick  = "";
+				$onclick .= "javascript:document.getElementById('" . $id . "').value='";
+				$onclick .= addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8'));
+				$onclick .= "';";
+				$onclick .= "document.getElementById('" . $id . "').setAttribute('class','width-45 untranslated');";
 
-					$onclick  = "";
-					$onclick .= "javascript:document.getElementById('" . $id . "').value='";
-					$onclick .= addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8'));
-					$onclick .= "';";
-					$onclick .= "document.getElementById('" . $id . "').setAttribute('class','width-45 untranslated');";
-
-					$onclick2 = "javascript:AzureTranslator(this, [], 0, '$token');";
+				$onclick2 = "";
 
 				$button   = '';
 				$button  .= '<i class="icon-reset hasTooltip return pointer" title="';
 				$button  .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT');
 				$button  .= '" onclick="' . $onclick . '"></i>';
 
-/*				$button2   = '';
-				$button2  .= '<input type="hidden" id="' . $id . 'text" value=\'';
-				$button2  .= addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . '\' />';
-				$button2  .= '<i class="icon-translate-bing hasTooltip translate pointer" title="';
-				$button2  .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE');
-				$button2  .= '" onclick="' . $onclick2 . '" rel="' . $id . '"></i>';
-*/
 				$onkeyup = "javascript:";
 
 				if ($istextchange == 1)
 				{
 					$onkeyup .= "if (this.getAttribute('value')=='')
 							{
-							this.setAttribute('class','width-45 untranslated');
+								this.setAttribute('class','width-45 untranslated');
 							}
 							else if (this.getAttribute('value')=='"
 							. addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8'))
 							. "')
 							{
-							this.setAttribute('class','width-45 untranslated');
+								this.setAttribute('class','width-45 untranslated');
 							}
 							else if (this.getAttribute('value')=='"
 							. addslashes(htmlspecialchars($this->element['frozen_task'], ENT_COMPAT, 'UTF-8'))
 							. "')
 							{
-							this.setAttribute('class','width-45 untranslated');
+								this.setAttribute('class','width-45 untranslated');
 							}
 							else
 							{
-							this.setAttribute('class','width-45 translated');
+								this.setAttribute('class','width-45 translated');
 							}";
 				}
 				else
 				{
 					$onkeyup .= "if (this.getAttribute('value')=='')
 							{
-							this.setAttribute('class','width-45 untranslated');
+								this.setAttribute('class','width-45 untranslated');
 							}
 							else if (this.getAttribute('value')=='"
 							. addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8'))
 							. "')
 							{
-							this.setAttribute('class','width-45 untranslated');
+								this.setAttribute('class','width-45 untranslated');
 							}
 							else
 							{
-							this.setAttribute('class','width-45 translated');
+								this.setAttribute('class','width-45 translated');
 							}";
 				}
 
@@ -282,69 +358,112 @@ class KeyField extends FormField
 				$input .= '" class="width-45 ' . $status . '" onkeyup="';
 				$input .= $onkeyup . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 			}
+
+			return $button . $button2 . $commented . $input;
 		}
 		else
 		{
-			// Set the class for the label.
-			$class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
-
-			// If a description is specified, use it to build a tooltip.
-			if (!empty($this->descText))
-			{
-				$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '" title="'
-						. htmlspecialchars(htmlspecialchars('::' . str_replace("\n", "\\n", $this->descText), ENT_QUOTES, 'UTF-8')) . '">';
-			}
-			else
-			{
-				$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '">';
-			}
-
-			Text::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
-			$label .= $this->element['label'] . '<br />' . $this->element['description'];
-			$label .= '</label>';
+			// This is not a translation. We are handling the en-GB reference output and is not handled as a translation case.
+			//
+			// Is allowed edit any key due maybe is required apply directly corrections to en-GB strings to show when other xx-XX language is called.
+			//
+			// Keys not in reference are "read only" cases at en-GB: that keys for sure are not present at next Joomla release.
+			//
+			// So, is not allowed delete not in ref keys at en-GB
+			// due if applied have the same effect than lost that en-GB string in the actual installed instance of Joomla.
+			//
+			// Is allowed handle "Grammar cases" at en-GB, with the string as read-only.
+			// The checked here is not showed as "changed text" at xx-XX. Not good idea with en-XX languages
+			// , only with all others can to be useful if we wanna avoid show en-GB grammar cases as changed text at xx-XX languages.
 
 			// Adjusting the stuff when all them are reference keys.
-			$readonly = '';
+			$readonly  = '';
 			$textvalue = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 
-			if ($istextchange == 1 || $isextraindev == 1)
-			{
-				// There is no translation task in develop for the reference files in develop.
-				$readonly = ' readonly="readonly" ';
-				$textvalue = htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8');
-			}
+			$onclick  = "javascript:";
+			$onclick .= "document.getElementById('" . $id . "').value='";
+			$onclick .= addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8'));
+			$onclick .= "';";
+			$onclick .= "document.getElementById('" . $id . "').setAttribute('class','width-45 untranslated');";
 
-			$status = (string) $this->element['status'];
-
-			$onclick = "javascript:document.getElementById(
-							'" . $this->id . "'
-							)
-							.value='" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "'
-							);
-							if (document.getElementById('" . $this->id . "').getAttribute('value')=='') {document.getElementById('" . $this->id . "').setAttribute('class','width-45 untranslated');}
-							else {document.getElementById('" . $this->id . "').setAttribute('class','width-45 " . $status . "');}";
-			$button  = '<i class="icon-reset hasTooltip return pointer"
-			 title="' . Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT') . '"
-			 onclick="' . $onclick . '"></i>';
+			$button   = '';
+			$button  .= '<i class="icon-reset hasTooltip return pointer" title="';
+			$button  .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT');
+			$button  .= '" onclick="' . $onclick . '"></i>';
 
 			// No sense translate the reference keys by the same language.
 			$onclick2 = '';
-			$button2 = '';
+			$button2  = '';
+
 			/*$button2  = '<span style="width:5%;">'
 						. HTMLHelper::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';*/
+			$onkeyup  = "javascript:";
+			$onkeyup .= "if (this.getAttribute('value')=='') {this.setAttribute('class','width-45 untranslated');}
+						else {if (this.getAttribute('value')=='"
+						. addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'))
+						. "') this.setAttribute('class','width-45 "
+						. $status
+						. "');"
+						. "else this.setAttribute('class','width-45 translated');}";
 
-			if ($istextchange == 1 || $isextraindev == 1)
+			if ($status == 'extra')
 			{
+				// There is no translation task in develop for the reference files in develop.
+				$readonly  = ' readonly="readonly" ';
+				$class    .= ' disabled ';
+				$textvalue = htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8');
+
 				// Is read only, so no changes.
 				$onkeyup = "";
+				$onclick = '';
+				$button  = '';
+				$button .= '<i class="icon-joomla hasTooltip pointer-not-allowed" title="';
+				$button .= Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_KEY_TO_DELETE');
+				$button .= '" onclick="' . $onclick . '"></i>';
+
+				$input  = '';
+				$input .= '<textarea name="' . $this->name . '" id="';
+				$input .= $this->id . '"' . $readonly . ' onfocus="this.select()" class="width-45 pointer-not-allowed ';
+
+				if ($isextraindev)
+				{
+					$input .= $status;
+				}
+				else
+				{
+					$input .= $class;
+				}
+
+				$input .= '" onkeyup="' . $onkeyup . '">' . $textvalue;
+				$input .= '</textarea>';
+
+				return $button . $button2 . $commented . $input;
 			}
-			else
+			elseif ($istextchange)
 			{
-				$onkeyup = "javascript:";
-				$onkeyup .= "if (this.getAttribute('value')=='') {this.setAttribute('class','width-45 untranslated');}
-							else {if (this.getAttribute('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'))
-							. "') this.setAttribute('class','width-45 " . $status . "');
-							" . "else this.setAttribute('class','width-45 translated');}";
+				// The string is read-only at en-GB file edition to avoid handle bugged counter results.
+				$readonly  = ' readonly="readonly" ';
+				$class    .= ' disabled ';
+				$textvalue = htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8');
+				$title     = '';
+				$tip       = '<div> <span class="badge bg-warning text-dark grammar">' . Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_GRAMMAR_CASE') . '</span></div>';
+
+				// Is read only, so no changes.
+				$onkeyup = "";
+				$onclick = '';
+				$button  = '';
+				$button .= '<i class="icon-joomla hasTooltip pointer-not-allowed" title="';
+				$button .= $title;
+				$button .= '" onclick="' . $onclick . '"></i>';
+
+				$input  = '';
+				$input .= '<textarea name="' . $this->name . '" id="';
+				$input .= $this->id . '"' . $readonly . ' onfocus="this.select()" class="width-45 pointer-not-allowed ';
+				$input .= $class;
+				$input .= '" onkeyup="' . $onkeyup . '">' . $textvalue;
+				$input .= '</textarea>';
+
+				return $button . $button2 . $tip . $commented . $input;
 			}
 
 			$input  = '';
@@ -354,12 +473,7 @@ class KeyField extends FormField
 			$input .= '" onkeyup="' . $onkeyup . '">' . $textvalue;
 			$input .= '</textarea>';
 
-			if ($status= 'extra')
-			{
-				$button = '';
-			}
+			return $button . $button2 . $commented . $input;
 		}
-
-		return $button . $button2 . $commented . $input;
 	}
 }

@@ -68,66 +68,75 @@ if (isset($posted['select']['keystatus'])
 	&& $posted['select']['keystatus'] != 'allkeys'
 	)
 {
-	$filter			= $posted['select']['keystatus'];
-	$keystofilter	= array ($this->item->$filter);
-	$tabchoised		= 'strings';
+	$filter       = $posted['select']['keystatus'];
+	$keystofilter = array ($this->item->$filter);
+	$tabchoised   = 'strings';
 }
 elseif (empty($posted['select']['keystatus']))
 {
-	$filter			= 'allkeys';
-	$keystofilter	= array();
-	$tabchoised		= 'default';
+	$filter       = 'allkeys';
+	$keystofilter = array();
+	$tabchoised   = 'default';
 }
 else
 {
-	$filter			= 'allkeys';
-	$keystofilter	= array();
-	$tabchoised		= 'default';
+	$filter       = 'allkeys';
+	$keystofilter = array();
+	$tabchoised   = 'default';
 }
 
 $fieldSets = $this->form->getFieldsets();
 $sections  = $this->form->getFieldsets('strings');
 $ftpSets   = $this->formftp->getFieldsets();
 
-// Prepare Bing translation
-Text::script('COM_LOCALISE_BINGTRANSLATING_NOW');
-Text::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
+if ($istranslation)
+{
+	// Only add the JS realted with the filters or others only showed at 'istranslation' case
+	Factory::getDocument()->addScriptDeclaration("
+		function returnAll()
+		{
+			$('.return').trigger('click');
+		}
 
-Factory::getDocument()->addScriptDeclaration("
-	function returnAll()
-	{
-		$('.return').trigger('click');
-	}
+		(function($){
+			$(document).ready(function() {
+				var has_translatedkeys   = " . $has_translatedkeys . ";
+				var has_untranslatedkeys = " . $has_untranslatedkeys . ";
+				var has_unchangedkeys    = " . $has_unchangedkeys . ";
+				var has_textchangedkeys  = " . $has_textchangedkeys . ";
 
-	(function($){
-		$(document).ready(function () {
-			var has_translatedkeys   = " . $has_translatedkeys . ";
-			var has_untranslatedkeys = " . $has_untranslatedkeys . ";
-			var has_unchangedkeys    = " . $has_unchangedkeys . ";
-			var has_textchangedkeys  = " . $has_textchangedkeys . ";
+				if (has_translatedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[2].disabled = true;
+				}
 
-			if (has_translatedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[2].disabled = true;
-			}
+				if (has_untranslatedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[3].disabled = true;
+				}
 
-			if (has_untranslatedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[3].disabled = true;
-			}
+				if (has_unchangedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[4].disabled = true;
+				}
 
-			if (has_unchangedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[4].disabled = true;
-			}
-
-			if (has_textchangedkeys == '0')
-			{
-				var x = document.getElementById('jform_select_keystatus').options[5].disabled = true;
-			}
-		});
-	})(jQuery);
-");
+				if (has_textchangedkeys == '0')
+				{
+					var x = document.getElementById('jform_select_keystatus').options[5].disabled = true;
+				}
+			});
+		})(jQuery);
+	");
+}
+else
+{
+	Factory::getDocument()->addScriptDeclaration("
+		function returnAll()
+		{
+			$('.return').trigger('click');
+		}
+	");
+}
 ?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<div class="row">
@@ -158,7 +167,11 @@ Factory::getDocument()->addScriptDeclaration("
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
 						<div class="alert alert-info">
 							<span class="fas fa-info-circle info-line" aria-hidden="true"</span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
-							<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE'); ?>
+							<?php if ($istranslation) : ?>
+								<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE'); ?>
+							<?php else : ?>
+								<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE_ENGB'); ?>
+							<?php endif; ?>
 						</div>
 						<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-legend', array('active' => '')); ?>
 						<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-legend', Text::_($fieldSets['legend']->label), 'legend'); ?>
@@ -202,7 +215,16 @@ Factory::getDocument()->addScriptDeclaration("
 									$i = 0;
 									foreach ($sections as $name => $fieldSet) :
 										echo HTMLHelper::_('bootstrap.addSlide', 'localise-translation-sliders', Text::_($fieldSet->label), 'collapse' . $i++);
-									?>
+										if ($fieldSet->label == "COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE") : ?>
+											<div class="alert alert-info">
+												<span class="fas fa-info-circle info-line" aria-hidden="true"</span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+												<?php if ($istranslation) : ?>
+													<?php echo Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_EXTRA_KEYS_IN_TRANSLATION'); ?>
+												<?php else : ?>
+													<?php echo Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_KEYS_TO_DELETE'); ?>
+												<?php endif; ?>
+											</div>
+										<?php endif; ?>
 										<ul class="adminformlist">
 											<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 												<?php
@@ -337,6 +359,7 @@ Factory::getDocument()->addScriptDeclaration("
 		</div>
 		<!-- End Localise Translation -->
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="notinref" value="" />
 		<?php echo HTMLHelper::_('form.token'); ?>
 
 	</div>
