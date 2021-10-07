@@ -77,11 +77,11 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		$user		   = Factory::getUser();
-		$checkedOut	   = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$user          = Factory::getUser();
+		$checkedOut    = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$complete      = (int) ComponentHelper::getParams('com_localise')->get('complete', 0);
-		$istranslation = $this->get('Item')->istranslation;
-		$has_notinref  = ($this->get('Item')->extra > 0) ? true : false;
+		$istranslation = $this->item->istranslation;
+		$has_notinref  = $this->item->extra > 0 ? true : false;
 
 		$toolbar = Toolbar::getInstance('toolbar');
 
