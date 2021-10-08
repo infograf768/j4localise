@@ -13,10 +13,27 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Layout\LayoutHelper;
 
-
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
 HTMLHelper::_('jquery.framework');
 HTMLHelper::_('behavior.core');
+
+$wa = $this->document->getWebAssetManager();
+$wa->useScript('webcomponent.core-loader');
+$wa->addInlineScript('
+    Joomla.submitbutton = (task) => {
+      "use strict";
+
+      if (task === "languages.purge") {
+        var spinner = document.createElement("joomla-core-loader");
+        document.body.appendChild(spinner);
+        Joomla.submitform(task);
+      }
+      else
+      {
+        Joomla.submitform(task);
+      }
+    }
+');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
