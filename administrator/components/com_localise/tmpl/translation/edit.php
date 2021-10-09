@@ -55,8 +55,16 @@ $installed_version = $installed_version->getShortVersion();
 		'notice');
 	}
 
-$input  = Factory::getApplication()->input;
-$posted = $input->post->get('jform', array(), 'array');
+$app        = Factory::getApplication();
+$input      = $app->input;
+$posted     = $input->post->get('jform', array(), 'array');
+$tabchoised = $app->getUserState ('com_localise.translation.edit.tabchoised');
+
+if(empty($tabchoised))
+{
+	// If empty select here the default tab by name.
+	$tabchoised = 'strings';
+}
 
 $has_translatedkeys   = !empty($this->item->translatedkeys) ? 1 : 0;
 $has_untranslatedkeys = !empty($this->item->untranslatedkeys) ? 1 : 0;
@@ -70,19 +78,19 @@ if (isset($posted['select']['keystatus'])
 {
 	$filter       = $posted['select']['keystatus'];
 	$keystofilter = array ($this->item->$filter);
-	$tabchoised   = 'strings';
+	//$tabchoised   = 'strings';
 }
 elseif (empty($posted['select']['keystatus']))
 {
 	$filter       = 'allkeys';
 	$keystofilter = array();
-	$tabchoised   = 'default';
+	//$tabchoised   = 'default';
 }
 else
 {
 	$filter       = 'allkeys';
 	$keystofilter = array();
-	$tabchoised   = 'default';
+	//$tabchoised   = 'default';
 }
 
 $fieldSets = $this->form->getFieldsets();
@@ -137,12 +145,30 @@ else
 		}
 	");
 }
+
+Factory::getDocument()->addScriptDeclaration("
+	(function($){
+		$(document).ready(function() {
+			$('#myTab').click(function(){
+
+				// Getting the form to use.
+				var form = $('#localise-translation-form');
+
+				// Searching the actual tab
+				var actual = form.find('button[aria-expanded=true]').attr('aria-controls');
+
+				// Save the actual tab value to the hidden form field 'tabchoised'
+				form.find('input[name=tabchoised]').val(actual);
+			});
+		});
+	})(jQuery);
+");
 ?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<div class="row">
 		<!-- Begin Localise Translation -->
 		<div class="col-md-12 form-horizontal">
-				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
+				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $tabchoised)); ?>
 					<?php if ($this->ftp) : ?>
 						<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 							<?php if (!empty($ftpSets['ftp']->description)):?>
@@ -360,6 +386,7 @@ else
 		<!-- End Localise Translation -->
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="notinref" value="" />
+		<input type="hidden" name="tabchoised" value="" />
 		<?php echo HTMLHelper::_('form.token'); ?>
 
 	</div>

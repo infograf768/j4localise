@@ -56,15 +56,17 @@ class TranslationModel extends AdminModel
 		$input = Factory::getApplication()->input;
 
 		// Get the infos
-		$client   = $input->getCmd('client', '');
-		$tag      = $input->getCmd('tag', '');
-		$filename = $input->getCmd('filename', '');
-		$storage  = $input->getCmd('storage', '');
+		$client     = $input->getCmd('client', '');
+		$tag        = $input->getCmd('tag', '');
+		$filename   = $input->getCmd('filename', '');
+		$storage    = $input->getCmd('storage', '');
+		$tabchoised = $input->getCmd('tabchoised', '');
 
 		$this->setState('translation.client', !empty($client) ? $client : 'site');
 		$this->setState('translation.tag', $tag);
 		$this->setState('translation.filename', $filename);
 		$this->setState('translation.storage', $storage);
+		$this->setState('translation.tabchoised', $tabchoised);
 
 		// Get the id
 		$id = $input->getInt('id', '0');
@@ -1174,6 +1176,12 @@ class TranslationModel extends AdminModel
 	 */
 	public function saveFile($data)
 	{
+		$app        = Factory::getApplication();
+		$input      = $app->input;
+		$tabchoised = $input->getCmd('tabchoised', '');
+
+		$app->setUserState ('com_localise.translation.edit.tabchoised', $tabchoised);
+
 		$client        = $this->getState('translation.client');
 		$tag           = $this->getState('translation.tag');
 		$reftag        = $this->getState('translation.reference');
