@@ -78,7 +78,9 @@ if (isset($posted['select']['keystatus'])
 {
 	$filter       = $posted['select']['keystatus'];
 	$keystofilter = array ($this->item->$filter);
-	//$tabchoised   = 'strings';
+	$tabchoised   = 'strings';
+
+	$app->setUserState ('com_localise.translation.edit.tabchoised', 'strings');
 }
 elseif (empty($posted['select']['keystatus']))
 {
