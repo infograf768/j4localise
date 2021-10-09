@@ -157,7 +157,7 @@ Factory::getDocument()->addScriptDeclaration("
 				var form = $('#localise-translation-form');
 
 				// Searching the actual tab
-				var actual = form.find('button[aria-expanded=true]').attr('aria-controls');
+				var actual = form.find('joomla-tab-element[active]').attr('id');
 
 				// Save the actual tab value to the hidden form field 'tabchoised'
 				form.find('input[name=tabchoised]').val(actual);
