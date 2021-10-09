@@ -56,17 +56,15 @@ class TranslationModel extends AdminModel
 		$input = Factory::getApplication()->input;
 
 		// Get the infos
-		$client     = $input->getCmd('client', '');
-		$tag        = $input->getCmd('tag', '');
-		$filename   = $input->getCmd('filename', '');
-		$storage    = $input->getCmd('storage', '');
-		$tabchoised = $input->getCmd('tabchoised', '');
+		$client   = $input->getCmd('client', '');
+		$tag      = $input->getCmd('tag', '');
+		$filename = $input->getCmd('filename', '');
+		$storage  = $input->getCmd('storage', '');
 
 		$this->setState('translation.client', !empty($client) ? $client : 'site');
 		$this->setState('translation.tag', $tag);
 		$this->setState('translation.filename', $filename);
 		$this->setState('translation.storage', $storage);
-		$this->setState('translation.tabchoised', $tabchoised);
 
 		// Get the id
 		$id = $input->getInt('id', '0');
