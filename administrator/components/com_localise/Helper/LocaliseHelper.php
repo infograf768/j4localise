@@ -866,10 +866,11 @@ abstract class LocaliseHelper
 				return true;
 			}
 
-			$xml_file = $custom_client_path . '/langmetadata.xml';
+			$xml_file     = $custom_client_path . '/langmetadata.xml';
+			$old_xml_file = $custom_client_path . '/en-GB.xml';
 
 			// Unrequired move or update files again
-			if ($saved_ref != '0' && $installed_version == $last_source && File::exists($xml_file))
+			if ($saved_ref != '0' && $installed_version == $last_source && File::exists($xml_file) && !File::exists($old_xml_file))
 			{
 				return false;
 			}
@@ -889,7 +890,7 @@ abstract class LocaliseHelper
 			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
 			$reference_client_path = Folder::makeSafe($reference_client_path);
 
-			if (File::exists($xml_file))
+			if (File::exists($xml_file) && !File::exists($old_xml_file))
 			{
 				// We have done this trunk and is not required get the files from Github again.
 				$update_files = self::updateSourcereference($gh_client, $custom_client_path);
@@ -1005,6 +1006,7 @@ abstract class LocaliseHelper
 			}
 
 			$files_to_include = array();
+			$is_j3format      = false;
 
 			foreach ($repostoryfiles as $repostoryfile)
 			{
@@ -1014,7 +1016,8 @@ abstract class LocaliseHelper
 
 				if ($has_tag == 'en-GB.')
 				{
-					$ext = File::getExt($file_to_include);
+					$is_j3format = true;
+					$ext         = File::getExt($file_to_include);
 
 					if ($ext == "ini" && $file_to_include == 'en-GB.ini')
 					{
@@ -1088,6 +1091,30 @@ abstract class LocaliseHelper
 
 								return false;
 							}
+						}
+					}
+				}
+			}
+
+			if ($is_j3format)
+			{
+				$actual_files = Folder::files($custom_client_path, "");
+
+				foreach ($actual_files as $file_to_delete)
+				{
+					$has_tag = substr($file_to_delete, 0, 6);
+
+					if ($has_tag == 'en-GB.')
+					{
+						$file_path = Folder::makeSafe($custom_client_path . "/" . $file_to_delete);
+
+						File::delete($file_path);
+
+						if (File::exists($file_path))
+						{
+							Factory::getApplication()->enqueueMessage(
+								Text::sprintf('COM_LOCALISE_ERROR_GITHUB_TAGGED_FILE_TO_DELETE_IS_PRESENT', $file_to_delete),
+								'warning');
 						}
 					}
 				}
