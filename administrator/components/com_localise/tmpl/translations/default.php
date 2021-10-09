@@ -17,6 +17,34 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('stylesheet', 'com_localise/localise.css', ['version' => 'auto', 'relative' => true]);
 
 HTMLHelper::_('behavior.core');
+HTMLHelper::_('jquery.framework');
+
+$wa = $this->document->getWebAssetManager();
+$wa->useScript('webcomponent.core-loader');
+$wa->addInlineScript("
+	// Page is loading
+	window.onload = function() {
+		initSpinner();
+	};
+
+	function initSpinner() {
+		spinner = document.createElement('joomla-core-loader');
+		document.body.appendChild(spinner);
+	}
+
+	// Page is loaded
+	jQuery(document).ready(function() {
+		// Close the spinner when page is loaded
+		var spinner = document.querySelector('joomla-core-loader');
+		spinner.parentNode.removeChild(spinner);
+
+		// Any field from the Select fieldset triggers the spinner
+		jQuery('select').change(function(){
+			spinner = document.createElement('joomla-core-loader');
+			document.body.appendChild(spinner);
+		})
+	});
+");
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
