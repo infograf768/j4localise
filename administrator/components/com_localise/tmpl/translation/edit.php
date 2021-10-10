@@ -55,15 +55,15 @@ $installed_version = $installed_version->getShortVersion();
 		'notice');
 	}
 
-$app        = Factory::getApplication();
-$input      = $app->input;
-$posted     = $input->post->get('jform', array(), 'array');
-$tabchoised = $app->getUserState ('com_localise.translation.edit.tabchoised');
+$app      = Factory::getApplication();
+$input    = $app->input;
+$posted   = $input->post->get('jform', array(), 'array');
+$tabstate = $app->getUserState ('com_localise.translation.edit.tabstate');
 
-if(empty($tabchoised))
+if(empty($tabstate))
 {
 	// If empty select here the default tab by name.
-	$tabchoised = 'strings';
+	$tabstate = 'default';
 }
 
 $has_translatedkeys   = !empty($this->item->translatedkeys) ? 1 : 0;
@@ -78,21 +78,21 @@ if (isset($posted['select']['keystatus'])
 {
 	$filter       = $posted['select']['keystatus'];
 	$keystofilter = array ($this->item->$filter);
-	$tabchoised   = 'strings';
+	$tabstate   = 'strings';
 
-	$app->setUserState ('com_localise.translation.edit.tabchoised', 'strings');
+	$app->setUserState ('com_localise.translation.edit.tabstate', 'strings');
 }
 elseif (empty($posted['select']['keystatus']))
 {
 	$filter       = 'allkeys';
 	$keystofilter = array();
-	//$tabchoised   = 'default';
+	//$tabstate   = 'default';
 }
 else
 {
 	$filter       = 'allkeys';
 	$keystofilter = array();
-	//$tabchoised   = 'default';
+	//$tabstate   = 'default';
 }
 
 $fieldSets = $this->form->getFieldsets();
@@ -159,8 +159,8 @@ Factory::getDocument()->addScriptDeclaration("
 				// Searching the actual tab
 				var actual = form.find('joomla-tab-element[active]').attr('id');
 
-				// Save the actual tab value to the hidden form field 'tabchoised'
-				form.find('input[name=tabchoised]').val(actual);
+				// Save the actual tab value to the hidden form field 'tabstate'
+				form.find('input[name=tabstate]').val(actual);
 			});
 		});
 	})(jQuery);
@@ -170,7 +170,7 @@ Factory::getDocument()->addScriptDeclaration("
 	<div class="row">
 		<!-- Begin Localise Translation -->
 		<div class="col-md-12 form-horizontal">
-				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $tabchoised)); ?>
+				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $tabstate)); ?>
 					<?php if ($this->ftp) : ?>
 						<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 							<?php if (!empty($ftpSets['ftp']->description)):?>
@@ -388,7 +388,7 @@ Factory::getDocument()->addScriptDeclaration("
 		<!-- End Localise Translation -->
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="notinref" value="" />
-		<input type="hidden" name="tabchoised" value="" />
+		<input type="hidden" name="tabstate" value="" />
 		<?php echo HTMLHelper::_('form.token'); ?>
 
 	</div>

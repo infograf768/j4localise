@@ -1174,12 +1174,6 @@ class TranslationModel extends AdminModel
 	 */
 	public function saveFile($data)
 	{
-		$app        = Factory::getApplication();
-		$input      = $app->input;
-		$tabchoised = $input->getCmd('tabchoised', '');
-
-		$app->setUserState ('com_localise.translation.edit.tabchoised', $tabchoised);
-
 		$client        = $this->getState('translation.client');
 		$tag           = $this->getState('translation.tag');
 		$reftag        = $this->getState('translation.reference');
