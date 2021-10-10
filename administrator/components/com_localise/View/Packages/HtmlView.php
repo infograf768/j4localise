@@ -144,7 +144,7 @@ class HtmlView extends BaseHtmlView
 			$toolbar->preferences('com_localise');
 		}
 
-		$toolbar->help('screen.packages', true);
+		//$toolbar->help('screen.packages', true);
 	}
 
 	/**
