@@ -43,24 +43,24 @@ $istranslation     = $this->item->istranslation;
 $installed_version = new Version;
 $installed_version = $installed_version->getShortVersion();
 
-	if ($saved_ref == 0)
-	{
-		$source_ref = $installed_version;
-	}
+if ($saved_ref == 0)
+{
+	$source_ref = $installed_version;
+}
 
-	if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
-	{
-		Factory::getApplication()->enqueueMessage(
-		Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
-		'notice');
-	}
+if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
+{
+	Factory::getApplication()->enqueueMessage(
+	Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
+	'notice');
+}
 
 $app      = Factory::getApplication();
 $input    = $app->input;
 $posted   = $input->post->get('jform', array(), 'array');
 $tabstate = $app->getUserState ('com_localise.translation.edit.tabstate');
 
-if(empty($tabstate))
+if (empty($tabstate))
 {
 	// If empty select here the default tab by name.
 	$tabstate = 'default';
@@ -101,7 +101,6 @@ $ftpSets   = $this->formftp->getFieldsets();
 
 if ($istranslation)
 {
-	// Only add the JS realted with the filters or others only showed at 'istranslation' case
 	Factory::getDocument()->addScriptDeclaration("
 		function returnAll()
 		{
