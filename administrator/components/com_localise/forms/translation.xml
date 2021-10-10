@@ -91,7 +91,7 @@
 			name="notinref"
 			type="hidden" />
 		<field
-			name="tabchoised"
+			name="tabstate"
 			type="hidden" />
 	</fieldset>
 	<fields name="select">
