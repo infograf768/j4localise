@@ -43,20 +43,28 @@ $istranslation     = $this->item->istranslation;
 $installed_version = new Version;
 $installed_version = $installed_version->getShortVersion();
 
-	if ($saved_ref == 0)
-	{
-		$source_ref = $installed_version;
-	}
+if ($saved_ref == 0)
+{
+	$source_ref = $installed_version;
+}
 
-	if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
-	{
-		Factory::getApplication()->enqueueMessage(
-		Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
-		'notice');
-	}
+if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
+{
+	Factory::getApplication()->enqueueMessage(
+	Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
+	'notice');
+}
 
-$input  = Factory::getApplication()->input;
-$posted = $input->post->get('jform', array(), 'array');
+$app      = Factory::getApplication();
+$input    = $app->input;
+$posted   = $input->post->get('jform', array(), 'array');
+$tabstate = $app->getUserState ('com_localise.translation.edit.tabstate');
+
+if (empty($tabstate))
+{
+	// If empty select here the default tab by name.
+	$tabstate = 'default';
+}
 
 $has_translatedkeys   = !empty($this->item->translatedkeys) ? 1 : 0;
 $has_untranslatedkeys = !empty($this->item->untranslatedkeys) ? 1 : 0;
@@ -70,19 +78,21 @@ if (isset($posted['select']['keystatus'])
 {
 	$filter       = $posted['select']['keystatus'];
 	$keystofilter = array ($this->item->$filter);
-	$tabchoised   = 'strings';
+	$tabstate   = 'strings';
+
+	$app->setUserState ('com_localise.translation.edit.tabstate', 'strings');
 }
 elseif (empty($posted['select']['keystatus']))
 {
 	$filter       = 'allkeys';
 	$keystofilter = array();
-	$tabchoised   = 'default';
+	//$tabstate   = 'default';
 }
 else
 {
 	$filter       = 'allkeys';
 	$keystofilter = array();
-	$tabchoised   = 'default';
+	//$tabstate   = 'default';
 }
 
 $fieldSets = $this->form->getFieldsets();
@@ -91,7 +101,6 @@ $ftpSets   = $this->formftp->getFieldsets();
 
 if ($istranslation)
 {
-	// Only add the JS realted with the filters or others only showed at 'istranslation' case
 	Factory::getDocument()->addScriptDeclaration("
 		function returnAll()
 		{
@@ -137,12 +146,30 @@ else
 		}
 	");
 }
+
+Factory::getDocument()->addScriptDeclaration("
+	(function($){
+		$(document).ready(function() {
+			$('#myTab').click(function(){
+
+				// Getting the form to use.
+				var form = $('#localise-translation-form');
+
+				// Searching the actual tab
+				var actual = form.find('joomla-tab-element[active]').attr('id');
+
+				// Save the actual tab value to the hidden form field 'tabstate'
+				form.find('input[name=tabstate]').val(actual);
+			});
+		});
+	})(jQuery);
+");
 ?>
 <form action="" method="post" name="adminForm" id="localise-translation-form" class="form-validate">
 	<div class="row">
 		<!-- Begin Localise Translation -->
 		<div class="col-md-12 form-horizontal">
-				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
+				<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $tabstate)); ?>
 					<?php if ($this->ftp) : ?>
 						<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'ftp', Text::_($ftpSets['ftp']->label, true)); ?>
 							<?php if (!empty($ftpSets['ftp']->description)):?>
@@ -360,6 +387,7 @@ else
 		<!-- End Localise Translation -->
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="notinref" value="" />
+		<input type="hidden" name="tabstate" value="" />
 		<?php echo HTMLHelper::_('form.token'); ?>
 
 	</div>

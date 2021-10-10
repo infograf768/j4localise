@@ -65,11 +65,23 @@ class TranslationController extends FormController
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
 		// Get the infos
-		$input    = Factory::getApplication()->input;
+		$app      = Factory::getApplication();
+		$input    = $app->input;
 		$client   = $input->get('client', '');
 		$tag      = $input->get('tag', '');
 		$filename = $input->get('filename', '');
 		$storage  = $input->get('storage', '');
+		$task     = $input->get('task', '');
+		$tabstate = $input->get('tabstate', '');
+
+		if(!empty($task) && $task == 'apply')
+		{
+			$app->setUserState ('com_localise.translation.edit.tabstate', $tabstate);
+		}
+		else
+		{
+			$app->setUserState ('com_localise.translation.edit.tabstate', '');
+		}
 
 		// Get the append string
 		$append  = parent::getRedirectToItemAppend($recordId, $urlVar);
