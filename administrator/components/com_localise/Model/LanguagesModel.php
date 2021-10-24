@@ -288,6 +288,9 @@ class LanguagesModel extends ListModel
 	 */
 	public function reformat()
 	{
+		$return  = false;
+		$renamed = false;
+
 		// Reformat ini files in extensions language folder
 		$scans = LocaliseHelper::getScans();
 
@@ -323,7 +326,8 @@ class LanguagesModel extends ListModel
 
 								Factory::getApplication()->enqueueMessage(Text::sprintf('COM_LOCALISE_REFORMAT_EXTENSION_SUCCESS', $shortpath . $extension . '/language/' . $tag . '/'), 'message');
 
-								$return = true;
+								$renamed = true;
+								$return  = true;
 							}
 						}
 					}
@@ -348,58 +352,63 @@ class LanguagesModel extends ListModel
 					'.',
 					false,
 					false,
-					array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides', 'en-GB')
+					array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
 			);
 
 			foreach ($folders as $folder)
 			{
-				$file = constant('LOCALISEPATH_' . strtoupper($client)) . '/language/' . $folder . '/' . $folder . '.xml';
 				$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
 
-				if (File::exists($file))
+				$files   = Folder::files($path . '/' . $folder);
+				$newPath = $path . '/' . $folder;
+				$renamed = false;
+
+				foreach ($files as $file)
 				{
-					$files   = Folder::files($path . '/' . $folder);
-					$newPath = $path . '/' . $folder;
-
-					foreach ($files as $file)
+					if ($file === $folder . '.xml')
 					{
-						if ($file === $folder . '.xml')
-						{
-							rename($newPath . '/' . $file, $newPath . '/langmetadata.xml');
-						}
-
-						if ($file === $folder . '.localise.php')
-						{
-							rename($newPath . '/' . $file, $newPath . '/localise.php');
-						}
+						rename($newPath . '/' . $file, $newPath . '/langmetadata.xml');
+						$renamed = true;
 					}
 
-					$inifiles = Folder::files($path . '/' . $folder, '.ini$');
-
-					foreach ($inifiles as $inifile)
+					if ($file === $folder . '.localise.php')
 					{
-						if ($inifile === $folder . '.ini')
-						{
-							rename($newPath . '/' . $inifile,  $newPath . '/joomla.ini');
-						}
-						else
-						{
-							$newinifile = str_replace($folder . '.', '', $inifile);
-							rename($newPath . '/' . $inifile,  $newPath . '/' . $newinifile);
-						}
+						rename($newPath . '/' . $file, $newPath . '/localise.php');
+						$renamed = true;
 					}
-
-					Factory::getApplication()->enqueueMessage(Text::sprintf('COM_LOCALISE_REFORMAT_SUCCESS', $folder, $client), 'message');
-
-					$return = true;
 				}
-				else
-				{
-					Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_REFORMAT_NONE'));
 
-					$return = false;
+				$inifiles = Folder::files($path . '/' . $folder, '.ini$');
+
+				foreach ($inifiles as $inifile)
+				{
+					$has_tag = substr($inifile, 0, strlen($folder)+1);
+
+					if ($inifile === $folder . '.ini')
+					{
+						rename($newPath . '/' . $inifile,  $newPath . '/joomla.ini');
+						$renamed = true;
+					}
+					else if ($has_tag === $folder . '.')
+					{
+						$newinifile = str_replace($folder . '.', '', $inifile);
+						rename($newPath . '/' . $inifile,  $newPath . '/' . $newinifile);
+						$renamed = true;
+					}
+				}
+
+				if ($renamed)
+				{
+					$return = true;
+					Factory::getApplication()->enqueueMessage(Text::sprintf('COM_LOCALISE_REFORMAT_SUCCESS', $folder, $client), 'message');
 				}
 			}
+		}
+
+		if (!$renamed)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_LOCALISE_REFORMAT_NONE'));
+			$return = false;
 		}
 
 		return $return;
