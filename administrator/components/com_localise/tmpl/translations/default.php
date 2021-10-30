@@ -22,27 +22,20 @@ HTMLHelper::_('jquery.framework');
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('webcomponent.core-loader');
 $wa->addInlineScript("
-	// Page is loading
-	window.onload = function() {
-		initSpinner();
-	};
-
-	function initSpinner() {
-		spinner = document.createElement('joomla-core-loader');
-		document.body.appendChild(spinner);
-	}
-
-	// Page is loaded
-	jQuery(document).ready(function() {
-		// Close the spinner when page is loaded
-		var spinner = document.querySelector('joomla-core-loader');
-		spinner.parentNode.removeChild(spinner);
-
+	$(function() {
 		// Any field from the Select fieldset triggers the spinner
-		jQuery('select').change(function(){
-			spinner = document.createElement('joomla-core-loader');
-			document.body.appendChild(spinner);
+		$('select').change(function(){
+			// Display the loading indication
+			document.body.appendChild(document.createElement('joomla-core-loader'));
 		})
+
+		$('#adminForm').on('load', function() {
+			// Iframe load finished, hide Joomla loading layer.
+			var spinner = document.querySelector('joomla-core-loader');
+			if (spinner) {
+				spinner.parentNode.removeChild(spinner);
+			}
+		});
 	});
 ");
 
