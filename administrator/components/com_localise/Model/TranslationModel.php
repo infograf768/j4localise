@@ -983,6 +983,7 @@ class TranslationModel extends AdminModel
 						}
 
 						$field->addAttribute('commented', $commented);
+						$field->addAttribute('translateLabel', 'false');
 
 						if ($have_develop == '1' && $istranslation == '0' && array_key_exists($key, $oldref['keys']))
 						{
