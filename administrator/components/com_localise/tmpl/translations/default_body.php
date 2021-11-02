@@ -124,7 +124,11 @@ $max_vars = ini_get('max_input_vars');
 				<span class="text"></span>
 				</a>
 			<?php elseif ($item->state == 'error') : ?>
-				<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR',substr($item->path,strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+				<?php if ($item->error[0] == '0') : ?>
+					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR_EMPTY_FILE',substr($item->path,strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+				<?php else : ?>
+					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR',substr($item->path,strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+				<?php endif; ?>
 			<?php elseif ($item->type == 'override') : ?>
 				<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_TYPE_OVERRIDE'), 'inactive_class'=>'16-override', 'enabled' => false, 'translate'=>false)); ?>
 			<?php elseif ($item->state == 'notinreference') : ?>
