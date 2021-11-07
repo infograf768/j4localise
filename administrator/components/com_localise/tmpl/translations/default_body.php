@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\Component\Localise\Administrator\Helper\LocaliseHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -104,7 +105,11 @@ $max_vars = ini_get('max_input_vars');
 			<?php elseif ($item->filename=='override') : ?>
 				<?php echo $item->name; ?>.ini
 			<?php else : ?>
-				<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR', substr($item->path, strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+				<?php if (File::exists($item->path)) : ?>
+					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR', substr($item->path, strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+				<?php else : ?>
+						<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_UNEXISTING', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-unexisting', 'enabled' => false, 'translate'=>false)); ?>
+				<?php endif; ?>
 				<?php echo $item->name; ?>.ini
 			<?php endif; ?>
 			<?php if ($item->writable && $canEdit) : ?>
@@ -124,7 +129,15 @@ $max_vars = ini_get('max_input_vars');
 				<span class="text"></span>
 				</a>
 			<?php elseif ($item->state == 'error') : ?>
-				<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR',substr($item->path,strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+				<?php if ($item->error[0] == '0') : ?>
+					<?php if (File::exists($item->path)) : ?>
+						<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR_EMPTY_FILE',substr($item->path,strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+					<?php else : ?>
+						<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_UNEXISTING', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-unexisting', 'enabled' => false, 'translate'=>false)); ?>
+					<?php endif; ?>
+				<?php else : ?>
+					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR',substr($item->path,strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+				<?php endif; ?>
 			<?php elseif ($item->type == 'override') : ?>
 				<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_TYPE_OVERRIDE'), 'inactive_class'=>'16-override', 'enabled' => false, 'translate'=>false)); ?>
 			<?php elseif ($item->state == 'notinreference') : ?>
@@ -137,7 +150,12 @@ $max_vars = ini_get('max_input_vars');
 				<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
 					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE_WITH_DEVELOP', $item->translated, $item->unchanged, $extras_amount, $text_changes_amount, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
 				<?php else : ?>
-					<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
+					<?php $is_emptyFile = empty(file_get_contents($item->refpath)); ?>
+					<?php if ($is_emptyFile) : ?>
+						<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_ERROR_REFERENCE_FILE_EMPTY', substr($item->refpath, strlen(JPATH_ROOT)), substr($item->path, strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+					<?php else : ?>
+						<?php echo HTMLHelper::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>Text::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
+					<?php endif; ?>
 				<?php endif; ?>
 			<?php else : ?>
 				<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>

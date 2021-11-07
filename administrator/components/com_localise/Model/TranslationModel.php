@@ -266,6 +266,10 @@ class TranslationModel extends AdminModel
 								$this->item->source = LocaliseHelper::combineReferences($path, $devpath);
 							}
 						}
+						else
+						{
+							$this->item->source = file_get_contents($path);
+						}
 					}
 					else
 					{
@@ -274,6 +278,38 @@ class TranslationModel extends AdminModel
 
 					$stream = new Stream;
 					$stream->open($path);
+
+					$is_emptyFile = empty(file_get_contents($path));
+
+					if ($is_emptyFile)
+					{
+						// Setting it as an error
+						$this->item->error[] = 0;
+
+						// Sending the error message
+						$emptyFile = str_replace(JPATH_ROOT, '', $path);
+						Factory::getApplication()->enqueueMessage(Text::sprintf('COM_LOCALISE_ERROR_FILE_EMPTY', $emptyFile), 'error');
+
+						// The "checked_out" value must be set before return the item or also will trigger log warnings.
+						// Next code line are a copy of the code to handle it that we can found also at the end of this function.
+						if ($this->getState('translation.id'))
+						{
+							$table = $this->getTable();
+							$table->load($this->getState('translation.id'));
+							$user = Factory::getUser($table->checked_out);
+							$this->item->setProperties($table->getProperties());
+
+							if ($this->item->checked_out == Factory::getUser()->id)
+							{
+								$this->item->checked_out = 0;
+							}
+
+							$this->item->editor = Text::sprintf('COM_LOCALISE_TEXT_TRANSLATION_EDITOR', $user->name, $user->username);
+						}
+
+						return $this->item;
+					}
+
 					$begin  = $stream->read(4);
 					$bom    = strtolower(bin2hex($begin));
 
