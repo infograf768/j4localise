@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="5.0" method="upgrade">
 	<name>com_localise</name>
-	<creationDate>2021-09-03</creationDate>
+	<creationDate>2021-11-11</creationDate>
 	<author>Christophe Demko</author>
 	<author>Jean-Marie Simonet</author>
 	<author>Ifan Evans</author>
 	<copyright>(C) 2017 - 2021 Open Source Matters. All rights reserved.</copyright>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
-	<version>5.0.0-beta5</version>
+	<version>5.0.0-rc1</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<scriptfile>install.php</scriptfile>
@@ -68,7 +68,7 @@
 	</administration>
 
 	<updateservers>
-		<server type="extension" priority="1" name="Localise Update Site">https://raw.githubusercontent.com/joomla-projects/com_localise/develop/update-server.xml</server>
+		
 	</updateservers>
 
 </extension>
