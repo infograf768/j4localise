@@ -53,14 +53,16 @@ class BranchesField extends ListField
 	{
 		$attributes    = '';
 		$params        = ComponentHelper::getParams('com_localise');
+		$branches      = array();
 		$branches_path = JPATH_ROOT
 				. '/administrator/components/com_localise/customisedref/joomla_branches.txt';
+		if (File::exists($branches_path))
+		{
+			file_put_contents($branches_path, '');
 
-		file_put_contents($branches_path, '');
-
-
-		$branches_file = file_get_contents($branches_path);
-		$branches      = preg_split("/\\r\\n|\\r|\\n/", $branches_file);
+			$branches_file = file_get_contents($branches_path);
+			$branches      = preg_split("/\\r\\n|\\r|\\n/", $branches_file);
+		}
 
 		$gh_user       = 'joomla';
 		$gh_project    = 'joomla-cms';

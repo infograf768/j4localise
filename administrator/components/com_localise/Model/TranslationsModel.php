@@ -737,7 +737,9 @@ class TranslationsModel extends ListModel
 	 */
 	private function getTranslations()
 	{
-		$app = Factory::getApplication();
+		$app           = Factory::getApplication();
+		$params        = ComponentHelper::getParams('com_localise');
+		$allow_develop = $params->get('gh_allow_develop', 0);
 
 		if (!isset($this->translations))
 		{
@@ -754,11 +756,17 @@ class TranslationsModel extends ListModel
 				return $this->translations;
 			}
 
-			$gh_data = array();
-			$gh_data['github_client'] = $filter_client;
+			// This will download from Github the set of core language files by client selected
+			// to be ready when a file is edited from 'translation' view.
+			// Only if 'Allow develop' is enabled from 'Options'.
+			if (isset($allow_develop) && $allow_develop)
+			{
+				$gh_data = array();
+				$gh_data['github_client'] = $filter_client;
 
-			$get_github_files   = LocaliseHelper::getTargetgithubfiles($gh_data);
-			$get_customised_ref = LocaliseHelper::getSourceGithubfiles($gh_data);
+				$get_github_files   = LocaliseHelper::getTargetgithubfiles($gh_data);
+				$get_customised_ref = LocaliseHelper::getSourceGithubfiles($gh_data);
+			}
 
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
 			$filter_tag   = $filter_tag ? ("^" . $filter_tag . "$") : '.';
