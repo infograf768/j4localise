@@ -769,12 +769,16 @@ abstract class LocaliseHelper
 			$customisedref = $saved_ref;
 			$last_sources  = self::getLastsourcereference();
 			$last_source   = $last_sources[$gh_client];
+			$versions      = array();
 
 			$versions_path = JPATH_ROOT
 					. '/administrator/components/com_localise/customisedref/stable_joomla_releases.txt';
 
-			$versions_file = file_get_contents($versions_path);
-			$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
+			if (File::exists($versions_path))
+			{
+				$versions_file = file_get_contents($versions_path);
+				$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
+			}
 
 			if ($saved_ref != '0' && !in_array($customisedref, $versions))
 			{

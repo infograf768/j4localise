@@ -53,21 +53,25 @@ class ReleasesField extends ListField
 	{
 		$attributes    = '';
 		$params        = ComponentHelper::getParams('com_localise');
+		$versions      = array();
 		$versions_path = JPATH_ROOT
 				. '/administrator/components/com_localise/customisedref/stable_joomla_releases.txt';
 
-		// Empty txt file to make sure it contains only stable releases after save.
-		if ($params->get('pre_stable', '0') == '0')
+		if (File::exists($versions_path))
 		{
-			file_put_contents($versions_path, '');
+			// Empty txt file to make sure it contains only stable releases after save.
+			if ($params->get('pre_stable', '0') == '0')
+			{
+				file_put_contents($versions_path, '');
+			}
+
+			$versions_file = file_get_contents($versions_path);
+			$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
 		}
 
-		$versions_file = file_get_contents($versions_path);
-		$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
-
-		$gh_user       = 'joomla';
-		$gh_project    = 'joomla-cms';
-		$gh_token      = $params->get('gh_token', '');
+		$gh_user    = 'joomla';
+		$gh_project = 'joomla-cms';
+		$gh_token   = $params->get('gh_token', '');
 
 		$options = new Registry;
 
