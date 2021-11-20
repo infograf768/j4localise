@@ -51,8 +51,8 @@ if ($saved_ref == 0)
 if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
 {
 	Factory::getApplication()->enqueueMessage(
-	Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
-	'notice');
+		Text::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
+		'notice');
 }
 
 $app      = Factory::getApplication();
@@ -193,7 +193,7 @@ Factory::getDocument()->addScriptDeclaration("
 					<?php echo HTMLHelper::_('uitab.endTab'); ?>
 					<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'strings', Text::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
 						<div class="alert alert-info">
-							<span class="fas fa-info-circle info-line" aria-hidden="true"</span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+							<span class="fas fa-info-circle info-line" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
 							<?php if ($istranslation) : ?>
 								<?php echo Text::_('COM_LOCALISE_TRANSLATION_NOTICE'); ?>
 							<?php else : ?>
@@ -244,7 +244,7 @@ Factory::getDocument()->addScriptDeclaration("
 										echo HTMLHelper::_('bootstrap.addSlide', 'localise-translation-sliders', Text::_($fieldSet->label), 'collapse' . $i++);
 										if ($fieldSet->label == "COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE") : ?>
 											<div class="alert alert-info">
-												<span class="fas fa-info-circle info-line" aria-hidden="true"</span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+												<span class="fas fa-info-circle info-line" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
 												<?php if ($istranslation) : ?>
 													<?php echo Text::_('COM_LOCALISE_TOOLTIP_TRANSLATION_EXTRA_KEYS_IN_TRANSLATION'); ?>
 												<?php else : ?>
