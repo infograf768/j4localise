@@ -340,8 +340,10 @@ class TranslationModel extends AdminModel
 					}
 
 					$stream->seek(0);
-					$continue   = true;
-					$lineNumber = 0;
+					$continue    = true;
+					$lineNumber  = 0;
+					$has_headers = false;
+					$is_string   = false;
 
 					$isTranslationsView = Factory::getApplication()->input->get('view') == 'translations';
 
@@ -349,6 +351,23 @@ class TranslationModel extends AdminModel
 					{
 						$line = $stream->gets();
 						$lineNumber++;
+
+						// Adding some control to detect if the file have headers.
+						if ($lineNumber == '1' && $line[0] != ';')
+						{
+							$headerline = str_replace('\"', '"_QQ_"', $line);
+
+							if (preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_:\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $headerline))
+							{
+								// The fist line is a string and no headders are prensent.
+								$is_string = true;
+							}
+						}
+						elseif ($lineNumber == '1' && $line[0] == ';')
+						{
+							// The file start with a standar header.
+							$has_headers = true;
+						}
 
 						if ($line[0] == '#')
 						{
@@ -481,6 +500,13 @@ class TranslationModel extends AdminModel
 					if (empty($this->item->additionalcopyright) && $params->get('additionalcopyright') && !$isTranslationsView)
 					{
 						$this->item->additionalcopyright[] = $params->get('additionalcopyright');
+					}
+
+					// Starting from the begin again if no headers are present.
+					if ($has_headers == false && $is_string == true)
+					{
+						$stream->seek(0);
+						$lineNumber = 0;
 					}
 
 					while (!$stream->eof())
@@ -961,6 +987,7 @@ class TranslationModel extends AdminModel
 			{
 				$stream = new Stream;
 				$stream->open($refpath);
+				$stream->seek(0);
 				$header     = true;
 				$lineNumber = 0;
 
@@ -969,11 +996,31 @@ class TranslationModel extends AdminModel
 					$line = $stream->gets();
 					$commented = '';
 					$lineNumber++;
+					$is_string  = false;
+					$has_headers = false;
+
+					// Adding some control to detect if the file have headers.
+					if ($lineNumber == '1' && $line[0] != ';')
+					{
+						$headerline = str_replace('\"', '"_QQ_"', $line);
+
+						if (preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_:\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $headerline))
+						{
+							// The first line is a string and no headers are prensent.
+							$is_string = true;
+						}
+					}
+					elseif ($lineNumber == '1' && $line[0] == ';')
+					{
+						// The file start with a standar header.
+						$has_headers = true;
+					}
 
 					// Blank lines
 					if (preg_match('/^\s*$/', $line))
 					{
-						$header = true;
+						// Seems the "$header" here is used to detect the first black line after de headers.
+						//$header = true;
 						$field  = $fieldset->addChild('field');
 						$field->addAttribute('label', '');
 						$field->addAttribute('type', 'spacer');
@@ -983,7 +1030,7 @@ class TranslationModel extends AdminModel
 					// Section lines
 					elseif (preg_match('/^\[([^\]]*)\]\s*$/', $line, $matches))
 					{
-						$header = false;
+						//$header = false;
 						$form->load($addform, false);
 						$section = $matches[1];
 						$addform = new \SimpleXMLElement('<form />');
@@ -995,7 +1042,8 @@ class TranslationModel extends AdminModel
 						continue;
 					}
 					// Comment lines
-					elseif (!$header && preg_match('/^;(.*)$/', $line, $matches))
+					elseif (preg_match('/^;(.*)$/', $line, $matches))
+					//elseif (!$header && preg_match('/^;(.*)$/', $line, $matches))
 					{
 						$key   = $matches[1];
 						$field = $fieldset->addChild('field');
@@ -1007,7 +1055,8 @@ class TranslationModel extends AdminModel
 					// Key lines
 					elseif (preg_match('/^([A-Z][A-Z0-9_:\*\-\.]*)\s*=/', $line, $matches))
 					{
-						$header     = false;
+						//$header     = false;
+						$is_string  = true;
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
 
@@ -1220,8 +1269,14 @@ class TranslationModel extends AdminModel
 		$custompath    = LocaliseHelper::searchCustompath($client, $refpath);
 		$exists        = File::exists($path);
 		$refexists     = File::exists($refpath);
-		$notinref      = (array) $data['notinref'];
 		$istranslation = $tag != $reftag;
+		$notinref      = array();
+
+		if (isset($data['notinref']))
+		{
+			$notinref  = (array) $data['notinref'];
+		}
+
 
 		if ($refexists && !empty($devpath))
 		{
@@ -1345,6 +1400,7 @@ class TranslationModel extends AdminModel
 
 			$contents = array();
 			$stream   = new Stream;
+			$stream->seek(0);
 
 			if ($exists)
 			{
@@ -1369,6 +1425,7 @@ class TranslationModel extends AdminModel
 				{
 					$stream->close();
 					$stream->open($refpath);
+					$stream->seek(0);
 
 					while (!$stream->eof())
 					{
@@ -1385,6 +1442,7 @@ class TranslationModel extends AdminModel
 			else
 			{
 				$stream->open($refpath);
+				$stream->seek(0);
 
 				while (!$stream->eof())
 				{
@@ -1403,6 +1461,8 @@ class TranslationModel extends AdminModel
 			}
 
 			$strings = $data['strings'];
+
+			$stream->seek(0);
 
 			while (!$stream->eof())
 			{
